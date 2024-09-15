@@ -38,8 +38,13 @@ const Login = () => {
           </div>
           {/* Password Field */}
           <div className="password-field">
-            <label htmlFor="pasword">Password</label>
-            <div className="underPassword">
+            <div className="password-text">
+              <label htmlFor="pasword">Password</label>
+              <a className="forgot-link" href="/">
+                Forgot?
+              </a>
+            </div>
+            <div className="passwordInput">
               <input
                 className="loginInput"
                 type="password"
@@ -49,12 +54,15 @@ const Login = () => {
                 placeholder="Enter your password"
                 required
               ></input>
-              <a className="forgot-link" href="/">
-                Forgot?
-              </a>
             </div>
           </div>
-          {/* Other */}
+          {/* Submit Button*/}
+          <div className="loginButtonContainer">
+            <button className="loginButton" onClick={handleLogin}>
+              Login now
+            </button>
+          </div>
+          {/* Sign Up */}
           <div className="signUp-field">
             <p> Don't have an account? </p>
             <a className="signUp-link" href="/">
