@@ -64,11 +64,12 @@ const Login = () => {
           </div>
           {/* Sign Up */}
           <div className="signUp-field">
-            <p> Don't have an account? </p>
+            <p className="signUp-text"> Don't have an account? </p>
             <a className="signUp-link" href="/">
               Sign up
             </a>
           </div>
+          {/* End */}
         </form>
       </div>
     </div>
