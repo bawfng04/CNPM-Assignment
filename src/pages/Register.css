@@ -7,6 +7,7 @@ body {
   display: flex;
   width: 180vh;
   animation: fadeIn 1s;
+  position: relative;
 }
 
 .left-side {
@@ -16,11 +17,34 @@ body {
   background-position: center;
 }
 
-.registerNoti {
+.registerNoti,
+.registerNotiError {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  padding: 30px 100px;
+  border: 2px solid none;
+  border-radius: 10px;
+  color: white;
+  animation: regNoti 1s;
+}
+
+.registerNoti {
+  background-color: rgb(6, 184, 0);
+}
+
+.registerNotiError {
+  background-color: rgb(255, 153, 0);
+}
+
+@keyframes regNoti {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .right-side {

@@ -53,6 +53,24 @@ body {
   margin-bottom: 25px;
 }
 
+.loginNoti,
+.loginNotiS {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 30px 100px;
+  border: 2px solid none;
+  border-radius: 10px;
+  color: white;
+  animation: regNoti 1s;
+  background-color: rgb(255, 153, 0);
+}
+
+.loginNotiS {
+  background-color: rgb(6, 184, 0);
+}
+
 .email-field,
 .password-field,
 .passwordInput {

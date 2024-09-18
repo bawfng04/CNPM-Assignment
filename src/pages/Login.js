@@ -1,22 +1,50 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Register from "./Register";
 import logo from "./images/logo.png";
 import "./Login.css";
 
-const Login = () => {
+function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState("");
-  const [logged, setlogged] = useState(false);
+  const [logged, setLogged] = useState(false);
+  const navigate = useNavigate();
 
   // const testLocalStorage = () => {
   //   localStorage.setItem("123", "456");
   //   alert(localStorage.getItem("123"));
   // };
 
+  const clearError = () => {
+    setTimeout(() => {
+      setError("");
+    }, 3000);
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
+    const userAccounts = JSON.parse(
+      localStorage.getItem("userAccounts") || "{}"
+    );
+    if (userAccounts[email] && userAccounts[email] === password) {
+      setLogged(true);
+      localStorage.setItem("isLoggedIn", "true");
+      setTimeout(() => {
+        onLogin();
+        navigate("/main");
+      }, 3000);
+    } else {
+      if (email === "") {
+        setError("Please input your email");
+      } else if (password === "") {
+        setError("Password can't be empty");
+      } else {
+        setError("Invalid username or password");
+      }
+      clearError();
+    }
   };
 
   const handleEmailChange = (e) => {
@@ -33,6 +61,16 @@ const Login = () => {
 
   return (
     <div className="Main">
+      {error && (
+        <div className="loginNoti">
+          <p>{error}</p>
+        </div>
+      )}
+      {logged && (
+        <div className="loginNotiS">
+          <p>Login successful!</p>
+        </div>
+      )}
       <div className="logo">
         <img src={logo} alt="logo" />
       </div>
@@ -96,6 +134,6 @@ const Login = () => {
       )}
     </div>
   );
-};
+}
 
 export default Login;
