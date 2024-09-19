@@ -5,6 +5,9 @@ import Register from "./pages/Register";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Main from "./pages/Main";
 
+//test
+// import Home from "./pages/components/Home";
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
@@ -26,6 +29,7 @@ function App() {
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/main/*" element={<Main />} />
+
           <Route path="/" element={<Login onLogin={handleLogin} />} />
         </Routes>
       </BrowserRouter>

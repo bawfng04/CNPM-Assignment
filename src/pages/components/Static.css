@@ -42,6 +42,7 @@ body {
   flex-direction: column;
   flex-grow: 1;
   margin: 0px;
+  padding: 0px;
 }
 
 .header {
@@ -51,10 +52,19 @@ body {
   padding: 20px;
   background-color: #ffffff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  max-height: 90px;
+  margin: 0px;
 }
 
 .header input {
   padding: 5px;
+}
+
+.header-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .header-icons span {
@@ -64,4 +74,56 @@ body {
 .content {
   padding: 20px;
   flex-grow: 1;
+}
+
+.BKP {
+  width: 100%;
+  padding: 10px;
+}
+
+.HCMUTLogo {
+  height: 100%;
+}
+
+.routes li {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.searchBar {
+  border: none;
+  border-radius: 20px;
+  background-color: rgb(240, 236, 236);
+  margin-right: 50px;
+  width: 250px;
+  height: 90%;
+  transition: transform 0.5s ease;
+}
+
+.searchBar:hover {
+  transform: scale(1.05);
+}
+
+.headerButton {
+  height: 100%;
+  background-color: white;
+  border: none;
+  margin-right: 20px;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.headerButton:hover {
+  transform: scale(1.2);
+}
+
+.sidebarImg {
+  margin-right: 10px;
+}
+
+.content {
+  color: white;
+  padding: 0px;
 }

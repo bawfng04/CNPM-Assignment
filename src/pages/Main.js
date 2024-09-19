@@ -5,7 +5,7 @@ import Static from "./components/Static";
 
 function Main() {
   return (
-    <div>
+    <div className="mainDiv">
       <Routes>
         <Route path="dashboard" element={<Dashboard />} />
       </Routes>

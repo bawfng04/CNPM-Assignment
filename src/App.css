@@ -10,3 +10,13 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+.App {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.mainDiv {
+  width: 100%;
+}
