@@ -17,10 +17,13 @@ body {
 }
 
 .sidebar {
+  display: flex;
+  flex-direction: column;
   width: 200px;
   background-color: #f4f7fc;
   padding: 20px;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 .sidebar h1 {
@@ -71,6 +74,10 @@ body {
   margin-left: 10px;
 }
 
+.navBar {
+  margin-top: 30px;
+}
+
 .content {
   padding: 20px;
   flex-grow: 1;
@@ -87,9 +94,7 @@ body {
 
 .routes li {
   display: flex;
-  align-items: center;
-  margin-top: 20px;
-  padding: 10px;
+  justify-content: flex-start;
 }
 
 .searchBar {
@@ -126,4 +131,23 @@ body {
 .content {
   color: white;
   padding: 0px;
+}
+
+.sidebarButton {
+  display: flex;
+  justify-content: flex-start;
+  border: none;
+  background-color: transparent;
+  color: blue;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  padding: 10px;
+  width: 200px;
+  border-radius: 10px;
+}
+
+.sidebarButton:hover {
+  transform: translateY(-3px);
+  background-color: #e1e1e1;
 }
