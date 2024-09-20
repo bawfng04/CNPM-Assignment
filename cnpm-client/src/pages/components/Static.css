@@ -1,0 +1,153 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  display: flex;
+}
+
+.static {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  background-color: #f4f7fc;
+  padding: 20px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.sidebar h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin-bottom: 10px;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin: 0px;
+  padding: 0px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  max-height: 90px;
+  margin: 0px;
+}
+
+.header input {
+  padding: 5px;
+}
+
+.header-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.header-icons span {
+  margin-left: 10px;
+}
+
+.navBar {
+  margin-top: 30px;
+}
+
+.content {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.BKP {
+  width: 100%;
+  padding: 10px;
+}
+
+.HCMUTLogo {
+  height: 100%;
+}
+
+.routes li {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.searchBar {
+  border: none;
+  border-radius: 20px;
+  background-color: rgb(240, 236, 236);
+  margin-right: 50px;
+  width: 250px;
+  height: 90%;
+  transition: transform 0.5s ease;
+}
+
+.searchBar:hover {
+  transform: scale(1.05);
+}
+
+.headerButton {
+  height: 100%;
+  background-color: white;
+  border: none;
+  margin-right: 20px;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.headerButton:hover {
+  transform: scale(1.2);
+}
+
+.sidebarImg {
+  margin-right: 10px;
+}
+
+.content {
+  color: white;
+  padding: 0px;
+}
+
+.sidebarButton {
+  display: flex;
+  justify-content: flex-start;
+  border: none;
+  background-color: transparent;
+  color: blue;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  padding: 10px;
+  width: 200px;
+  border-radius: 10px;
+}
+
+.sidebarButton:hover {
+  transform: translateY(-3px);
+  background-color: #e1e1e1;
+}
