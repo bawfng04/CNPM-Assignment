@@ -20,10 +20,9 @@ body {
   display: flex;
   flex-direction: column;
   width: 200px;
-  background-color: #f4f7fc;
+  background-color: #ffffff;
   padding: 20px;
-  flex-shrink: 0;
-  margin-left: auto;
+  height: 100%;
 }
 
 .sidebar h1 {
@@ -46,6 +45,7 @@ body {
   flex-grow: 1;
   margin: 0px;
   padding: 0px;
+  height: 100%;
 }
 
 .header {
@@ -81,6 +81,7 @@ body {
 .content {
   padding: 20px;
   flex-grow: 1;
+  animation: replaceCard 1s ease;
 }
 
 .BKP {
@@ -150,4 +151,19 @@ body {
 .sidebarButton:hover {
   transform: translateY(-3px);
   background-color: #e1e1e1;
+}
+
+.replaceCard {
+  animation: replaceCard 0.5s ease-in-out;
+}
+
+@keyframes replaceCard {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

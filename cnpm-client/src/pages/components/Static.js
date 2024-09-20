@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Static.css";
 import Sidebar from "./Sidebar/Sidebar";
 import Header from "./Sidebar/Header";
@@ -26,12 +26,26 @@ const Static = () => {
     }
   };
 
+  useEffect(() => {
+    const contentDiv = document.querySelector(".content");
+    contentDiv.classList.add("replaceCard");
+    const handleAnimationEnd = () => {
+      contentDiv.classList.remove("replaceCard");
+    };
+    contentDiv.addEventListener("animationend", handleAnimationEnd);
+    return () => {
+      contentDiv.removeEventListener("animationend", handleAnimationEnd);
+    };
+  }, [activeComponent]);
+
   return (
     <div className="static">
       <Sidebar setActiveComponent={setActiveComponent} />
       <div className="main-content">
         <Header />
-        <div className="content">{renderContent()}</div>
+        <div className="content" key={activeComponent}>
+          {renderContent()}
+        </div>
       </div>
     </div>
   );
