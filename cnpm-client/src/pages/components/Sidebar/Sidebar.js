@@ -13,7 +13,7 @@ function Sidebar({ setActiveComponent }) {
         <ul className="routes">
           <li>
             <button
-              onClick={() => setActiveComponent("home")}
+              onClick={() => setActiveComponent("dashboard")}
               className="sidebarButton"
             >
               <img src={home} alt="home" className="sidebarImg"></img>

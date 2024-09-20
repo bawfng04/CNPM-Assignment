@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./Static.css";
+//sidebar and header
 import Sidebar from "./Sidebar/Sidebar";
 import Header from "./Sidebar/Header";
-//components
-import Dashboard from "./Dashboard";
-import History from "./History";
-import Accounts from "./Accounts";
-import Settings from "./Settings";
+//components in content div
+import Dashboard from "./Cards/Dashboard";
+import History from "./Cards/History";
+import Accounts from "./Cards/Accounts";
+import Settings from "./Cards/Settings";
 
 const Static = () => {
   const [activeComponent, setActiveComponent] = useState("dashboard");
@@ -36,6 +37,11 @@ const Static = () => {
     return () => {
       contentDiv.removeEventListener("animationend", handleAnimationEnd);
     };
+  }, [activeComponent]);
+
+  useEffect(() => {
+    const url = `/${activeComponent}`;
+    window.history.pushState({ path: url }, "", url);
   }, [activeComponent]);
 
   return (

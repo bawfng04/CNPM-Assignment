@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/Cards/Dashboard";
 import Static from "./components/Static";
 
 function Main() {
