@@ -22,6 +22,15 @@ function Sidebar({ setActiveComponent }) {
           </li>
           <li>
             <button
+              onClick={() => setActiveComponent("printer")}
+              className="sidebarButton"
+            >
+              <img src={home} alt="home" className="sidebarImg"></img>
+              Printer
+            </button>
+          </li>
+          <li>
+            <button
               onClick={() => setActiveComponent("history")}
               className="sidebarButton"
             >

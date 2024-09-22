@@ -8,6 +8,7 @@ import Dashboard from "./Cards/Dashboard";
 import History from "./Cards/History";
 import Accounts from "./Cards/Accounts";
 import Settings from "./Cards/Settings";
+import Printer from "./Cards/PrinterComponent/Printer";
 
 const Static = () => {
   const [activeComponent, setActiveComponent] = useState("dashboard");
@@ -22,6 +23,8 @@ const Static = () => {
         return <Accounts />;
       case "settings":
         return <Settings />;
+      case "printer":
+        return <Printer />;
       default:
         return <Dashboard />;
     }
