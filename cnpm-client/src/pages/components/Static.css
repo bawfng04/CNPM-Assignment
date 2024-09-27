@@ -105,13 +105,21 @@ body {
 }
 
 .searchBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
-  border-radius: 20px;
-  background-color: rgb(240, 236, 236);
+  border-radius: 30px;
+  background-color: rgba(244, 243, 243, 0.867);
   margin-right: 50px;
-  width: 250px;
-  height: 90%;
+  width: 220px;
+  height: 50px;
   transition: transform 0.5s ease;
+  background-image: url("../images/magnifying-glass.png");
+  background-repeat: no-repeat;
+  background-position: left;
+  background-position-x: 10px;
+  text-indent: 30px;
 }
 
 .searchBar:hover {
@@ -177,4 +185,9 @@ body {
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+.boldText {
+  font-weight: bold;
+  font-size: 20px;
 }

@@ -53,7 +53,7 @@ const Static = () => {
     <div className="static">
       <Sidebar setActiveComponent={setActiveComponent} />
       <div className="main-content">
-        <Header />
+        <Header activeComponent={activeComponent} />
         <div className="content" key={activeComponent}>
           {renderContent()}
         </div>

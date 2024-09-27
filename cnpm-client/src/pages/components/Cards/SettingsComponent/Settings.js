@@ -16,13 +16,25 @@ const Settings = () => {
                 className="settingsBtn"
                 onClick={() => setActiveSettings("EditProfile")}
               >
-                Edit Profile
+                <span
+                  className={
+                    activeSettings === "EditProfile" ? "underlineText" : ""
+                  }
+                >
+                  Edit Profile
+                </span>
               </button>
               <button
                 className="settingsBtn"
                 onClick={() => setActiveSettings("Security")}
               >
-                Security
+                <span
+                  className={
+                    activeSettings === "Security" ? "underlineText" : ""
+                  }
+                >
+                  Security
+                </span>
               </button>
             </div>
           </div>

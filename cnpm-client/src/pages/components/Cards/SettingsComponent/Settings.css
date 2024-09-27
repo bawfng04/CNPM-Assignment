@@ -124,3 +124,9 @@ input {
 .title {
   margin-bottom: 50px;
 }
+
+.underlineText {
+  border-bottom: 3px solid;
+  display: inline-block;
+  padding-bottom: 2px;
+}

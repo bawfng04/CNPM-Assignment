@@ -63,7 +63,9 @@ function Sidebar({ setActiveComponent }) {
                   className="sidebarImg"
                 ></img>
               )}
-              Dashboard
+              <span className={activeIcon === "dashboard" ? "boldText" : ""}>
+                Dashboard
+              </span>
             </button>
           </li>
           <li>
@@ -80,7 +82,9 @@ function Sidebar({ setActiveComponent }) {
               ) : (
                 <img src={printer} alt="printer" className="sidebarImg"></img>
               )}
-              Printer
+              <span className={activeIcon === "printer" ? "boldText" : ""}>
+                Printer
+              </span>
             </button>
           </li>
           <li>
@@ -97,7 +101,9 @@ function Sidebar({ setActiveComponent }) {
               ) : (
                 <img src={market} alt="market" className="sidebarImg"></img>
               )}
-              Market
+              <span className={activeIcon === "market" ? "boldText" : ""}>
+                Market
+              </span>
             </button>
           </li>
           <li>
@@ -114,7 +120,9 @@ function Sidebar({ setActiveComponent }) {
               ) : (
                 <img src={history} alt="history" className="sidebarImg"></img>
               )}
-              History
+              <span className={activeIcon === "history" ? "boldText" : ""}>
+                History
+              </span>
             </button>
           </li>
           <li>
@@ -131,7 +139,9 @@ function Sidebar({ setActiveComponent }) {
               ) : (
                 <img src={settings} alt="settings" className="sidebarImg"></img>
               )}
-              Settings
+              <span className={activeIcon === "settings" ? "boldText" : ""}>
+                Settings
+              </span>
             </button>
           </li>
         </ul>
