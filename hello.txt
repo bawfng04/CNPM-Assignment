@@ -1,0 +1,1 @@
+Cái database tui dùng postgres, chỉnh lại username với password ở máy cá nhân để chạy được á
