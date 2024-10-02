@@ -3,7 +3,7 @@ const {v4 : uuidv4} = require('uuid');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const UserService = require('../../database/userSerive');
+const UserService = require('../../database/userService');
 
 class AuthController {
     postSignUp(req, res, next){
