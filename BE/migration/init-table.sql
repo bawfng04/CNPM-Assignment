@@ -17,6 +17,9 @@ CREATE TABLE "printers" (
 	printerName VARCHAR(60) NOT NULL,
 	brandName VARCHAR(60),
 )
+CREATE TYPE printerStatus AS ENUM('active', 'disable');
+ALTER TABLE "printers"
+ADD status printerStatus DEFAULT 'active';
 
 CREATE TABLE public.orders (
     orderID uuid PRIMARY KEY,
@@ -32,4 +35,3 @@ CREATE TABLE public.orders (
     filePath VARCHAR(200) NOT NULL,
 	fileType VARCHAR(20) NOT NULL,
 );
-

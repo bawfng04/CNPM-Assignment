@@ -31,7 +31,7 @@ class PrinterController {
         const fileType = req.file.mimetype;
         try {
             const data = await PrinterService.createOrder(orderId, studentID, printerID, fileName, filePath, fileType);
-            console.log("Check respone: ", data);
+            // console.log("Check respone: ", data);
             res.json(data);
         }
         catch(err) {
@@ -42,19 +42,28 @@ class PrinterController {
 
     async getOrderPrint(req, res, next) {
         const orderID = req.params.orderId;
-        console.log("Check order ID: ", orderID);
+        if(!orderID) {
+            return res.status(400).json({
+                statusCode: 400,
+                msg: 'Missing orderID',
+                data: null
+            })
+        }
+        
         try {
             const response = await PrinterService.findOrderByID(orderID);
+            if(!response) {
+                return res.status(400).json({
+                    statusCode: 400,
+                    msg: 'Invalid orderID',
+                    data: null
+                })
+            }
             if(response.statusCode === 200) {
                 const fileName = response.data.filename;
                 const fileType = response.data.filetype;
                 let filePath = response.data.filepath;
-                // filePath = "D:\\CODE SPACE\\Printer-BK\\BE\\uploads\\1727883618001ava.png";
-                console.log('Check file: ', response.data);
-                
                 filePath = filePath.replace(/\\/g, '/');
-                console.log('Check file: ', filePath);
-                // D:/CODE SPACE/Printer-BK/BE/uploads/1727507845168ask.png
                 const file = fs.createReadStream(filePath);
                 res.setHeader('Content-Type', `${fileType}`);
                 res.setHeader(
