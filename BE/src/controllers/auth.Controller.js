@@ -6,31 +6,61 @@ require('dotenv').config();
 const UserService = require('../../database/userService');
 
 class AuthController {
-    postSignUp(req, res, next){
-        // console.log('CHECK authData: ', req.body)
+    async  postSignUp(req, res, next){
         const userId = uuidv4();
         const errors = validationResult(req);
+        let role  = req.role;
+        if(!role) {
+            role = 'user'
+        }
         if(!errors.isEmpty()) {
             const error = new Error('Validation failed');
             error.statusCode = 422;
             error.data = errors.array();
-            console.log(error);
-            throw error;
+            return res.status(422).json({
+                statusCode: 422,
+                msg: error.message,
+                data: error.data    
+            })
         }
         const {email, password} = req.body;
         let username = req.body.username;
         if(!username) {
             username = email.split('@')[0];
         }
+        console.log('Check email: ', email)
+        const existUser = await UserService.findByEmail(email)
+        if(existUser.data) {
+            return res.status(403).json({
+                statusCode: 403,
+                msg: "This email had already exist",
+                data: null
+            })
+        }
+
         bcrypt.hash(password, 12)
             .then((hashPw) => {
-                return UserService.createUser(username, hashPw, email);
+                return UserService.createUser(userId, username, hashPw, email);
             })
             .then(result => {
-                res.status(200).json({
-                    msg: 'User created',
-                    userId: userId
-                })
+                if(result.status === 200){
+                    return UserService.createStudent(userId)
+                } else {
+                    const err = new Error(result.msg);
+                    next(err);
+                }
+            })
+            .then(result => {
+                if(result.status === 200){
+                    return res.status(200).json({
+                        statusCode: 200,
+                        msg: "Create user sucessfully",
+                        data: null
+                    })
+                } else {
+                    const err = new Error(result.msg);
+                    next(err);
+                }
             })
             .catch(err => {
                 if(!err.statusCode) {
@@ -51,9 +81,7 @@ class AuthController {
                     error.statusCode = 401;
                     throw err;
                 }
-
-                loadedUser = result.data[0];
-                console.log('Check user: ', loadedUser);   
+                loadedUser = result.data;   
                 return bcrypt.compare(password, loadedUser.password);
             })
             .then((isEqual) => {
@@ -66,7 +94,8 @@ class AuthController {
                 const token = jwt.sign(
                     {
                         email: loadedUser.email, 
-                        userId: loadedUser.id
+                        userId: loadedUser.id,
+                        role: loadedUser.role
                     },
                     process.env.SECRET_TOKEN,
                     { expiresIn: '1h'}
@@ -84,10 +113,18 @@ class AuthController {
     }
 
     async fetchAllUsers(req, res, next) {
-        const limit = req.params.limit ? req.params.limit : null;
+        const limit = req.params.limit ? req.params.limit : 10;
         try {
-            const data = await UserService.fetchUsers(limit);
-            res.json(data);
+            const result = await UserService.fetchUsers(limit);
+            if(result.status !== 200) {
+                statusCode: result.status, 
+               { ... result}
+            }
+            res.status(200).json({
+                statusCode: 200,
+                msg: `Fetch users LIMI ${limit}`,
+                data: result.data
+            });
         }
         catch(err) {
             next(err);

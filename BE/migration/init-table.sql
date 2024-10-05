@@ -1,4 +1,4 @@
-CREATE TYPE userRole AS ENUM ('teacher', 'student');
+CREATE TYPE userRole AS ENUM ('admin', 'user');
 
 CREATE TABLE "users" (
 	id 	uuid PRIMARY KEY,
@@ -12,6 +12,16 @@ CREATE TABLE "users" (
 	city	VARCHAR(45),
 	country VARCHAR(45)
 ) 
+
+CREATE TABLE "students" (
+	stuID uuid PRIMARY KEY
+		CONSTRAINT stuID_foreign_key
+		REFERENCES users.id
+		ON DELETE CASCADE
+	accountBalance double_precision
+	freePageA4	INT DEFAULT 0
+)
+
 CREATE TABLE "printers" (
 	printerID uuid PRIMARY KEY,
 	printerName VARCHAR(60) NOT NULL,

@@ -12,6 +12,17 @@ router.get('/orders/:orderId', [
         .isLength({ min: 5 })
 ], PrinterController.getOrderPrint);
 
+router.post('/checkBalance',[
+    body('pageNum')
+        .trim()
+        .isInt({min: 1})
+        .withMessage('pageNum MUST BE a number greater than 1'),
+    body('pageSize')
+        .trim()
+        .isLength({min: 1})
+        .withMessage('required pageSize')
+] , isAuth, PrinterController.checkAccountBalance);
+
 router.get('/', (req, res, next) => {
     res.send("This is printer route");
 })

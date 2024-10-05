@@ -13,7 +13,7 @@ router.post('/signUp', [
     body('password')
         .trim()
         .isLength({min: 5})
-        .withMessage('Password mus be at leat 5 characters long')
+        .withMessage('Password mus be  at leat 5 characters long')
 ] ,authController.postSignUp);
 
 

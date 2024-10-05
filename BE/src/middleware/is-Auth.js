@@ -33,6 +33,7 @@ module.exports = (req, res, next) => {
             data: null
         })
     }
+    req.role = decodedToken.role;
     req.userId = decodedToken.userId;
     next();
 }

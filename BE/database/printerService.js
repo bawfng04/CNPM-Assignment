@@ -13,13 +13,13 @@ class PrinterService {
                     if(err) {
                         console.log(err)
                         reject({
-                            statusCode: 400,
+                            status: 400,
                             msg: err.message,
                             data: null
                         })
                     } else {
                         resolve({
-                            statusCode: 200,
+                            status: 200,
                             msg: "Create successfully!",
                             data: res.rows
                         })
@@ -37,13 +37,13 @@ class PrinterService {
                 `, [orderID], (err, res) => {
                     if(err) {
                         reject({
-                            statusCode: 400,
+                            status: 400,
                             msg: err.message,
                             data: null
                         })
                     } else {
                         resolve({
-                            statusCode: 200,
+                            status: 200,
                             msg: `File order ${orderID}`,
                             data: res.rows[0]
                         })

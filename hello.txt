@@ -1,1 +1,8 @@
 Cái database tui dùng postgres, chỉnh lại username với password ở máy cá nhân để chạy được á
+- Add authentication cho request example:
+ fetch('http://localhost:4000/users', {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5nb2MuaHV5bmhAaGNtdXQuZWR1LnZuIiwidXNlcklkIjoiM2JiZDdkZDgtYmMxMy00OGFlLTllZGYtMDUzYjYzMDJhZjE3Iiwicm9sZSI6bnVsbCwiaWF0IjoxNzI4MTAyODczLCJleHAiOjE3MjgxMDY0NzN9.aV9gbskeo6b4SAThZUazvhe7AxrtHyFjxvtNO7Jyamw'
+    }
+})

@@ -7,7 +7,9 @@ const fs = require('fs');
 const path = require('path');
 const pdf = require('pdf-parse')
 const PrinterService = require('../../database/printerService');
+const userService = require('../../database/userService');
 const sharp = require('sharp');
+
 
 class PrinterController {
     async postFile(req, res, next) {
@@ -35,6 +37,7 @@ class PrinterController {
         // const filePath = req.file.path;
         const fileName = req.file.originalname;
         const fileType = req.file.mimetype;
+
         try {
             const data = await PrinterService.createOrder(orderId, studentID, printerID, fileName, filePath, fileType, pageNum);
             // console.log("Check respone: ", data);
@@ -89,7 +92,19 @@ class PrinterController {
             next(err);
         }
     }
-}
 
+    async checkAccountBalance(req, res, next) {
+        const errors = validationResult(req);
+        if(!errors.isEmpty()) {
+            const error = new Error('Validation failed');
+            error.statusCode = 422;
+            error.data = errors.array();
+            console.log(error);
+            throw error;
+        }
+        res.send('Check Account Balance');
+    }
+
+}
 module.exports = new PrinterController;
 
