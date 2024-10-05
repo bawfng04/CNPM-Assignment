@@ -4,11 +4,11 @@ const {v4: uuidv4} = require('uuid')
 class PrinterService {
     constructor() {};
 
-    async createOrder(orderID, studentID, printerID, fileName, filePath, fileType) {
+    async createOrder(orderID, studentID, printerID, fileName, filePath, fileType, pageNum) {
         return new Promise((resolve, reject) => {
             client.query(
-                `INSERT INTO orders(orderID, studentID, printerID, fileName, filePath, fileType) VALUES ($1, $2, $3, $4, $5, $6)`,
-                [orderID, studentID, printerID, fileName, filePath, fileType],
+                `INSERT INTO orders(orderID, studentID, printerID, fileName, filePath, fileType, pageNum) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+                [orderID, studentID, printerID, fileName, filePath, fileType, pageNum],
                 (err, res) => {
                     if(err) {
                         console.log(err)

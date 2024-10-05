@@ -5,14 +5,12 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
-const PDFDocument = require("pdfkit");
+const pdf = require('pdf-parse')
 const PrinterService = require('../../database/printerService');
 const sharp = require('sharp');
 
 class PrinterController {
     async postFile(req, res, next) {
-        console.log('Check body: ', req.body);
-        console.log('check stuID: ', req.userId);
         console.log('Check file: ', req.file);
         if(!req.file) {
             return res.status(400).json({
@@ -25,12 +23,20 @@ class PrinterController {
         // const studentID =  "3bbd7dd8-bc13-48ae-9edf-053b6302af17";
         // const printerID = "3bbd7dd8-bc13-48ae-9edf-053b6302af10";
         
+        let filePath = req.file.path;
+        filePath = filePath.replace(/\\/g, '/');
+        let pageNum;
+        let dataBuffer = fs.readFileSync(filePath);
+        pdf(dataBuffer).then(function(data) {
+            pageNum = data.numpages;
+            console.log(`Number of pages: ${data.numpages}`)
+        })
         const orderId = uuidv4();
-        const filePath = req.file.path;
+        // const filePath = req.file.path;
         const fileName = req.file.originalname;
         const fileType = req.file.mimetype;
         try {
-            const data = await PrinterService.createOrder(orderId, studentID, printerID, fileName, filePath, fileType);
+            const data = await PrinterService.createOrder(orderId, studentID, printerID, fileName, filePath, fileType, pageNum);
             // console.log("Check respone: ", data);
             res.json(data);
         }

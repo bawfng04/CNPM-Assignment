@@ -26,6 +26,7 @@ const path = require('path');
           cb(null, uploadDir);
       },
       filename: (req, file, cb) => {
+        const originalName = Buffer.from(file.originalname, 'latin1').toString('utf8');
         cb(null, Date.now() + file.originalname);
       }
   })

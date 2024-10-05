@@ -34,4 +34,5 @@ CREATE TABLE public.orders (
     fileName VARCHAR(60) NOT NULL,
     filePath VARCHAR(200) NOT NULL,
 	fileType VARCHAR(20) NOT NULL,
+	pageNum INT NOT NULL
 );
