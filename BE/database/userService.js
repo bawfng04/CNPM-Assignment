@@ -2,10 +2,10 @@ const client = require('./database');
 const {v4: uuidv4} = require('uuid')
 class UserService {
     constructor() {};
-    async createStudent(studentID) {
+    async createCustomer(studentID) {
         return new Promise((resolve, reject) => {
             client.query(
-                `INSERT INTO students(stuID) VALUES($1)`,
+                `INSERT INTO customers(stuID) VALUES($1)`,
                 [studentID],
                 (err, res) => {
                     if(err) {
@@ -26,11 +26,11 @@ class UserService {
         })
     }
 
-    async createUser(userId, username, password, email) {
+    async createUser(userId, username, password, email, role) {
         return new Promise((resolve, reject) => {
             client.query(
-                `INSERT INTO users( id, username, password, email) VALUES ($1, $2, $3, $4)`,
-                [userId, username, password, email],
+                `INSERT INTO users( id, username, password, email, role) VALUES ($1, $2, $3, $4, $5)`,
+                [userId, username, password, email, role],
                 (err, res) => {
                     if(err) {
                         console.log(err)

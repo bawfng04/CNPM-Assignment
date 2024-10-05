@@ -1,6 +1,6 @@
 const authRouter = require('./auth.route');
 const printerRouter = require('./printer.route');
-// const adminRouter = require('./admin.route.js');
+const payRouter = require('./pay.route')
 // const sellerRouter = require('./seller.route.js');
 // const productRouter = require('./customer.route.js');
 
@@ -27,7 +27,7 @@ const path = require('path');
       },
       filename: (req, file, cb) => {
         const originalName = Buffer.from(file.originalname, 'latin1').toString('utf8');
-        cb(null, Date.now() + file.originalname);
+        cb(null, Date.now() + originalName);
       }
   })
   
@@ -44,6 +44,7 @@ function route(app) {
 
     app.post('/uploads/', upload.single('printFile'), PrinterController.postFile)
     app.use('/print', printerRouter);
+    app.use('/pay', payRouter);
     app.use('/', authRouter)
 }
 

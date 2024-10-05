@@ -8,8 +8,8 @@ const path = require('path');
 const pdf = require('pdf-parse')
 const PrinterService = require('../../database/printerService');
 const userService = require('../../database/userService');
+const PayService  = require('../../database/payService');
 const sharp = require('sharp');
-
 
 class PrinterController {
     async postFile(req, res, next) {
@@ -21,9 +21,9 @@ class PrinterController {
                 data: null
             })
         }
-        const {studentID, printerID} = req.body;
-        // const studentID =  "3bbd7dd8-bc13-48ae-9edf-053b6302af17";
-        // const printerID = "3bbd7dd8-bc13-48ae-9edf-053b6302af10";
+        // const {studentID, printerID} = req.body;
+        const cusID =  "3db7b86a-e72f-4e7d-ae06-e992d7e3be43";
+        const printerID = "3bbd7dd8-bc13-48ae-9edf-053b6302af10";
         
         let filePath = req.file.path;
         filePath = filePath.replace(/\\/g, '/');
@@ -35,19 +35,32 @@ class PrinterController {
         })
         const orderId = uuidv4();
         // const filePath = req.file.path;
-        const fileName = req.file.originalname;
+        const fileName = Buffer.from(req.file.originalname, 'latin1').toString('utf8');
         const fileType = req.file.mimetype;
-
+        let pageSize = req.body.pageSize;
+        if(!pageSize) pageSize = 'A4';
+        let pageSide = req.body.pageSide;
+        if(!pageSide) pageSide = 'single';
         try {
-            const data = await PrinterService.createOrder(orderId, studentID, printerID, fileName, filePath, fileType, pageNum);
-            // console.log("Check respone: ", data);
-            res.json(data);
+            // const data = await PrinterService.createOrder(orderId, studentID, printerID, fileName, filePath, fileType, pageNum);
+            const data = await PrinterService.createOrder(orderId, cusID, printerID, fileName, filePath, fileType, pageNum, pageSize, pageSide,  new Date(), new Date())
+            console.log("Check respone: ", data);
+            if(data.status !== 200) {
+                return res.status(data.status).json({
+                    statusCode: data.status,
+                    ... data
+                })
+            } else {
+                return res.status(data.status).json({
+                    statusCode: data.status,
+                    ... data
+                })
+            }
         }
         catch(err) {
             next(err);
         }
     }
-
 
     async getOrderPrint(req, res, next) {
         const orderID = req.params.orderId;
@@ -72,7 +85,7 @@ class PrinterController {
                 const fileName = response.data.filename;
                 const fileType = response.data.filetype;
                 let filePath = response.data.filepath;
-                filePath = filePath.replace(/\\/g, '/');
+                // filePath = filePath.replace(/\\/g, '/');
                 const file = fs.createReadStream(filePath);
                 res.setHeader('Content-Type', `${fileType}`);
                 res.setHeader(
@@ -93,18 +106,7 @@ class PrinterController {
         }
     }
 
-    async checkAccountBalance(req, res, next) {
-        const errors = validationResult(req);
-        if(!errors.isEmpty()) {
-            const error = new Error('Validation failed');
-            error.statusCode = 422;
-            error.data = errors.array();
-            console.log(error);
-            throw error;
-        }
-        res.send('Check Account Balance');
-    }
-
+    
 }
 module.exports = new PrinterController;
 

@@ -40,12 +40,20 @@ class AuthController {
 
         bcrypt.hash(password, 12)
             .then((hashPw) => {
-                return UserService.createUser(userId, username, hashPw, email);
+                return UserService.createUser(userId, username, hashPw, email, role);
             })
             .then(result => {
-                if(result.status === 200){
-                    return UserService.createStudent(userId)
-                } else {
+                if(result.status === 200 && role !== 'user'){
+                    return res.status(200).json({
+                        statusCode: 200,
+                        msg: "Create user sucessfully",
+                        data: null
+                    })
+                    
+                } else if(result.status === 200 && role === 'user') {
+                    return UserService.createCustomer(userId)
+                }
+                 else {
                     const err = new Error(result.msg);
                     next(err);
                 }
@@ -94,7 +102,7 @@ class AuthController {
                 const token = jwt.sign(
                     {
                         email: loadedUser.email, 
-                        userId: loadedUser.id,
+                        userID: loadedUser.id,
                         role: loadedUser.role
                     },
                     process.env.SECRET_TOKEN,
