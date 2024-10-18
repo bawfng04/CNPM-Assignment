@@ -4,7 +4,14 @@ const { verify } = require("../controllers/auth.Controller");
 
 async function login(req, res, next) {
   const schema = Joi.object({
-    username: Joi.string().required().alphanum().min(3).max(30).trim().strict(),
+    email: Joi.string()
+      .required()
+      .email({
+        minDomainSegments: 3,
+        tlds: { allow: ["edu", "vn"] },
+      })
+      .trim()
+      .strict(),
     password: Joi.string()
       .required()
       .trim()
@@ -32,12 +39,6 @@ async function login(req, res, next) {
 
 async function register(req, res, next) {
   const schema = Joi.object({
-    username: Joi.string().required().alphanum().min(3).max(30).trim().strict(),
-    password: Joi.string()
-      .required()
-      .trim()
-      .strict()
-      .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
     email: Joi.string()
       .required()
       .email({
@@ -46,6 +47,11 @@ async function register(req, res, next) {
       })
       .trim()
       .strict(),
+    password: Joi.string()
+      .required()
+      .trim()
+      .strict()
+      .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
   });
 
   try {

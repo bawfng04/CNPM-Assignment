@@ -4,23 +4,24 @@ const { v4: uuidv4 } = require("uuid");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const UserService = require("../../database/userService");
-const { models } = require("../models/auth.Model.js");
-const { sendMail } = require("../provider.js");
-const { htmlVerify, htmlEmail } = require("../constant.js");
+const models = require("../models/auth.Model.js");
+const sendMail = require("../provider.js");
+const Mail = require("../constant.js");
 const { StatusCodes } = require("http-status-codes");
 
 async function register(req, res) {
   try {
+    console.log(req.body);
     const data = await models.register(req.body);
-
+    console.log("hehe");
     const token = jwt.sign(data, process.env.SECRET_TOKEN);
     const subject = "XÁC THỰC TÀI KHOẢN BK_Printing";
     // const htmlContent = `<h1>Click vào link sau để xác thực email</h1>
     // <a href="http://localhost:4000/user/verify/${token}">Xác thực email</a>`;
 
-    const htmlContent = htmlEmail(token);
+    const htmlContent = Mail.htmlEmail(token);
 
-    sendMail(data.email, subject, htmlContent);
+    sendMail.sendMail(data.email, subject, htmlContent);
 
     res.status(StatusCodes.OK).json({ message: "Vui long xac thuc email" });
   } catch (err) {
@@ -64,7 +65,7 @@ async function verify(req, res) {
       .status(StatusCodes.CREATED)
       // .json({ message: "Registered successfully" });
       // .redirect("http://localhost:4000/login");
-      .send(htmlVerify);
+      .send(Mail.htmlVerify);
   } catch (err) {
     const newErr = new Error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

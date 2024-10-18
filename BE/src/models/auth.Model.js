@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt");
 require("dotenv").config();
-// const { v4: uuidv4 } = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 const UserService = require("../../database/userService");
+
 async function login(data) {
   try {
     const email = data.email;
@@ -32,8 +33,8 @@ async function login(data) {
 async function register(data) {
   try {
     data.userId = uuidv4();
-    let role = data.role || "user";
-    let username = data.username || data.email.split("@")[0];
+    if (!data.role) data.role = "user";
+    data.username = data.username || data.email.split("@")[0];
 
     console.log("Check email: ", data.email);
 
@@ -41,12 +42,11 @@ async function register(data) {
     if (existUser.data) {
       throw new Error("This email has already existed");
     }
+    // console.log("haha");
 
     const hashPassword = await bcrypt.hash(data.password, 12);
     data.password = hashPassword;
-
-    const newUser = await UserService.createUser(data);
-    return newUser;
+    return data;
   } catch (err) {
     throw err;
   }
@@ -54,7 +54,9 @@ async function register(data) {
 async function verify(data) {
   try {
     const user = await UserService.findByEmail(data.email);
-    if (!user) {
+    console.log(data);
+    if (!user.data) {
+      console.log("BAO");
       await UserService.createUser(
         data.userId,
         data.username,
@@ -68,3 +70,8 @@ async function verify(data) {
     // throw err;
   }
 }
+module.exports = {
+  register,
+  login,
+  verify,
+};

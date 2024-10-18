@@ -3,7 +3,7 @@ const router = express.Router();
 const { body, param } = require("express-validator");
 const { v4: uuidv4 } = require("uuid");
 const isAuth = require("../middleware/is-Auth");
-const authController = require("../controllers/auth.Controller");
+const authController = require("../controllers/auth.Controller.js");
 const validations = require("../validations/auth.Validation.js");
 // [POST] /signUp
 router.post("/register", validations.register, authController.register);

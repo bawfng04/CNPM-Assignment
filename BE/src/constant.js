@@ -85,7 +85,7 @@ function htmlEmail(token) {
     </p>
     
     <p>
-      Vui lòng nhấp vào <a href="http://localhost:4000/user/verify/${token}">liên kết này</a> để hoàn tất quá trình xác thực.
+      Vui lòng nhấp vào <a href="http://localhost:4000/verify/${token}">liên kết này</a> để hoàn tất quá trình xác thực.
     </p>
     
     <p>
