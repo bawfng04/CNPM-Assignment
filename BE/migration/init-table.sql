@@ -32,6 +32,7 @@ ALTER TABLE "printers"
 ADD status printerStatus DEFAULT 'active';
 
 CREATE TYPE printStatus AS ENUM ('pending', 'accepted', 'done', 'canceled');
+CREATE TYPE typeSide AS ENUM ('single', 'double');
 
 CREATE TABLE public.orders (
     orderID uuid PRIMARY KEY,
@@ -44,11 +45,11 @@ CREATE TABLE public.orders (
         REFERENCES public.printers(printerid)
         ON DELETE NO ACTION,
 	time TIMESTAMP DEFAULT NOW(),
-    fileName VARCHAR(60) NOT NULL,
+    fileName VARCHAR(600) NOT NULL,
     filePath VARCHAR(200) NOT NULL,
-	fileType VARCHAR(20) NOT NULL,
+	fileType VARCHAR(200) NOT NULL,
 	pageNum INT,
-	pageSize DOUBLE PRECISION NOT NULL,
+	pageSize VARCHAR(60),
 	pageSide typeSide DEFAULT 'single',
 	startPTime TIMESTAMP,
 	endPTime TIMESTAMP,

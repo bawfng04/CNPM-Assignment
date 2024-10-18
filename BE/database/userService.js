@@ -5,7 +5,7 @@ class UserService {
     async createCustomer(studentID) {
         return new Promise((resolve, reject) => {
             client.query(
-                `INSERT INTO customers(stuID) VALUES($1)`,
+                `INSERT INTO customers(cusID) VALUES($1)`,
                 [studentID],
                 (err, res) => {
                     if(err) {

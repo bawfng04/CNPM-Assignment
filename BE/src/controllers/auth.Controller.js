@@ -31,6 +31,8 @@ class AuthController {
         console.log('Check email: ', email)
         const existUser = await UserService.findByEmail(email)
         if(existUser.data) {
+
+            // console.log("CHECK DATA: ", existUser )
             return res.status(403).json({
                 statusCode: 403,
                 msg: "This email had already exist",
@@ -51,7 +53,7 @@ class AuthController {
                     })
                     
                 } else if(result.status === 200 && role === 'user') {
-                    return UserService.createCustomer(userId)
+                    return UserService.createCustomer(userId);
                 }
                  else {
                     const err = new Error(result.msg);
@@ -59,6 +61,8 @@ class AuthController {
                 }
             })
             .then(result => {
+
+                console.log("CHECK CREATE CUSTOMER: ", result)
                 if(result.status === 200){
                     return res.status(200).json({
                         statusCode: 200,
@@ -71,6 +75,7 @@ class AuthController {
                 }
             })
             .catch(err => {
+                console.log("ERROR: ", err)
                 if(!err.statusCode) {
                     err.statusCode = 500;
                 }
