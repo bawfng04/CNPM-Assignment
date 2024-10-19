@@ -6,13 +6,18 @@ const isAuth = require("../middleware/is-Auth");
 const authController = require("../controllers/auth.Controller.js");
 const validations = require("../validations/auth.Validation.js");
 // [POST] /signUp
+const verify = require("../middleware/auth.js");
+
 router.post("/register", validations.register, authController.register);
 router.post("/login", validations.login, authController.login);
 router.get("/verify/:token", authController.verify);
-// router.get("/users", isAuth, authController.fetchAllUsers);
+router.get("/", (req, res, next) => {
+  res.send("Hello World");
+});
 
-// router.get("/", (req, res, next) => {
-//   res.send("Hello World");
-// });
+router.use(verify.verifyToken);
+router.get("/users", authController.fetchAllUsers);
+
+router.get("/logout", authController.logout);
 
 module.exports = router;

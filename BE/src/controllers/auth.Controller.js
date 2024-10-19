@@ -1,6 +1,5 @@
 // const { validationResult } = require("express-validator");
 const { v4: uuidv4 } = require("uuid");
-// const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const UserService = require("../../database/userService");
@@ -13,7 +12,7 @@ async function register(req, res) {
   try {
     console.log(req.body);
     const data = await models.register(req.body);
-    console.log("hehe");
+    // console.log("hehe");
     const token = jwt.sign(data, process.env.SECRET_TOKEN);
     const subject = "XÁC THỰC TÀI KHOẢN BK_Printing";
     // const htmlContent = `<h1>Click vào link sau để xác thực email</h1>
@@ -37,13 +36,15 @@ async function login(req, res) {
     const user = await models.login(req.body);
     const token = jwt.sign(
       {
-        email: loadedUser.email,
-        userID: loadedUser.id,
-        role: loadedUser.role,
+        email: user.email,
+        userID: user.id,
+        role: user.role,
       },
       process.env.SECRET_TOKEN,
       { expiresIn: "1h" }
     );
+
+    res.cookie("token", token);
     res.status(200).json({
       token: token,
     });
@@ -74,6 +75,18 @@ async function verify(req, res) {
     });
   }
 }
+async function logout(req, res) {
+  try {
+    res.clearCookie("token");
+    res.status(StatusCodes.OK).json({ message: "Logout success" });
+  } catch (err) {
+    const newErr = new Error(err);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: err.message,
+      stack: newErr.stack,
+    });
+  }
+}
 
 async function fetchAllUsers(req, res, next) {
   const limit = req.params.limit ? req.params.limit : 10;
@@ -95,5 +108,7 @@ async function fetchAllUsers(req, res, next) {
 module.exports = {
   register,
   login,
+  logout,
   verify,
+  fetchAllUsers,
 };

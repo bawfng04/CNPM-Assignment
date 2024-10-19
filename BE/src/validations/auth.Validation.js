@@ -1,6 +1,5 @@
 const Joi = require("joi");
 const { StatusCodes } = require("http-status-codes");
-const { verify } = require("../controllers/auth.Controller");
 
 async function login(req, res, next) {
   const schema = Joi.object({
@@ -52,6 +51,7 @@ async function register(req, res, next) {
       .trim()
       .strict()
       .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
+    role: Joi.string().optional().valid("user", "admin").trim().strict(),
   });
 
   try {
@@ -103,4 +103,4 @@ async function updateProfile(req, res, next) {
   }
 }
 
-module.exports = { login, register, verify };
+module.exports = { login, register };

@@ -7,24 +7,23 @@ async function login(data) {
   try {
     const email = data.email;
     const password = data.password;
-    let loadedUser;
-    UserService.findByEmail(email)
-      .then((result) => {
-        if (result.status !== 200) {
-          const error = new Error("Wrong email");
-          error.statusCode = 401;
-          throw error;
-        }
-        loadedUser = result.data;
-        return bcrypt.compare(password, loadedUser.password);
-      })
-      .then((isEqual) => {
-        if (!isEqual) {
-          const error = new Error("Wrong password");
-          error.statusCode = 401;
-          throw error;
-        }
-      });
+
+    const result = await UserService.findByEmail(email);
+
+    if (result.status !== 200) {
+      const error = new Error("Wrong email");
+      error.statusCode = 401;
+      throw error;
+    }
+    const loadedUser = result.data;
+    const isEqual = await bcrypt.compare(password, loadedUser.password);
+    if (!isEqual) {
+      const error = new Error("Wrong password");
+      error.statusCode = 401;
+      throw error;
+    }
+
+    return loadedUser;
   } catch (err) {
     throw err;
   }
@@ -56,7 +55,7 @@ async function verify(data) {
     const user = await UserService.findByEmail(data.email);
     console.log(data);
     if (!user.data) {
-      console.log("BAO");
+      // console.log("BAO");
       await UserService.createUser(
         data.userId,
         data.username,

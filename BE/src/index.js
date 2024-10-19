@@ -1,13 +1,13 @@
-const path = require('path')
-const express = require('express');
-const morgan = require('morgan');
-const handlebars = require('express-handlebars');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+const path = require("path");
+const express = require("express");
+const morgan = require("morgan");
+const handlebars = require("express-handlebars");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 var swaggerJsdoc = require("swagger-jsdoc");
 var swaggerUi = require("swagger-ui-express");
-const route = require('./routes');
-
+const route = require("./routes");
+const cookieParser = require("cookie-parser");
 // Config swagger docs
 // var options = {
 //   swaggerDefinition: {
@@ -21,7 +21,6 @@ const route = require('./routes');
 // };
 // var swaggerSpecs = swaggerJsdoc(options);
 
-
 const app = express();
 const port = 4000;
 
@@ -31,13 +30,17 @@ const port = 4000;
 // app.use(express.static(path.join(__dirname, '../uploads')))
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Method', 'POST, GET, PUT, PATCH, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Header', 'Content-Type, Authorization');
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Method",
+    "POST, GET, PUT, PATCH, DELETE, OPTIONS"
+  );
+  res.setHeader("Access-Control-Allow-Header", "Content-Type, Authorization");
   next();
-})
+});
 
 // route
 route(app);
@@ -45,5 +48,5 @@ route(app);
 
 // 127.0.0.1 - localhost
 app.listen(port, () => {
-  console.log(`App listening on port http://localhost:${port}`)
-})
+  console.log(`App listening on port http://localhost:${port}`);
+});
