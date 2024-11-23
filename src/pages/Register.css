@@ -10,6 +10,7 @@ body {
   position: relative;
 }
 
+
 .left-side {
   width: 50%;
   background-image: url("./images/bg.png");
@@ -153,4 +154,22 @@ body {
   color: red;
   margin-top: 10px;
   text-align: center;
+}
+
+
+/* response cho mobile */
+@media (max-width: 768px) {
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .right-side {
+    width: 100%;
+  }
+  .left-side {
+    width: 0%;
+    height: 0vh;
+    display: none;
+  }
 }
