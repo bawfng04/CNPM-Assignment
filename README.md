@@ -1,11 +1,10 @@
-Deploy complete: https://smartprinterservice-86a9c.web.app/
 
-routes:
 
-/login
+Deploy: https://smartprinterservice-86a9c.web.app/
 
-/register
+**routes:**
 
-/main/user
-
-/main/admin
+- /login
+- /register
+- /main/user
+- /main/admin
