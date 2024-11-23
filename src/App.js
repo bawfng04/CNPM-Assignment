@@ -39,7 +39,7 @@ function App() {
 export default App;
 
 // git checkout FE
-// cd "/d/Projects/CNPM Assignment/"
+// cd "/d/Projects/CNPM Assignment/cnpm-client"
 // git add .
 // git commit -m " "
 // git push origin FE
