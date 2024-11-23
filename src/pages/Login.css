@@ -54,7 +54,7 @@ body {
   background-color: white;
 }
 
-/* response cho mobile */
+/* responsive cho mobile */
 @media (max-width: 768px) {
   .loginBox {
     width: 90vw;

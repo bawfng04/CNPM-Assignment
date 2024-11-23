@@ -157,7 +157,7 @@ body {
 }
 
 
-/* response cho mobile */
+/* responsive cho mobile */
 @media (max-width: 768px) {
   .main-container {
     display: flex;
