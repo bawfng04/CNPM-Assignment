@@ -1,0 +1,19 @@
+.detail-btn {
+  padding: 10px 20px;
+  border: 2px solid #1814f3;
+  border-radius: 20px;
+  color: #1814f3;
+  background-color: white;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.detail-btn:hover {
+  transform: scale(1.1);
+  background-color: #dedede;
+}
+
+.printTextz {
+  margin-bottom: 20px;
+  font-size: 20px;
+}

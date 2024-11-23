@@ -1,0 +1,106 @@
+.config-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f0f4f8;
+  border-radius: 10px;
+  color: black;
+}
+
+.configMain {
+  margin-top: 10px;
+  padding: 40px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+h2 {
+  color: #3b4f8f;
+}
+
+.config-form {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+}
+
+label {
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.searchTypeOfFile {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.file-list {
+  margin-bottom: 20px;
+}
+
+.file-list h3 {
+  color: #3b4f8f;
+}
+
+.file-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.file-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.delete-button {
+  background-color: transparent;
+  color: red;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.add-file-type {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.add-button {
+  background-color: #00d1b2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.save-button {
+  background-color: #3b4f8f;
+  color: white;
+  border: none;
+  padding: 10px 40px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.fileUnit {
+  padding: 10px;
+  margin: 10px;
+}
+
+.fileTypes {
+  margin: 0px;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid rgb(120, 120, 120);
+}

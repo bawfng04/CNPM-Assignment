@@ -1,0 +1,360 @@
+.c-market {
+    padding: 30px 41px;
+}
+
+.c-market__box-1 {
+    display: grid;
+    grid-template-columns: repeat(4, 255px);
+    justify-content: space-between;
+    margin-bottom: 23px;
+}
+
+.c-market__head-item {
+    padding: 24px 0 24px 26px;
+    background-color: #fff;
+    border-radius: 20px;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+}
+
+.c-market__head-item img {
+    margin-right: 14px;
+}
+
+.c-market__item-transaction {
+    position: relative;
+}
+
+.c-market__head-info {
+    margin-top: 10px;
+}
+
+.c-market__head-info h2 {
+    font-size: 16px;
+    font-weight: 400;
+    color: #718EBF;
+    margin-bottom: 5px;
+}
+
+.c-market__head-info p {
+    font-size: 25px;
+    font-weight: 600;
+    color: #232323;
+    letter-spacing: 0.03em;
+}
+
+.c-market__item-transaction p {
+    font-size: 16px;
+    font-weight: 400;
+    color: #718EBF;
+    letter-spacing: 0.03em;
+}
+
+.c-market__item-transaction .p-1 {
+    margin-right: 40px;
+}
+
+.c-market__item-transaction .p-2 {
+    margin-right: 40px;
+}
+
+.c-market__item-transaction span {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #FE5C73;
+}
+
+.c-market__item-transaction #green {
+    color: #16DBAA;
+}
+
+.c-market__box-2 {
+    display: flex;
+    gap: 22px;
+    margin-bottom: 37px;
+}
+
+.c-market__box-transaction {
+    margin-bottom: 22px;
+}
+
+.c-market__head-transaction h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333B69;
+    margin-bottom: 18px;
+}
+
+.c-market__info-transaction {
+    background-color: #fff;
+    border-radius: 20px;
+    width: 730px;
+    padding: 24px 24px;
+}
+
+.c-market__item-transaction {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-bottom: 13px;
+}
+
+.c-market__item-transaction:last-child {
+    margin-bottom: 0;
+}
+
+.c-market__item-transaction img {
+    margin-right: 25px;
+}
+
+.c-market__head-info-transaction {
+    margin-right: 55px;
+}
+
+.c-market__head-info-transaction h2 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #232323;
+}
+.c-market__head-info-transaction p {
+    font-size: 15px;
+    font-weight: 400;
+    color: #718EBF;
+}
+
+.c-market__head-paper h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333B69;
+    margin-bottom: 20px;
+}
+
+.c-market__info-paper {
+    background-color: #fff;
+    width: 730px;
+    height: 364px;
+    border-radius: 22px;
+    padding: 28px 42px 28px 46px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    position: relative;
+}
+
+.c-market__item-paper {
+    height: 100px;
+}
+
+.c-market__top-paper {
+    display: flex;
+    margin-bottom: 2px;
+}
+
+.c-market__top-paper img {
+    margin-right: 5px;
+}
+
+.c-market__top-paper p {
+    font-size: 16px;
+    font-weight: 400;
+    color: #B1B1B1;
+    margin-top: 10px;
+}
+
+.c-market__bottom-paper {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.c-market__bottom-paper input {
+    width: 151px;
+    height: 30px;
+    border-radius: 6px;
+    margin-right: 7px;
+}
+
+.c-market__price {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    position: absolute;
+    top: 278px;
+    left: 416px;
+}
+
+.c-market__price h3 {
+    font-size: 30px;
+    font-weight: 500;
+    color: #232323;
+    letter-spacing: 0.03em;
+    margin-right: 10px;
+}
+
+.c-market__price span {
+    font-size: 22px;
+    font-weight: 600;
+    color: #F82A1D;
+    letter-spacing: 0.03em;
+    margin-right: 8px;
+}
+
+.c-market__price button {
+    border: none;
+    padding: 9px 13px;
+    background-color: #005EA2;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 4px;
+    border-radius: 3px;
+}
+
+.c-market__head-current h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333B69;
+    margin-bottom: 20px;
+}
+
+.c-market__box-current {
+    background-color: #fff;
+    border-radius: 22px;
+    width: 350px;
+    height: 670px;
+    padding: 30px 24px;
+}
+
+.c-market__item-current {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.c-market__item-current img {
+    margin-right: 20px;
+}
+
+.c-market__info-current h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #B1B1B1;
+    margin-bottom: 6px;
+}
+
+.c-market__info-current p {
+    font-size: 15px;
+    font-weight: 400;
+    color: #718EBF;
+}
+
+.c-market__item-current span {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 6px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #718EBF;
+}
+
+.c-market__head-payment h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333B69;
+    margin-bottom: 28px;
+}
+
+.c-market__box-payment {
+    width: 100%;
+    height: 673px;
+    border-radius: 22px;
+    background-color: #fff;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    gap: 64px;
+}
+
+.c-market__box-payment-left {
+    padding: 39px 46px;
+}
+
+.c-market__box-payment-left h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333B69;
+}
+
+.c-market__box-payment-right {
+    padding: 62px 96px 0 0;
+    flex: 1;
+}
+
+.c-market__head-payment-right {
+    text-align: right;
+}
+
+.c-market__head-payment-right h3 {
+    font-size: 17px;
+    font-weight: 500;
+    color: #333B69;
+    margin-bottom: 20px;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.row label {
+    font-size: 16px;
+    font-weight: 400;
+    color: #232323;
+}
+
+.row input {
+    padding: 14px 20px;
+    border-radius: 15px;
+    border: 1px solid #DFEAF2;
+    font-size: 15px;
+    font-weight: 400;
+    color: #718EBF;
+}
+
+.c-btn {
+    text-align: right;
+    padding-top: 7px;
+    padding-right: 14px;
+}
+
+.c-btn button {
+    border: none;
+    padding: 9px 15px;
+    background-color: #005EA2;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 4px;
+    border-radius: 3px;
+}
+
+.marketButton{
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.marketButton:hover{
+    transform: scale(1.1);
+    background-color: #00406d;
+}
