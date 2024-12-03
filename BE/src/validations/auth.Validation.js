@@ -31,7 +31,6 @@ async function login(req, res, next) {
 
     res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
       error: arrMessage,
-      stack: newError.stack,
     });
   }
 }
@@ -67,7 +66,6 @@ async function register(req, res, next) {
 
     res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
       error: arrMessage,
-      stack: newError.stack,
     });
   }
 }
@@ -98,7 +96,6 @@ async function updateProfile(req, res, next) {
 
     res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
       error: arrMessage,
-      stack: newError.stack,
     });
   }
 }

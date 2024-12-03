@@ -1,11 +1,13 @@
 const Joi = require("joi");
 const { StatusCodes } = require("http-status-codes");
-async function login(req, res, next) {
-  const schema = Joi.object({
-    printerName: Joi.string().required().trim().strict(),
-    printerAddress: Joi.string().required().trim().strict(),
-  });
-}
+
+const schema = Joi.object({
+  printername: Joi.string().required().trim().strict(),
+  printer_model: Joi.string().required().trim().strict(),
+  short_description: Joi.string().optional().trim().strict(),
+  location: Joi.string().required().trim().strict(),
+});
+
 async function create(req, res, next) {
   try {
     await schema.validateAsync(req.body, { abortEarly: false });
@@ -18,7 +20,7 @@ async function create(req, res, next) {
     }
     res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
       error: arrMessage,
-      stack: newError.stack,
     });
   }
 }
+module.exports = { create };

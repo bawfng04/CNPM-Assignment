@@ -32,16 +32,16 @@ async function login(data) {
 async function register(data) {
   try {
     data.userId = uuidv4();
+    console.log(data.role);
     if (!data.role) data.role = "user";
     data.username = data.username || data.email.split("@")[0];
 
-    console.log("Check email: ", data.email);
+    // console.log("Check email: ", data.email);
 
     const existUser = await UserService.findByEmail(data.email);
     if (existUser.data) {
       throw new Error("This email has already existed");
     }
-    // console.log("haha");
 
     const hashPassword = await bcrypt.hash(data.password, 12);
     data.password = hashPassword;

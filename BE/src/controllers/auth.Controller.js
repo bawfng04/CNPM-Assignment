@@ -10,7 +10,7 @@ const { StatusCodes } = require("http-status-codes");
 
 async function register(req, res) {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     const data = await models.register(req.body);
     // console.log("hehe");
     const token = jwt.sign(data, process.env.SECRET_TOKEN);
@@ -27,7 +27,6 @@ async function register(req, res) {
     const newErr = new Error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error: err.message,
-      stack: newErr.stack,
     });
   }
 }
@@ -53,7 +52,6 @@ async function login(req, res) {
     // console.log(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error: err.message,
-      stack: newErr.stack,
     });
   }
 }
@@ -71,7 +69,6 @@ async function verify(req, res) {
     const newErr = new Error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error: err.message,
-      stack: newErr.stack,
     });
   }
 }
@@ -83,7 +80,6 @@ async function logout(req, res) {
     const newErr = new Error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error: err.message,
-      stack: newErr.stack,
     });
   }
 }
