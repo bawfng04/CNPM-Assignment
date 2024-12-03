@@ -45,6 +45,7 @@ function Login({ onLogin }) {
       }
       clearError();
     }
+
   };
 
   const handleEmailChange = (e) => {
