@@ -5,7 +5,7 @@ const client = new Client({
   user: "postgres",
   host: "localhost",
   database: "BK-printer",
-  password: "ttb2107",
+  password: "nkt3012",
   port: 5432,
 });
 

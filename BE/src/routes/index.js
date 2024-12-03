@@ -40,11 +40,6 @@ const upload = multer({
 });
 
 function route(app) {
-  // app.use('/product', productRouter);
-  // app.use('/admin', adminRouter);
-  // app.use('/customer', customerRouter);
-  // app.use('/seller', sellerRouter);
-
   app.post("/uploads/", upload.single("printFile"), PrinterController.postFile);
   app.use("/print", printerRouter);
   app.use("/pay", payRouter);
