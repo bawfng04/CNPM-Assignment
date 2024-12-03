@@ -9,17 +9,17 @@ var swaggerUi = require("swagger-ui-express");
 const route = require("./routes");
 const cookieParser = require("cookie-parser");
 // Config swagger docs
-// var options = {
-//   swaggerDefinition: {
-//     info: {
-//       title: "My API",
-//       version: "1.0.0",
-//       description: "My API for doing cool stuff!",
-//     },
-//   },
-//   apis: [path.join(__dirname, "/routes/*.js")],
-// };
-// var swaggerSpecs = swaggerJsdoc(options);
+var options = {
+  swaggerDefinition: {
+    info: {
+      title: "My API",
+      version: "1.0.0",
+      description: "My API for doing cool stuff!",
+    },
+  },
+  apis: [path.join(__dirname, "/routes/*.js")],
+};
+var swaggerSpecs = swaggerJsdoc(options);
 
 const app = express();
 const port = 4000;
@@ -44,7 +44,7 @@ app.use((req, res, next) => {
 
 // route
 route(app);
-// app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // 127.0.0.1 - localhost
 app.listen(port, () => {

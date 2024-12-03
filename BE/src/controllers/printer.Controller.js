@@ -29,7 +29,7 @@ class PrinterController {
         filePath = filePath.replace(/\\/g, '/');
         let pageNum;
         let dataBuffer = fs.readFileSync(filePath);
-        pdf(dataBuffer).then(function(data) {
+        if(req.file.mimetype === 'application/pdf')   pdf(dataBuffer).then(function(data) {
             pageNum = data.numpages;
             console.log(`Number of pages: ${data.numpages}`)
         })
@@ -81,7 +81,9 @@ class PrinterController {
                     data: null
                 })
             }
-            if(response.statusCode === 200) {
+
+            console.log("LOAD FILE: ", response)
+            if(response.status === 200) {
                 const fileName = response.data.filename;
                 const fileType = response.data.filetype;
                 let filePath = response.data.filepath;
