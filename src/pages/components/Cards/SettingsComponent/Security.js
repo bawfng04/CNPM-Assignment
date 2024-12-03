@@ -2,19 +2,23 @@ import React from "react";
 
 const logoutAPI = "http://localhost:4000/logout";
 
-const handleLogout = async (navigate) => {
+const handleLogout = async () => {
   const response = await fetch(logoutAPI, {
-    method: "POST",
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
+  console.log("TOKENNNN:", localStorage.getItem("token"));
   const data = await response.json();
-  if (data.error) {
-    console.log(data.error);
+  if (data.message) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("isLoggedIn");
+    window.location.href = "/";
+    alert("Logout success");
   } else {
-    localStorage.setItem("isLoggedIn", "false");
-    navigate("/login");
+    console.log(data.error);
   }
 };
 

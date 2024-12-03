@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Register from "./Register";
 import logo from "./images/logo.png";
 import "./Login.css";
+import { jwtDecode } from "jwt-decode";
 
 const loginAPI = "http://localhost:4000/login";
 
@@ -19,6 +20,12 @@ function Login({ onLogin }) {
   //   alert(localStorage.getItem("123"));
   // };
 
+  const decodeToken = (token) => {
+    const decoded = jwtDecode(token);
+    console.log("decoded: ", decoded);
+    return decoded;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const response = await fetch(loginAPI, {
@@ -31,12 +38,27 @@ function Login({ onLogin }) {
         password: password,
       }),
     });
+
     const data = await response.json();
     if (data.token) {
+      //decode
+      // console.log("wegfjwejg: ", decodeToken(data.token));
+      localStorage.setItem(
+        "role",
+        JSON.stringify(decodeToken(data.token).role)
+      );
+
+      console.log("ROLE: ", localStorage.getItem("role"));
+
       localStorage.setItem("token", data.token);
+
+      // console.log("TOKEN1: ", data.token);
       setLogged(true);
       localStorage.setItem("isLoggedIn", "true");
-      // console.log("TOKEN: ", data.token);
+      //save to cookie
+      document.cookie = `token=${data.token}; max-age=3600; path=/`;
+      //
+      console.log("TOKEN: ", localStorage.getItem("token"));
       setTimeout(() => {
         onLogin();
         navigate("/main");
@@ -59,29 +81,29 @@ function Login({ onLogin }) {
     }, 3000);
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    const userAccounts = JSON.parse(
-      localStorage.getItem("userAccounts") || "{}"
-    );
-    if (userAccounts[email] && userAccounts[email] === password) {
-      setLogged(true);
-      localStorage.setItem("isLoggedIn", "true");
-      setTimeout(() => {
-        onLogin();
-        navigate("/main");
-      }, 3000);
-    } else {
-      if (email === "") {
-        setError("Please input your email");
-      } else if (password === "") {
-        setError("Password can't be empty");
-      } else {
-        setError("Invalid username or password");
-      }
-      clearError();
-    }
-  };
+  // const handleLogin = (e) => {
+  //   e.preventDefault();
+  //   const userAccounts = JSON.parse(
+  //     localStorage.getItem("userAccounts") || "{}"
+  //   );
+  //   if (userAccounts[email] && userAccounts[email] === password) {
+  //     setLogged(true);
+  //     localStorage.setItem("isLoggedIn", "true");
+  //     setTimeout(() => {
+  //       onLogin();
+  //       navigate("/main");
+  //     }, 3000);
+  //   } else {
+  //     if (email === "") {
+  //       setError("Please input your email");
+  //     } else if (password === "") {
+  //       setError("Password can't be empty");
+  //     } else {
+  //       setError("Invalid username or password");
+  //     }
+  //     clearError();
+  //   }
+  // };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);

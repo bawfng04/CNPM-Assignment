@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Market.css";
 import m1 from "../../../images/m1.png";
 import m2 from "../../../images/m2.png";
@@ -15,9 +15,102 @@ import pa5 from "../../../images/pa5.png";
 import pa6 from "../../../images/pa6.png";
 import iconPlus from "../../../images/icon-plus.png";
 import c1 from "../../../images/c1.png";
-import qr from "../../../images/qr.png";
+
+let QRDisplaying = false;
+
+const marketAPI = "http://localhost:4000/pay/BuyPages";
 
 function Market() {
+  const [A0num, setA0num] = useState(0);
+  const [A1num, setA1num] = useState(0);
+  const [A2num, setA2num] = useState(0);
+  const [A3num, setA3num] = useState(0);
+  const [A4num, setA4num] = useState(0);
+  const [A5num, setA5num] = useState(0);
+  const [qrDisplay, setQrDisplay] = useState(false);
+
+  const sendToBackend = async (data) => {
+    try {
+      const response = await fetch(marketAPI, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(data),
+      });
+      const res = await response.json();
+      console.log(res);
+      if (res) {
+        const qrUrl = res.qrUrl;
+
+        const total = res.total;
+
+        let parentElement2 = document.getElementById("TOTAL");
+        //clear previous total
+        parentElement2.innerHTML = "";
+        parentElement2.innerHTML = `<h3>Total: ${total}đ</h3>`;
+
+        //qr code image
+        const imgElement = document.createElement("img");
+        imgElement.src = qrUrl;
+        imgElement.alt = "QR Code";
+        document.body.appendChild(imgElement);
+
+        let parentElement = document.getElementById("QRRR");
+        //clear previous qr code
+        parentElement.innerHTML = "";
+        parentElement.appendChild(imgElement);
+
+        setQrDisplay(true);
+
+        //scroll to the image
+        imgElement.scrollIntoView({ behavior: "smooth" });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleA0Change = (e) => {
+    setA0num(e.target.value);
+  };
+
+  const handleA1Change = (e) => {
+    setA1num(e.target.value);
+  };
+
+  const handleA2Change = (e) => {
+    setA2num(e.target.value);
+  };
+
+  const handleA3Change = (e) => {
+    setA3num(e.target.value);
+  };
+
+  const handleA4Change = (e) => {
+    setA4num(e.target.value);
+  };
+
+  const handleA5Change = (e) => {
+    setA5num(e.target.value);
+  };
+
+  const handleBuyNow = () => {
+    //create form data
+    const data = {
+      A0: A0num,
+      A1: A1num,
+      A2: A2num,
+      A3: A3num,
+      A4: A4num,
+      A5: A5num,
+    };
+
+    sendToBackend(data);
+    console.log("Data: ", data);
+  };
+
   return (
     <section className="c-market">
       <div className="c-market__box-1">
@@ -112,7 +205,7 @@ function Market() {
                   <p>A5 paper</p>
                 </div>
                 <div className="c-market__bottom-paper">
-                  <input type="text" />
+                  <input type="number" onChange={handleA5Change} />
                   <img src={iconPlus} alt="Logo" />
                 </div>
               </div>
@@ -123,7 +216,7 @@ function Market() {
                   <p>A4 paper</p>
                 </div>
                 <div className="c-market__bottom-paper">
-                  <input type="text" />
+                  <input type="number" onChange={handleA4Change} />
                   <img src={iconPlus} alt="Logo" />
                 </div>
               </div>
@@ -134,7 +227,7 @@ function Market() {
                   <p>A3 paper</p>
                 </div>
                 <div className="c-market__bottom-paper">
-                  <input type="text" />
+                  <input type="number" onChange={handleA3Change} />
                   <img src={iconPlus} alt="Logo" />
                 </div>
               </div>
@@ -145,7 +238,7 @@ function Market() {
                   <p>A2 paper</p>
                 </div>
                 <div className="c-market__bottom-paper">
-                  <input type="text" />
+                  <input type="number" onChange={handleA2Change} />
                   <img src={iconPlus} alt="Logo" />
                 </div>
               </div>
@@ -156,7 +249,7 @@ function Market() {
                   <p>A1 paper</p>
                 </div>
                 <div className="c-market__bottom-paper">
-                  <input type="text" />
+                  <input type="number" onChange={handleA1Change} />
                   <img src={iconPlus} alt="Logo" />
                 </div>
               </div>
@@ -167,16 +260,17 @@ function Market() {
                   <p>A0 paper</p>
                 </div>
                 <div className="c-market__bottom-paper">
-                  <input type="text" />
+                  <input type="number" onChange={handleA0Change} />
                   <img src={iconPlus} alt="Logo" />
                 </div>
               </div>
 
               <div className="c-market__price">
-                <h3>Total:</h3>
-                <span>100,000đ</span>
-                <button className="marketButton">Buy now</button>
+                <button className="marketButton" onClick={handleBuyNow}>
+                  Buy now
+                </button>
               </div>
+              <h3>Total:</h3>
             </div>
           </div>
         </div>
@@ -244,45 +338,15 @@ function Market() {
       </div>
 
       <div className="c-market__box-3">
-        <div className="c-market__head-payment">
-          <h2>BK Payment</h2>
-        </div>
-
         <div className="c-market__box-payment">
           <div className="c-market__box-payment-left">
-            <h3>Payment by QR code</h3>
-            <img src={qr} alt="Logo" />
-          </div>
-          <div className="c-market__box-payment-right">
-            <div className="c-market__head-payment-right">
-              <h3>Transaction information</h3>
+            <div id="TOTAL" className="totalPrice"></div>
+            <div id="QRRR"></div>
+            <div className="abc">
+              {qrDisplay && <button className="PaymentComplete">Done</button>}
             </div>
-            <form action="">
-              <div className="row">
-                <label htmlFor="">Full Name</label>
-                <input type="text" />
-              </div>
-              <div className="row">
-                <label htmlFor="">Student ID</label>
-                <input type="text" />
-              </div>
-              <div className="row">
-                <label htmlFor="">Phone Number</label>
-                <input type="text" />
-              </div>
-              <div className="row">
-                <label htmlFor="">Email</label>
-                <input type="text" />
-              </div>
-              <div className="row">
-                <label htmlFor="">Money</label>
-                <input type="text" />
-              </div>
-              <div className="c-btn">
-                <button className="marketButton">Deposit</button>
-              </div>
-            </form>
           </div>
+          <div className="c-market__box-payment-right"></div>
         </div>
       </div>
     </section>

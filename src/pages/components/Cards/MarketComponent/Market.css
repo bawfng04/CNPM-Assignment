@@ -349,6 +349,7 @@
     border-radius: 3px;
 }
 
+
 .marketButton{
     cursor: pointer;
     transition: transform 0.3s ease;
@@ -357,4 +358,32 @@
 .marketButton:hover{
     transform: scale(1.1);
     background-color: #00406d;
+}
+
+.abc{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.PaymentComplete{
+    padding: 20px 50px;
+    border-radius: 10px;
+    background-color: #005EA2;
+    color: white;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.PaymentComplete:hover{
+    transform: scale(1.1);
+    background-color: #00406d;
+}
+
+
+#TOTAL {
+  font-size: 50px!important;
+  font-weight: bold;
+  color: #333;
+  margin: 10px 0;
 }

@@ -46,24 +46,24 @@ const Register = () => {
     }
   };
 
-  const handleRegister = (event) => {
-    event.preventDefault();
-    const userAccounts = JSON.parse(
-      localStorage.getItem("userAccounts") || "{}"
-    );
-    if (userAccounts[email]) {
-      setError("Email already registered!");
-      clearError();
-    } else if (password !== rePassword) {
-      setError("Password does not match!");
-      clearError();
-    } else {
-      userAccounts[email] = password;
-      localStorage.setItem("userAccounts", JSON.stringify(userAccounts));
-      setRegisterSuccess(true);
-      setTimeout(() => navigate("/login"), 3000);
-    }
-  };
+  // const handleRegister = (event) => {
+  //   event.preventDefault();
+  //   const userAccounts = JSON.parse(
+  //     localStorage.getItem("userAccounts") || "{}"
+  //   );
+  //   if (userAccounts[email]) {
+  //     setError("Email already registered!");
+  //     clearError();
+  //   } else if (password !== rePassword) {
+  //     setError("Password does not match!");
+  //     clearError();
+  //   } else {
+  //     userAccounts[email] = password;
+  //     localStorage.setItem("userAccounts", JSON.stringify(userAccounts));
+  //     setRegisterSuccess(true);
+  //     setTimeout(() => navigate("/login"), 3000);
+  //   }
+  // };
 
   const handleCancel = () => {
     navigate("/login");

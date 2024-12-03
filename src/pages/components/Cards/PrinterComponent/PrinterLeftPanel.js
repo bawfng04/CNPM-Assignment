@@ -14,18 +14,29 @@ const PrinterLeftPanel = () => {
     try {
       const response = await fetch(uploadAPI, {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+
         body: formData,
       });
-      const data = await response.json();
-      if (data.error) {
-        console.log(data.error);
+
+      if (response.headers.get("content-type")?.includes("application/json")) {
+        const data = await response.json();
+        if (data.error) {
+          console.log(data.error);
+        } else {
+          console.log(data.message);
+        }
       } else {
-        console.log(data.message);
+        // console.log("File uploaded successfully");
+        alert("File uploaded successfully");
       }
     } catch (error) {
       console.log(error);
     }
   };
+
 
   const handleFileChange = (e) => {
     const allowedFileTypes = ["jpg", "png", "pdf", "docx"];
