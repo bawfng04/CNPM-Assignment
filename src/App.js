@@ -38,7 +38,7 @@ function App() {
 
 export default App;
 
-// git checkout FE
+
 // cd "/d/Projects/CNPM Assignment/cnpm-client"
 // git add .
 // git commit -m " "

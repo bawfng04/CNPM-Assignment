@@ -4,6 +4,8 @@ import "./Register.css";
 import resBackground from "./images/bg.png";
 import GGlogo from "./images/GoogleLogo.png";
 
+const registerAPI = "http://localhost:4000/register";
+
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,6 +18,32 @@ const Register = () => {
     setTimeout(() => {
       setError("");
     }, 2000);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (password !== rePassword) {
+      setError("Password does not match!");
+      return;
+    }
+    const response = await fetch(registerAPI, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
+    const data = await response.json();
+    if (data.error) {
+      setError(data.error);
+      clearError();
+    } else {
+      setRegisterSuccess(true);
+      setTimeout(() => navigate("/login"), 3000);
+    }
   };
 
   const handleRegister = (event) => {
@@ -57,7 +85,8 @@ const Register = () => {
         <img src={resBackground} alt="Background" />
       </div>
       <div className="right-side">
-        <form onSubmit={handleRegister}>
+        {/* <form onSubmit={handleRegister}> */}
+        <form onSubmit={handleSubmit}>
           <h1>Create an account</h1>
           <label htmlFor="email">Email</label>
           <input

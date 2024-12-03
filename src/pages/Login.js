@@ -4,6 +4,8 @@ import Register from "./Register";
 import logo from "./images/logo.png";
 import "./Login.css";
 
+const loginAPI = "http://localhost:4000/login";
+
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,6 +18,40 @@ function Login({ onLogin }) {
   //   localStorage.setItem("123", "456");
   //   alert(localStorage.getItem("123"));
   // };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const response = await fetch(loginAPI, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
+    const data = await response.json();
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+      setLogged(true);
+      localStorage.setItem("isLoggedIn", "true");
+      // console.log("TOKEN: ", data.token);
+      setTimeout(() => {
+        onLogin();
+        navigate("/main");
+      }, 3000);
+    } else {
+      if (email === "") {
+        setError("Please input your email");
+      } else if (password === "") {
+        setError("Password can't be empty");
+      } else {
+        setError("Invalid username or password");
+      }
+      clearError();
+    }
+  };
 
   const clearError = () => {
     setTimeout(() => {
@@ -81,7 +117,8 @@ function Login({ onLogin }) {
           <div className="loginContainer">
             <div className="loginBox">
               <h1 className="login-title">Login to your account</h1>
-              <form className="login-form" onSubmit={handleLogin}>
+              {/* <form className="login-form" onSubmit={handleLogin}> */}
+              <form className="login-form" onSubmit={handleSubmit}>
                 {/* Email Field */}
                 <div className="email-field">
                   <label htmlFor="email">Email</label>
@@ -117,7 +154,7 @@ function Login({ onLogin }) {
                 </div>
                 {/* Submit Button*/}
                 <div className="loginButtonContainer">
-                  <button className="loginButton" onClick={handleLogin}>
+                  <button className="loginButton" onClick={handleSubmit}>
                     Login now
                   </button>
                 </div>

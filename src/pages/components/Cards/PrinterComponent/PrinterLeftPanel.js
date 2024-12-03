@@ -1,10 +1,31 @@
 import React, { useState } from "react";
 import uploadIcon from "../../../images/uploadIcon.png";
 
+const uploadAPI = "http://localhost:4000/upload";
+
 const PrinterLeftPanel = () => {
   const [file, setFile] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [errorUpload, setErrorUpload] = useState(false);
+
+  const uploadFile = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const response = await fetch(uploadAPI, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleFileChange = (e) => {
     const allowedFileTypes = ["jpg", "png", "pdf", "docx"];
@@ -16,6 +37,7 @@ const PrinterLeftPanel = () => {
     if (uploadedFile && allowedFileTypes.includes(fileExtension)) {
       setFile(uploadedFile);
       setUploadSuccess(true);
+      uploadFile(uploadedFile);
     } else {
       setFile(null);
       setUploadSuccess(false);

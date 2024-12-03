@@ -130,3 +130,24 @@ input {
   display: inline-block;
   padding-bottom: 2px;
 }
+
+.form-group2{
+  display: flex;
+  justify-content: space-between;
+  width: 45%;
+
+}
+
+.logout-button{
+  margin-top: 20px;
+  padding: 10px 40px;
+  background-color: #dc120f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #a00c0a;
+}
