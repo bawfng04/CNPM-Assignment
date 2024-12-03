@@ -4,6 +4,7 @@ const axios = require("axios");
 const PrinterService = require("../../database/printerService");
 const UserService = require("../../database/userService");
 const PayService = require("../../database/payService");
+const { date } = require("joi");
 const PRICE_PER_PAGE_A4 = 500;
 
 class PayController {
@@ -133,16 +134,16 @@ class PayController {
     const sotien = req.body.number * PRICE_PER_PAGE_A4; // Tính số tiền
     const noidung = encodeURIComponent("Thanh toan mua trang in"); // Mã hóa nội dung để phù hợp với URL
     const qr = `https://img.vietqr.io/image/970436-1046583393-compact2.png?amount=${sotien}&addInfo=${noidung}&accountName=Thanh%20toan%20mua%20giay`;
-    try {
-      // Lấy hình ảnh từ URL
-      const response = await axios.get(qr, { responseType: "arraybuffer" });
 
-      // Gửi hình ảnh về Postman
-      res.set("Content-Type", "image/png"); // Hoặc định dạng phù hợp (image/jpeg, ...)
-      res.send(response.data);
+    try {
+      // Gửi về frontend cả số tiền và mã QR URL
+      res.json({
+        total: sotien,
+        qrUrl: qr, // Gửi URL của mã QR về frontend
+      });
     } catch (error) {
       console.error(error);
-      res.status(500).send("Lỗi tải hình ảnh");
+      res.status(500).send("Lỗi tạo mã QR");
     }
   }
   async SuccessBuyPages(req, res) {
