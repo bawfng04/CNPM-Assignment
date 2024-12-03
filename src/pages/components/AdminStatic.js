@@ -9,9 +9,11 @@ import General from "./Cards-Admin/GeneralComponent/General";
 import Config from "./Cards-Admin/ConfigComponent/Config";
 import ManageUser from "./Cards-Admin/ManageUser/ManageUser";
 import ManagePrinter from "./Cards-Admin/ManagePrinter/ManagePrinter";
+import { useNavigate } from "react-router-dom";
 
 const AdminStatic = () => {
   const [activeComponent, setActiveComponent] = useState("general");
+  const navigate = useNavigate();
 
   const renderContent = () => {
     switch (activeComponent) {
@@ -27,6 +29,14 @@ const AdminStatic = () => {
         return <General />;
     }
   };
+
+  //check user role
+  useEffect(() => {
+    const role = JSON.parse(localStorage.getItem("role"));
+    if (role === "user") {
+      window.location.href = "/main/unauthorized";
+    }
+  }, [navigate]);
 
   // Re-animation when changing component
   useEffect(() => {

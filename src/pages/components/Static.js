@@ -9,10 +9,11 @@ import Printer from "./Cards/PrinterComponent/Printer";
 import Market from "./Cards/MarketComponent/Market";
 import History from "./Cards/HistoryComponent/History";
 import Settings from "./Cards/SettingsComponent/Settings";
-
+import { useNavigate } from "react-router-dom";
 
 const Static = () => {
   const [activeComponent, setActiveComponent] = useState("dashboard");
+  const navigate = useNavigate();
 
   const renderContent = () => {
     switch (activeComponent) {
@@ -31,6 +32,14 @@ const Static = () => {
         return <Dashboard />;
     }
   };
+
+  //check user role
+  useEffect(() => {
+    const role = JSON.parse(localStorage.getItem("role"));
+    if (role !== "user") {
+      window.location.href = "/main/unauthorized";
+    }
+  }, [navigate]);
 
   // Re-animation when changing component
   useEffect(() => {

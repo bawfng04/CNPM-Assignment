@@ -48,20 +48,21 @@ function Login({ onLogin }) {
         JSON.stringify(decodeToken(data.token).role)
       );
 
-      console.log("ROLE: ", localStorage.getItem("role"));
 
       localStorage.setItem("token", data.token);
-
-      // console.log("TOKEN1: ", data.token);
       setLogged(true);
       localStorage.setItem("isLoggedIn", "true");
-      //save to cookie
       document.cookie = `token=${data.token}; max-age=3600; path=/`;
-      //
       console.log("TOKEN: ", localStorage.getItem("token"));
       setTimeout(() => {
+        console.log("Current role: ", localStorage.getItem("role"));
         onLogin();
-        navigate("/main");
+        const userRole = JSON.parse(localStorage.getItem("role"));
+        if (userRole === "user") {
+          navigate("/main");
+        } else {
+          navigate("/main/admin");
+        }
       }, 3000);
     } else {
       if (email === "") {
