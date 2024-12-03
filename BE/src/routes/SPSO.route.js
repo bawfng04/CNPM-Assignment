@@ -7,6 +7,7 @@ const verify = require("../middleware/auth.js");
 router.use(verify.verifyTokenAdmin);
 
 // router.get("/", controllers.getPrinter);
+router.get("/getUsers", controllers.fetchAllUsers);
 router.post("/creatprinter", validations.create, controllers.create);
 router.get("/test", (req, res, next) => {
   res.send("Hello World");

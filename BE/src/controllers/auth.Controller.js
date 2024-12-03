@@ -84,27 +84,9 @@ async function logout(req, res) {
   }
 }
 
-async function fetchAllUsers(req, res, next) {
-  const limit = req.params.limit ? req.params.limit : 10;
-  try {
-    const result = await UserService.fetchUsers(limit);
-    if (result.status !== 200) {
-      statusCode: result.status, { ...result };
-    }
-    res.status(200).json({
-      statusCode: 200,
-      msg: `Fetch users LIMI ${limit}`,
-      data: result.data,
-    });
-  } catch (err) {
-    next(err);
-  }
-}
-
 module.exports = {
   register,
   login,
   logout,
   verify,
-  fetchAllUsers,
 };

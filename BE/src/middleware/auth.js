@@ -3,8 +3,9 @@ require("dotenv").config();
 const { StatusCodes } = require("http-status-codes");
 
 async function verifyToken(req, res, next) {
-  const token = req.cookies.token;
-  //   console.log(token);
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  console.log("Extracted Token:", token);
   if (!token)
     return res
       .status(StatusCodes.FORBIDDEN)
@@ -22,7 +23,9 @@ async function verifyToken(req, res, next) {
 }
 
 async function verifyTokenAdmin(req, res, next) {
-  const token = req.cookies.token;
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  console.log("Extracted Token:", token);
   if (!token)
     return res
       .status(StatusCodes.FORBIDDEN)

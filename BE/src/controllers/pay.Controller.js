@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
 const { v4: uuidv4 } = require("uuid");
-
+const axios = require("axios");
 const PrinterService = require("../../database/printerService");
 const UserService = require("../../database/userService");
 const PayService = require("../../database/payService");
@@ -130,6 +130,22 @@ class PayController {
       });
   }
   async BuyPages(req, res) {
+    const sotien = req.body.number * PRICE_PER_PAGE_A4; // Tính số tiền
+    const noidung = encodeURIComponent("Thanh toan mua trang in"); // Mã hóa nội dung để phù hợp với URL
+    const qr = `https://img.vietqr.io/image/970436-1046583393-compact2.png?amount=${sotien}&addInfo=${noidung}&accountName=Thanh%20toan%20mua%20giay`;
+    try {
+      // Lấy hình ảnh từ URL
+      const response = await axios.get(qr, { responseType: "arraybuffer" });
+
+      // Gửi hình ảnh về Postman
+      res.set("Content-Type", "image/png"); // Hoặc định dạng phù hợp (image/jpeg, ...)
+      res.send(response.data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Lỗi tải hình ảnh");
+    }
+  }
+  async SuccessBuyPages(req, res) {
     const { email, number } = req.body;
 
     // Kiểm tra input
