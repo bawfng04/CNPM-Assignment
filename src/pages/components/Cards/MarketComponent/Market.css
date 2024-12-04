@@ -380,10 +380,24 @@
     background-color: #00406d;
 }
 
-
 #TOTAL {
-  font-size: 50px!important;
+  font-size: 50px !important;
   font-weight: bold;
   color: #333;
   margin: 10px 0;
+  text-align: center;
+}
+
+#QRRR img {
+  display: block;
+  margin: 20px auto;
+  max-width: 100%;
+  height: auto;
+  border: 2px solid #333;
+  border-radius: 10px;
+}
+
+.loading{
+    font-size: 100px;
+    color: black;
 }

@@ -16,8 +16,6 @@ import pa6 from "../../../images/pa6.png";
 import iconPlus from "../../../images/icon-plus.png";
 import c1 from "../../../images/c1.png";
 
-let QRDisplaying = false;
-
 const marketAPI = "http://localhost:4000/pay/BuyPages";
 
 function Market() {
@@ -28,6 +26,7 @@ function Market() {
   const [A4num, setA4num] = useState(0);
   const [A5num, setA5num] = useState(0);
   const [qrDisplay, setQrDisplay] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const sendToBackend = async (data) => {
     try {
@@ -40,18 +39,19 @@ function Market() {
         body: JSON.stringify(data),
       });
       const res = await response.json();
+
       console.log(res);
       if (res) {
         const qrUrl = res.qrUrl;
-
         const total = res.total;
 
         let parentElement2 = document.getElementById("TOTAL");
         //clear previous total
         parentElement2.innerHTML = "";
-        parentElement2.innerHTML = `<h3>Total: ${total}đ</h3>`;
+        parentElement2.innerHTML = `<h3>Total: ${formatCurrency(total)}</h3>`;
 
         //qr code image
+
         const imgElement = document.createElement("img");
         imgElement.src = qrUrl;
         imgElement.alt = "QR Code";
@@ -66,11 +66,17 @@ function Market() {
 
         //scroll to the image
         imgElement.scrollIntoView({ behavior: "smooth" });
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
+
+  function formatCurrency(amount) {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
+  }
 
   const handleA0Change = (e) => {
     setA0num(e.target.value);
@@ -98,6 +104,7 @@ function Market() {
 
   const handleBuyNow = () => {
     //create form data
+    setLoading(true);
     const data = {
       A0: A0num,
       A1: A1num,
@@ -340,13 +347,15 @@ function Market() {
       <div className="c-market__box-3">
         <div className="c-market__box-payment">
           <div className="c-market__box-payment-left">
+            {loading && <h3 className="loading">Loading...</h3>}
             <div id="TOTAL" className="totalPrice"></div>
             <div id="QRRR"></div>
             <div className="abc">
-              {qrDisplay && <button className="PaymentComplete">Done</button>}
+              {!loading && qrDisplay && (
+                <button className="PaymentComplete">Done</button>
+              )}
             </div>
           </div>
-          <div className="c-market__box-payment-right"></div>
         </div>
       </div>
     </section>

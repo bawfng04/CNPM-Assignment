@@ -10,7 +10,7 @@ const PrinterLeftPanel = () => {
 
   const uploadFile = async (file) => {
     const formData = new FormData();
-    formData.append("printFile", file); // Ensure the field name matches the backend
+    formData.append("printFile", file);
 
     try {
       const response = await fetch(uploadAPI, {
@@ -74,9 +74,7 @@ const PrinterLeftPanel = () => {
             accept=".jpg, .png, .pdf, .docx"
             onChange={handleFileChange}
           />
-          <div className="description">
-            Supported formats: JPG, PNG, PDF, DOCX
-          </div>
+          <div className="description">Supported formats: PDF, DOCX</div>
         </div>
         {uploadSuccess ? (
           <div className="fileName">

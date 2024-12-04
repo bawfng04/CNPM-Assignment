@@ -47,6 +47,16 @@ function Login({ onLogin }) {
         "role",
         JSON.stringify(decodeToken(data.token).role)
       );
+      localStorage.setItem(
+        "email",
+        JSON.stringify(decodeToken(data.token).email)
+      );
+      localStorage.setItem(
+        "userId",
+        JSON.stringify(decodeToken(data.token).userId)
+      );
+      localStorage.setItem("iat", JSON.stringify(decodeToken(data.token).iat));
+      localStorage.setItem("exp", JSON.stringify(decodeToken(data.token).exp));
 
       localStorage.setItem("token", data.token);
       setLogged(true);
@@ -56,6 +66,10 @@ function Login({ onLogin }) {
 
       setTimeout(() => {
         console.log("Current role: ", localStorage.getItem("role"));
+        console.log("Current email: ", localStorage.getItem("email"));
+        console.log("Current userId: ", localStorage.getItem("userId"));
+        console.log("Current iat: ", localStorage.getItem("iat"));
+        console.log("Current exp: ", localStorage.getItem("exp"));
         onLogin();
         const userRole = JSON.parse(localStorage.getItem("role"));
         if (userRole === "user") {
