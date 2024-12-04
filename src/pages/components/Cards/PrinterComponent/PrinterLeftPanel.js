@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import uploadIcon from "../../../images/uploadIcon.png";
 
-const uploadAPI = "http://localhost:4000/upload";
+const uploadAPI = "http://localhost:4000/uploads/";
 
 const PrinterLeftPanel = () => {
   const [file, setFile] = useState("");
@@ -10,14 +10,14 @@ const PrinterLeftPanel = () => {
 
   const uploadFile = async (file) => {
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("printFile", file); // Ensure the field name matches the backend
+
     try {
       const response = await fetch(uploadAPI, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-
         body: formData,
       });
 
@@ -25,18 +25,20 @@ const PrinterLeftPanel = () => {
         const data = await response.json();
         if (data.error) {
           console.log(data.error);
+          setErrorUpload(true);
         } else {
           console.log(data.message);
+          setUploadSuccess(true);
         }
       } else {
-        // console.log("File uploaded successfully");
         alert("File uploaded successfully");
+        setUploadSuccess(true);
       }
     } catch (error) {
       console.log(error);
+      setErrorUpload(true);
     }
   };
-
 
   const handleFileChange = (e) => {
     const allowedFileTypes = ["jpg", "png", "pdf", "docx"];
@@ -44,10 +46,11 @@ const PrinterLeftPanel = () => {
     const fileExtension = uploadedFile
       ? uploadedFile.name.split(".").pop().toLowerCase()
       : "";
-    //ex.pdf -> ["ex", "pdf"] -> ["pdf"] -> "pdf"
+
     if (uploadedFile && allowedFileTypes.includes(fileExtension)) {
       setFile(uploadedFile);
-      setUploadSuccess(true);
+      setUploadSuccess(false);
+      setErrorUpload(false);
       uploadFile(uploadedFile);
     } else {
       setFile(null);
@@ -62,7 +65,7 @@ const PrinterLeftPanel = () => {
       <div className="upload-section">
         <div className="upload-container">
           <img className="uploadIcon" src={uploadIcon} alt="upload icon" />
-          <label for="file">
+          <label htmlFor="file">
             Drag & drop files or <span>Browse</span>
           </label>
           <input

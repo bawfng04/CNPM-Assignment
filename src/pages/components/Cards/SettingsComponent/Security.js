@@ -5,6 +5,7 @@ const logoutAPI = "http://localhost:4000/logout";
 const handleLogout = async () => {
   const response = await fetch(logoutAPI, {
     method: "GET",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,

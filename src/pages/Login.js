@@ -48,12 +48,12 @@ function Login({ onLogin }) {
         JSON.stringify(decodeToken(data.token).role)
       );
 
-
       localStorage.setItem("token", data.token);
       setLogged(true);
       localStorage.setItem("isLoggedIn", "true");
       document.cookie = `token=${data.token}; max-age=3600; path=/`;
       console.log("TOKEN: ", localStorage.getItem("token"));
+
       setTimeout(() => {
         console.log("Current role: ", localStorage.getItem("role"));
         onLogin();
@@ -64,6 +64,7 @@ function Login({ onLogin }) {
           navigate("/main/admin");
         }
       }, 3000);
+
     } else {
       if (email === "") {
         setError("Please input your email");
