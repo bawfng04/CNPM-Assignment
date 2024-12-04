@@ -46,9 +46,14 @@ function Market() {
         const total = res.total;
 
         let parentElement2 = document.getElementById("TOTAL");
+        let parentElement3 = document.getElementById("Vietnamse");
         //clear previous total
+
         parentElement2.innerHTML = "";
+        parentElement3.innerHTML = "";
+
         parentElement2.innerHTML = `<h3>Total: ${formatCurrency(total)}</h3>`;
+        parentElement3.innerHTML = `<h3>${convertToVietnamese(total)}</h3>`;
 
         //qr code image
 
@@ -76,6 +81,101 @@ function Market() {
 
   function formatCurrency(amount) {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
+  }
+
+  //convert to Vietnamse
+  function convertToVietnamese(amount) {
+    const units = ["", "nghìn", "triệu", "tỷ", "nghìn tỷ", "triệu tỷ"];
+    const numbers = [
+      "không",
+      "một",
+      "hai",
+      "ba",
+      "bốn",
+      "năm",
+      "sáu",
+      "bảy",
+      "tám",
+      "chín",
+    ];
+
+    function readThreeDigits(number) {
+      let hundred = Math.floor(number / 100);
+      let ten = Math.floor((number % 100) / 10);
+      let unit = number % 10;
+      let result = "";
+
+      if (hundred !== 0) {
+        result += numbers[hundred] + " trăm ";
+        if (ten === 0 && unit !== 0) {
+          result += "linh ";
+        }
+      }
+
+      if (ten !== 0 && ten !== 1) {
+        result += numbers[ten] + " mươi ";
+        if (ten === 0 && unit !== 0) {
+          result += "linh ";
+        }
+      }
+
+      if (ten === 1) {
+        result += "mười ";
+      }
+
+      switch (unit) {
+        case 1:
+          if (ten !== 0 && ten !== 1) {
+            result += "mốt ";
+          } else {
+            result += numbers[unit] + " ";
+          }
+          break;
+        case 5:
+          if (ten === 0) {
+            result += numbers[unit] + " ";
+          } else {
+            result += "lăm ";
+          }
+          break;
+        default:
+          if (unit !== 0) {
+            result += numbers[unit] + " ";
+          }
+          break;
+      }
+
+      result = result.trim();
+      return result;
+    }
+
+    function readGroup(number) {
+      if (number === "000") return "";
+      return readThreeDigits(parseInt(number, 10));
+    }
+
+    function convert(amount) {
+      if (amount === 0) return "không đồng";
+      let strAmount = amount.toString();
+      let result = "";
+      let groupCount = 0;
+
+      while (strAmount.length > 0) {
+        let group = strAmount.slice(-3);
+        strAmount = strAmount.slice(0, -3);
+        let groupText = readGroup(group);
+        if (groupText !== "") {
+          result = groupText + " " + units[groupCount] + " " + result;
+        }
+        groupCount++;
+      }
+
+      result = result.trim() + " đồng";
+      result = result.charAt(0).toUpperCase() + result.slice(1);
+      return result;
+    }
+
+    return convert(amount);
   }
 
   const handleA0Change = (e) => {
@@ -349,6 +449,7 @@ function Market() {
           <div className="c-market__box-payment-left">
             {loading && <h3 className="loading">Loading...</h3>}
             <div id="TOTAL" className="totalPrice"></div>
+            <div id="Vietnamse" className="totalPrice2"></div>
             <div id="QRRR"></div>
             <div className="abc">
               {!loading && qrDisplay && (

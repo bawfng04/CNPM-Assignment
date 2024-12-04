@@ -49,3 +49,9 @@ const Security = () => {
 };
 
 export default Security;
+
+
+
+
+// UPDATE public.users
+// SET role = 'admin';

@@ -367,17 +367,18 @@
 }
 
 .PaymentComplete{
-    padding: 20px 50px;
+    padding: 10px 30px;
     border-radius: 10px;
-    background-color: #005EA2;
+    background-color: #ff8000;
     color: white;
     transition: transform 0.3s ease;
     cursor: pointer;
+    border: none;
 }
 
 .PaymentComplete:hover{
     transform: scale(1.1);
-    background-color: #00406d;
+    background-color: #f55a00;
 }
 
 #TOTAL {
@@ -400,4 +401,17 @@
 .loading{
     font-size: 100px;
     color: black;
+}
+
+#Vietnamse.totalPrice2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  font-size: 16px;
+  color: #333;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 10px 0;
 }
