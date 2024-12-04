@@ -64,43 +64,94 @@ const Profile = () => {
             <div className="form">
               <div className="form-group">
                 <label>First Name</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                />
               </div>
               <div className="form-group">
                 <label>Last Name</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                />
               </div>
               <div className="form-group">
                 <label>Email</label>
-                <input type="email" />
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
               </div>
               <div className="form-group">
                 <label>Password</label>
-                <input type="password" />
+                <input
+                  readOnly
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
               </div>
               <div className="form-group">
                 <label>Student ID</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="studentID"
+                  value={formData.studentID}
+                  onChange={handleChange}
+                />
               </div>
               <div className="form-group">
                 <label>Present Address</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="presentAddress"
+                  value={formData.presentAddress}
+                  onChange={handleChange}
+                />
               </div>
               <div className="form-group">
                 <label>Faculty</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="faculty"
+                  value={formData.faculty}
+                  onChange={handleChange}
+                />
               </div>
               <div className="form-group">
                 <label>City</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                />
               </div>
               <div className="form-group">
                 <label>Class</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="class"
+                  value={formData.class}
+                  onChange={handleChange}
+                />
               </div>
               <div className="form-group">
                 <label>Country</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  name="country"
+                  value={formData.country}
+                  onChange={handleChange}
+                />
               </div>
             </div>
             <button className="save-button align-right">Save</button>
