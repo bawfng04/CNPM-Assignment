@@ -2,6 +2,8 @@
 
 Deploy: https://smartprinterservice-86a9c.web.app/
 
+[Phải chạy server localhost:4000 mới vào được]
+
 **routes:**
 
 - /login
