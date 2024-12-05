@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { body, param } = require("express-validator");
-const { v4: uuidv4 } = require("uuid");
+const { v4: uuidv4, validate } = require("uuid");
 const isAuth = require("../middleware/is-Auth");
 const authController = require("../controllers/auth.Controller.js");
 const validations = require("../validations/auth.Validation.js");
@@ -17,7 +17,7 @@ router.get("/", (req, res, next) => {
 
 router.use(verify.verifyToken);
 router.post("/getIn4", authController.getIn4);
-router.post("/update");
+router.post("/update", validations.updateProfile, authController.updateProfile);
 router.get("/logout", authController.logout);
 
 module.exports = router;
