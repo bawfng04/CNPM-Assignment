@@ -44,6 +44,10 @@ function Market() {
       if (res) {
         const qrUrl = res.qrUrl;
         const total = res.total;
+        if (total === 0) {
+          alert("Please select at least 1 item to buy");
+          return;
+        }
 
         let parentElement2 = document.getElementById("TOTAL");
         let parentElement3 = document.getElementById("Vietnamse");

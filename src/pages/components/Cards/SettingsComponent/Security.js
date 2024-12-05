@@ -15,6 +15,12 @@ const handleLogout = async () => {
   if (data.message) {
     localStorage.removeItem("token");
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("role");
+    localStorage.removeItem("email");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("iat");
+    localStorage.removeItem("exp");
+    localStorage.removeItem("activeComponent");
     window.location.href = "/";
     alert("Logout success");
   } else {
