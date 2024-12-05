@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const Unauthorized = () => {
-  const [role, setRole] = useState(localStorage.getItem("role") || "user");
+  const role = useState(localStorage.getItem("role") || "student")[0];
 
   const handleRedirect = () => {
     window.location.href = "/login";

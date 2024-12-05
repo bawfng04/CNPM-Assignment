@@ -42,8 +42,7 @@ function Login({ onLogin }) {
 
       const data = await response.json();
       if (data.token) {
-        //decode
-        // console.log("wegfjwejg: ", decodeToken(data.token));
+        console.log("DATA: ", data);
         localStorage.setItem(
           "role",
           JSON.stringify(decodeToken(data.token).role)
@@ -54,7 +53,7 @@ function Login({ onLogin }) {
         );
         localStorage.setItem(
           "userId",
-          JSON.stringify(decodeToken(data.token).userId)
+          JSON.stringify(decodeToken(data.token).userID)
         );
         localStorage.setItem(
           "iat",
@@ -79,7 +78,7 @@ function Login({ onLogin }) {
           console.log("Current exp: ", localStorage.getItem("exp"));
           onLogin();
           const userRole = JSON.parse(localStorage.getItem("role"));
-          if (userRole === "user") {
+          if (userRole === "student") {
             navigate("/main/user");
           } else {
             navigate("/main/admin");
@@ -108,29 +107,6 @@ function Login({ onLogin }) {
     }, 3000);
   };
 
-  // const handleLogin = (e) => {
-  //   e.preventDefault();
-  //   const userAccounts = JSON.parse(
-  //     localStorage.getItem("userAccounts") || "{}"
-  //   );
-  //   if (userAccounts[email] && userAccounts[email] === password) {
-  //     setLogged(true);
-  //     localStorage.setItem("isLoggedIn", "true");
-  //     setTimeout(() => {
-  //       onLogin();
-  //       navigate("/main");
-  //     }, 3000);
-  //   } else {
-  //     if (email === "") {
-  //       setError("Please input your email");
-  //     } else if (password === "") {
-  //       setError("Password can't be empty");
-  //     } else {
-  //       setError("Invalid username or password");
-  //     }
-  //     clearError();
-  //   }
-  // };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);

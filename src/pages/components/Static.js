@@ -44,7 +44,7 @@ const Static = () => {
   //check user role
   useEffect(() => {
     const role = JSON.parse(localStorage.getItem("role"));
-    if (role !== "user") {
+    if (role !== "student") {
       window.location.href = "/main/unauthorized";
     }
   }, [navigate]);
