@@ -2,7 +2,7 @@
 
 Deploy: https://smartprinterservice-86a9c.web.app/
 
-[Phải chạy server localhost:4000 mới vào được]
+[Phải chạy server BE (localhost:4000) và PostgreSQL mới vào được]
 
 **routes:**
 
@@ -10,7 +10,7 @@ Deploy: https://smartprinterservice-86a9c.web.app/
 - /register (trang register)
 - /main/user (trang cho user)
 - /main/admin (trang cho admin)
-- /main/unauthorized (redirect về trang này khi không có quyền truy cập)
+- /main/unauthorized (redirect về trang này nếu không có quyền truy cập)
 
 # Screenshots
 ![image](https://github.com/user-attachments/assets/7a678bf3-18ac-4fc8-9525-a9f1c0225e6e)
