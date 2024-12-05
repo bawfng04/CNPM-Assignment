@@ -26,7 +26,7 @@ class PayController {
       error.data = errors.array();
       return res.status(400).json({
         statusCode: 400,
-        msg: error.data,
+        msg: errors.data,
         data: null,
       });
     }

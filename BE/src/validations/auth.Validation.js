@@ -9,8 +9,10 @@ async function login(req, res, next) {
         minDomainSegments: 3,
         tlds: { allow: ["edu", "vn"] },
       })
+      .message("Sử dụng email hcmut.edu.vn")
       .trim()
-      .strict(),
+      .strict()
+      ,
     password: Joi.string()
       .required()
       .trim()
@@ -27,8 +29,6 @@ async function login(req, res, next) {
     for (let i = 0; i < err.details.length; i++) {
       arrMessage.push(err.details[i].message);
     }
-    // console.log(arrMessage);
-
     res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
       error: arrMessage,
     });
