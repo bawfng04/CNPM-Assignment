@@ -535,21 +535,17 @@ function Market() {
         </div>
       </div>
 
-      <div className="c-market__box-3">
-        <div className="c-market__box-payment">
-          <div className="c-market__box-payment-left">
-            {loading && <h3 className="loading">Loading...</h3>}
-            <div id="TOTAL" className="totalPrice"></div>
-            <div id="Vietnamse" className="totalPrice2"></div>
-            <div id="QRRR"></div>
-            <div className="abc">
-              {!loading && qrDisplay && (
-                <button className="PaymentComplete" onClick={handleDone}>
-                  Done
-                </button>
-              )}
-            </div>
-          </div>
+      <div className="QRRRR">
+        {loading && <h3 className="loading">Loading...</h3>}
+        <div id="TOTAL" className="totalPrice"></div>
+        <div id="Vietnamse" className="totalPrice2"></div>
+        <div id="QRRR"></div>
+        <div className="abc">
+          {!loading && qrDisplay && (
+            <button className="PaymentComplete" onClick={handleDone}>
+              Done
+            </button>
+          )}
         </div>
       </div>
     </section>

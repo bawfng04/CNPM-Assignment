@@ -349,14 +349,15 @@
     border-radius: 3px;
 }
 
-
 .marketButton{
     cursor: pointer;
     transition: transform 0.3s ease;
+    padding: 15px 35px !important;
+    border-radius: 10px !important;
 }
 
 .marketButton:hover{
-    transform: scale(1.1);
+    transform: scale(1.2);
     background-color: #00406d;
 }
 
@@ -367,7 +368,7 @@
 }
 
 .PaymentComplete{
-    padding: 10px 30px;
+    padding: 15px 40px;
     border-radius: 10px;
     background-color: #ff8000;
     color: white;
@@ -381,8 +382,19 @@
     background-color: #f55a00;
 }
 
+.QRRRR{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0px;
+    margin: 0px;
+    margin-right: 200px;
+    animation: fadeIn 1s;
+}
+
 #TOTAL {
-  font-size: 50px !important;
+  font-size: 20px;
   font-weight: bold;
   color: #333;
   margin: 10px 0;
@@ -396,6 +408,8 @@
   height: auto;
   border: 2px solid #333;
   border-radius: 10px;
+  height: 400px;
+  padding: 20px;
 }
 
 .loading{
@@ -404,14 +418,11 @@
 }
 
 #Vietnamse.totalPrice2 {
+    width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
   font-size: 16px;
-  color: #333;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin: 10px 0;
+  color: #a43131;
 }
+
