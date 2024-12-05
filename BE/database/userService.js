@@ -250,15 +250,16 @@ class UserService {
           updated_at = CURRENT_TIMESTAMP
         WHERE id = $9
       `;
+
       const values = [
-        user.first_name || null,
-        user.last_name || null,
-        user.phone_number || null,
-        user.email || null,
-        user.username || null,
-        user.password || null,
-        user.avatar_encoded || null,
-        user.role || null,
+        user.first_name !== undefined ? user.first_name : null, // Kiểm tra rõ ràng undefined
+        user.last_name !== undefined ? user.last_name : null,
+        user.phone_number !== undefined ? user.phone_number : null,
+        user.email !== undefined ? user.email : null,
+        user.username !== undefined ? user.username : null,
+        user.password !== undefined ? user.password : null,
+        user.avatar_encoded !== undefined ? user.avatar_encoded : null,
+        user.role !== undefined ? user.role : null,
         user.id,
       ];
 
@@ -268,14 +269,27 @@ class UserService {
         throw new Error("User not found or no changes made");
       }
 
+      // Trả về thông tin phản hồi chi tiết
       return {
         status: 200,
         message: "User updated successfully",
-        data: user, // Trả về thông tin gốc
+        updatedFields: {
+          // Chỉ trả về các trường được cập nhật
+          first_name: user.first_name,
+          last_name: user.last_name,
+          phone_number: user.phone_number,
+          email: user.email,
+          username: user.username,
+          password: user.password,
+          avatar_encoded: user.avatar_encoded,
+          role: user.role,
+        },
       };
     } catch (error) {
       console.error("Error updating user:", error.message);
-      throw new Error("Failed to update user");
+
+      // Ném lỗi với thông tin cụ thể hơn
+      throw new Error(`Failed to update user: ${error.message}`);
     }
   }
   async updateStudent(student) {

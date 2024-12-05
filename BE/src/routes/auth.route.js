@@ -15,7 +15,7 @@ router.get("/", (req, res, next) => {
   res.send("Hello World");
 });
 
-router.use(verify.verifyToken);
+// router.use(verify.verifyToken);
 router.post("/getIn4", authController.getIn4);
 router.post("/update", validations.updateProfile, authController.updateProfile);
 router.get("/logout", authController.logout);

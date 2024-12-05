@@ -72,6 +72,14 @@ async function register(req, res, next) {
 
 async function updateProfile(req, res, next) {
   const schema = Joi.object({
+    email: Joi.string()
+      .required()
+      .email({
+        minDomainSegments: 3,
+        tlds: { allow: ["edu", "vn"] },
+      })
+      .trim()
+      .strict(),
     firstname: Joi.string().required().trim().strict(),
     lastname: Joi.string().required().trim().strict(),
     phonenumber: Joi.string().required().min(10).max(11).trim().strict(),

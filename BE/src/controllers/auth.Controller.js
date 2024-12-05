@@ -99,7 +99,7 @@ async function getIn4(req, res) {
     res.status(200).json({
       message: "get Information Successfully",
       user: user,
-      studet: student.data,
+      student: student.data,
     });
   } catch (err) {
     const newErr = new Error(err);
