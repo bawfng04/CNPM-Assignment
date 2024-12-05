@@ -194,6 +194,36 @@ class PayController {
       });
     }
   }
+  async TotalPage(req, res) {
+    try {
+      const email = req.body.email;
+      // Tìm người dùng qua email
+      const result = await UserService.findByEmail(email);
+      if (!result || result.status !== 200 || !result.data) {
+        const error = new Error("Can't find user");
+        error.statusCode = 401;
+        throw error;
+      }
+      const user = result.data;
+      const student = await UserService.findByID(user.id);
+      if (!student || student.status !== 200 || !student.data) {
+        const error = new Error("Can't find student");
+        error.statusCode = 401;
+        throw error;
+      }
+      // Trả về phản hồi thành công
+      res.status(200).json({
+        message: "Successfully",
+        data: student.data.pages_remaining,
+      });
+    } catch (err) {
+      console.error("Error :", err);
+      res.status(err.statusCode || 500).json({
+        error: err.message,
+        stack: err.stack,
+      });
+    }
+  }
 }
 
 module.exports = new PayController();

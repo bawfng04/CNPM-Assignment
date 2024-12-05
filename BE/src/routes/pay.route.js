@@ -21,13 +21,7 @@ router.post(
   isAuth,
   PayController.checkAccountBalance
 );
-
-router.post(
-  "/payByAccount",
-  [body("oderID").isUUID().withMessage("Invalied orderID")],
-  isAuth,
-  PayController.PayByAccount
-);
+router.get("/TotalPage", PayController.TotalPage);
 router.post("/BuyPages", PayController.BuyPages);
 router.post("/Update", PayController.SuccessBuyPages);
 module.exports = router;

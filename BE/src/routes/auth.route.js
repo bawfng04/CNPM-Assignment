@@ -16,7 +16,6 @@ router.get("/", (req, res, next) => {
 });
 
 router.use(verify.verifyToken);
-
 router.get("/logout", authController.logout);
 
 module.exports = router;
