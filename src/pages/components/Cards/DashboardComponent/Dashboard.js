@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 import avatarDashboard from "../../../images/avatar-dashboard.png";
 import t1 from "../../../images/t1.png";
@@ -12,7 +12,48 @@ import p2 from "../../../images/p2.jpg";
 import p3 from "../../../images/p3.jpg";
 import iconNext from "../../../images/icon-next.png";
 
+const getInfoAPI = "http://localhost:4000/getIn4";
+
 function Dashboard() {
+  const [name, setName] = useState("");
+  const [studentID, setStudentID] = useState("");
+  const getStudentInfo = async () => {
+    const email = localStorage.getItem("email");
+    try {
+      const response = await fetch(getInfoAPI, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authentication: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      if (!data.student) {
+        setStudentID("-------");
+      } else {
+        const studentID = data.student.student_id;
+        setStudentID(studentID);
+      }
+
+      if (!data.user.first_name && !data.user.last_name) {
+        setName("");
+      } else {
+        const name = data.user.first_name + " " + data.user.last_name;
+        setName(name);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    getStudentInfo();
+  }, []);
+
   return (
     <section className="c-dashboard">
       <div className="c-dashboard__box-1">
@@ -24,10 +65,10 @@ function Dashboard() {
           <div className="c-dashboard__box-card">
             <div className="c-dashboard__detail">
               <h3>
-                Name: <span>Trần Đăng Bảo</span>
+                Name: <span>{name ? name : "NULL"}</span>
               </h3>
               <h3>
-                Student ID: <span id="span2">2210270</span>
+                Student ID: <span id="span2">{studentID}</span>
               </h3>
               <h3>
                 Faculty: <span id="span3">Computer Science</span>

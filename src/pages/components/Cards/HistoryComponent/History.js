@@ -2,9 +2,13 @@ import React from "react";
 import "./History.css";
 import A4 from "../../../images/A4.png";
 import A3 from "../../../images/A3.png";
-import A1 from "../../../images/A1.png";
+// import A1 from "../../../images/A1.png";
+
 
 const History = () => {
+  const a3num = localStorage.getItem("A3plus") || 0;
+  const a4num = localStorage.getItem("A4plus") || 0;
+
   return (
     <div className="history-container">
       <div className="summary-section">
@@ -12,30 +16,17 @@ const History = () => {
           <img src={A4} alt="A4" className="paperIcon" />
           <div className="info">
             <h3>A4 paper</h3>
-            <p>200</p>
+            <p>{a4num }</p>
           </div>
         </div>
         <div className="card">
           <img src={A3} alt="A3" className="paperIcon" />
           <div className="info">
             <h3>A3 paper</h3>
-            <p>49</p>
+            <p>{a3num }</p>
           </div>
         </div>
-        <div className="card">
-          <div className="icon purple"></div>
-          <div className="info">
-            <h3>A2 paper</h3>
-            <p>31</p>
-          </div>
-        </div>
-        <div className="card">
-          <img src={A1} alt="A1" className="paperIcon" />
-          <div className="info">
-            <h3>Others</h3>
-            <p>89</p>
-          </div>
-        </div>
+
       </div>
       <div className="printNfilter">
         <h2 className="printText">Print History</h2>

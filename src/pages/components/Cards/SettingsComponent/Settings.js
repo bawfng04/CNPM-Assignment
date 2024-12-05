@@ -39,7 +39,7 @@ const Settings = () => {
             </div>
           </div>
           <div className="profileAndInfo">
-            <div className="settings-container">
+            <div className="settings-container" key={activeSettings}>
               {activeSettings === "EditProfile" ? <Profile /> : <Security />}
             </div>
           </div>

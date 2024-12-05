@@ -216,3 +216,29 @@ body {
 .iconButton:hover {
   transform: translateY(-3px);
 }
+
+
+.logoutContainer {
+  position: absolute;
+  top: 10%;
+  right: 8%;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 1;
+  animation: fadeIn 1s;
+}
+
+.logoutButton{
+  background-color: red;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  border-radius: 20px;
+  border: none;
+  transition: transform 0.3s ease;
+}
+
+.logoutButton:hover{
+  transform: scale(1.1);
+}

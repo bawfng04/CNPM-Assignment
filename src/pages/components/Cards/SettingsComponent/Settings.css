@@ -151,3 +151,8 @@ input {
 .logout-button:hover {
   background-color: #a00c0a;
 }
+
+
+.settings-container{
+  animation: fadeIn 1s;
+}

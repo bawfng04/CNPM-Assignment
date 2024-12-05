@@ -1,20 +1,15 @@
 import ProfileLogo from "../../../images/HCMUT_official_logo.png";
 import React, { useState } from "react";
 
-const sendFormAPI = "http://localhost:4000/form/something";
+const sendFormAPI = "http://localhost:4000/update";
 
 const Profile = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    password: "",
     studentID: "",
-    presentAddress: "",
-    faculty: "",
-    city: "",
-    class: "",
-    country: "",
+    PhoneNumber: "",
   });
 
   const handleChange = (e) => {
@@ -27,24 +22,42 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let email = localStorage.getItem("email");
+    // console.log("email", email);
+    email = email.replace(/^"|"$/g, "");
+    // console.log("email", email);
+
+    const token = localStorage.getItem("token");
+
+    const formDataToSend = {
+      email: email,
+      firstname: formData.firstName,
+      lastname: formData.lastName,
+      phonenumber: formData.PhoneNumber,
+      studentID: formData.studentID,
+    };
+
+    console.log("fff", formDataToSend);
+
     try {
       const response = await fetch(sendFormAPI, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: "Bearer " + token,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formDataToSend),
       });
-      if (response.message) {
-        // Handle success
-        console.log("Form submitted successfully");
+      if (response.ok) {
+        alert("Update successfully");
       } else {
-        // Handle error
-        console.error("Form submission failed");
+        const errorData = await response.json();
+        console.error("Error:", errorData.error);
+        alert("Update failed: " + errorData.error[0]);
       }
     } catch (error) {
       console.error("Error:", error);
+      alert("Update failed: ", error);
     }
   };
 
@@ -109,11 +122,11 @@ const Profile = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Present Address</label>
+                <label>PhoneNumber</label>
                 <input
                   type="text"
-                  name="presentAddress"
-                  value={formData.presentAddress}
+                  name="PhoneNumber"
+                  value={formData.PhoneNumber}
                   onChange={handleChange}
                 />
               </div>
