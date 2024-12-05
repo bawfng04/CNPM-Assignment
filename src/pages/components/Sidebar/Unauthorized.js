@@ -1,6 +1,18 @@
+import React, { useState } from "react";
+
 const Unauthorized = () => {
+  const [role, setRole] = useState(localStorage.getItem("role") || "user");
+
   const handleRedirect = () => {
     window.location.href = "/login";
+  };
+
+  const handleAdminRedirect = () => {
+    window.location.href = "/main/admin";
+  };
+
+  const handleUserRedirect = () => {
+    window.location.href = "/main/user";
   };
 
   return (
@@ -25,7 +37,7 @@ const Unauthorized = () => {
           padding: "0",
         }}
       >
-        Unauthorized
+        Unauthorized :(
       </h1>
       <p
         style={{
@@ -35,6 +47,41 @@ const Unauthorized = () => {
       >
         You are not authorized to view this page
       </p>
+      {role === "admin" ? (
+        <button
+          onClick={handleAdminRedirect}
+          style={{
+            marginTop: "20px",
+            padding: "10px 20px",
+            fontSize: "1em",
+            cursor: "pointer",
+            backgroundColor: "#7f6065",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            transition: "all 0.3 ease",
+          }}
+        >
+          Go to Admin Page
+        </button>
+      ) : (
+        <button
+          onClick={handleUserRedirect}
+          style={{
+            marginTop: "20px",
+            padding: "10px 20px",
+            fontSize: "1em",
+            cursor: "pointer",
+            backgroundColor: "#7f6065",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            transition: "all 0.3 ease",
+          }}
+        >
+          Go to User Page
+        </button>
+      )}
       <button
         onClick={handleRedirect}
         style={{
@@ -42,14 +89,14 @@ const Unauthorized = () => {
           padding: "10px 20px",
           fontSize: "1em",
           cursor: "pointer",
-          backgroundColor: "#007bff",
+          backgroundColor: "#7f6065",
           color: "white",
           border: "none",
           borderRadius: "5px",
           transition: "all 0.3 ease",
         }}
       >
-        Go to Login
+        Go back to Login page
       </button>
     </div>
   );
