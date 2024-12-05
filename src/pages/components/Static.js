@@ -12,23 +12,31 @@ import Settings from "./Cards/SettingsComponent/Settings";
 import { useNavigate } from "react-router-dom";
 
 const Static = () => {
-  const [activeComponent, setActiveComponent] = useState("dashboard");
+  const [activeComponent, setActiveComponent] = useState(() => {
+    const savedComponent = localStorage.getItem("activeComponent");
+    return savedComponent || "dashboard";
+  });
   const navigate = useNavigate();
 
   const renderContent = () => {
     switch (activeComponent) {
       case "dashboard":
+        localStorage.setItem("activeComponent", "dashboard");
         return <Dashboard />;
       case "printer":
+        localStorage.setItem("activeComponent", "printer");
         return <Printer />;
       case "market":
+        localStorage.setItem("activeComponent", "market");
         return <Market />;
       case "history":
+        localStorage.setItem("activeComponent", "history");
         return <History />;
       case "settings":
+        localStorage.setItem("activeComponent", "settings");
         return <Settings />;
-      case "general":
       default:
+        localStorage.setItem("activeComponent", "dashboard");
         return <Dashboard />;
     }
   };
@@ -40,6 +48,15 @@ const Static = () => {
       window.location.href = "/main/unauthorized";
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const activeComponent = localStorage.getItem("activeComponent");
+    if (activeComponent) {
+      setActiveComponent(activeComponent);
+    } else {
+      setActiveComponent("dashboard");
+    }
+  }, []);
 
   // Re-animation when changing component
   useEffect(() => {

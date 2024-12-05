@@ -28,65 +28,76 @@ function Login({ onLogin }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await fetch(loginAPI, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
+    try {
+      const response = await fetch(loginAPI, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
 
-    const data = await response.json();
-    if (data.token) {
-      //decode
-      // console.log("wegfjwejg: ", decodeToken(data.token));
-      localStorage.setItem(
-        "role",
-        JSON.stringify(decodeToken(data.token).role)
-      );
-      localStorage.setItem(
-        "email",
-        JSON.stringify(decodeToken(data.token).email)
-      );
-      localStorage.setItem(
-        "userId",
-        JSON.stringify(decodeToken(data.token).userId)
-      );
-      localStorage.setItem("iat", JSON.stringify(decodeToken(data.token).iat));
-      localStorage.setItem("exp", JSON.stringify(decodeToken(data.token).exp));
+      const data = await response.json();
+      if (data.token) {
+        //decode
+        // console.log("wegfjwejg: ", decodeToken(data.token));
+        localStorage.setItem(
+          "role",
+          JSON.stringify(decodeToken(data.token).role)
+        );
+        localStorage.setItem(
+          "email",
+          JSON.stringify(decodeToken(data.token).email)
+        );
+        localStorage.setItem(
+          "userId",
+          JSON.stringify(decodeToken(data.token).userId)
+        );
+        localStorage.setItem(
+          "iat",
+          JSON.stringify(decodeToken(data.token).iat)
+        );
+        localStorage.setItem(
+          "exp",
+          JSON.stringify(decodeToken(data.token).exp)
+        );
 
-      localStorage.setItem("token", data.token);
-      setLogged(true);
-      localStorage.setItem("isLoggedIn", "true");
-      document.cookie = `token=${data.token}; max-age=3600; path=/`;
-      console.log("TOKEN: ", localStorage.getItem("token"));
+        localStorage.setItem("token", data.token);
+        setLogged(true);
+        localStorage.setItem("isLoggedIn", "true");
+        document.cookie = `token=${data.token}; max-age=3600; path=/`;
+        console.log("TOKEN: ", localStorage.getItem("token"));
 
-      setTimeout(() => {
-        console.log("Current role: ", localStorage.getItem("role"));
-        console.log("Current email: ", localStorage.getItem("email"));
-        console.log("Current userId: ", localStorage.getItem("userId"));
-        console.log("Current iat: ", localStorage.getItem("iat"));
-        console.log("Current exp: ", localStorage.getItem("exp"));
-        onLogin();
-        const userRole = JSON.parse(localStorage.getItem("role"));
-        if (userRole === "user") {
-          navigate("/main");
-        } else {
-          navigate("/main/admin");
-        }
-      }, 3000);
-
-    } else {
-      if (email === "") {
-        setError("Please input your email");
-      } else if (password === "") {
-        setError("Password can't be empty");
+        setTimeout(() => {
+          console.log("Current role: ", localStorage.getItem("role"));
+          console.log("Current email: ", localStorage.getItem("email"));
+          console.log("Current userId: ", localStorage.getItem("userId"));
+          console.log("Current iat: ", localStorage.getItem("iat"));
+          console.log("Current exp: ", localStorage.getItem("exp"));
+          onLogin();
+          const userRole = JSON.parse(localStorage.getItem("role"));
+          if (userRole === "user") {
+            navigate("/main/user");
+          } else {
+            navigate("/main/admin");
+          }
+        }, 3000);
       } else {
-        setError("Invalid username or password");
+        if (email === "") {
+          setError("Please input your email");
+        } else if (password === "") {
+          setError("Password can't be empty");
+        } else {
+          setError("Invalid username or password");
+        }
+        clearError();
       }
+    } catch (error) {
+      console.error("Error", error);
+      setError("Server  error");
       clearError();
     }
   };

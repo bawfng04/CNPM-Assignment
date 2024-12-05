@@ -18,12 +18,16 @@ const AdminStatic = () => {
   const renderContent = () => {
     switch (activeComponent) {
       case "general":
+        localStorage.setItem("activeComponent", "general");
         return <General />;
       case "config":
+        localStorage.setItem("activeComponent", "config");
         return <Config />;
       case "manageUser":
+        localStorage.setItem("activeComponent", "manageUser");
         return <ManageUser />;
       case "managePrinter":
+        localStorage.setItem("activeComponent", "managePrinter");
         return <ManagePrinter />;
       default:
         return <General />;
@@ -37,6 +41,15 @@ const AdminStatic = () => {
       window.location.href = "/main/unauthorized";
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const activeComponent = localStorage.getItem("activeComponent");
+    if (activeComponent) {
+      setActiveComponent(activeComponent);
+    } else {
+      setActiveComponent("general");
+    }
+  }, [activeComponent]);
 
   // Re-animation when changing component
   useEffect(() => {

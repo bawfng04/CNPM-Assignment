@@ -10,6 +10,7 @@ Deploy: https://smartprinterservice-86a9c.web.app/
 - /register
 - /main/user
 - /main/admin
+- /main/unauthorized
 
 # Screenshots
 ![image](https://github.com/user-attachments/assets/7a678bf3-18ac-4fc8-9525-a9f1c0225e6e)
