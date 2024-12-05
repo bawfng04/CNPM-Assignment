@@ -72,15 +72,10 @@ async function register(req, res, next) {
 
 async function updateProfile(req, res, next) {
   const schema = Joi.object({
-    username: Joi.string().required().alphanum().min(3).max(30).trim().strict(),
-    fullName: Joi.string().required().trim().strict(),
-    phoneNumber: Joi.string().required().min(10).max(11).trim().strict(),
-    address: Joi.string().required().trim().strict(),
-    drivingLicense: Joi.array()
-      .required()
-      .items(Joi.string().valid("truck", "coach", "container"))
-      .min(1)
-      .max(3),
+    firstname: Joi.string().required().trim().strict(),
+    lastname: Joi.string().required().trim().strict(),
+    phonenumber: Joi.string().required().min(10).max(11).trim().strict(),
+    studentID: Joi.string().required().trim().strict(),
   });
 
   try {

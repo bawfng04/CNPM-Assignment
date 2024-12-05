@@ -21,7 +21,7 @@ router.post(
   isAuth,
   PayController.checkAccountBalance
 );
-router.get("/TotalPage", PayController.TotalPage);
+router.post("/TotalPage", PayController.TotalPage);
 router.post("/BuyPages", PayController.BuyPages);
 router.post("/Update", PayController.SuccessBuyPages);
 module.exports = router;

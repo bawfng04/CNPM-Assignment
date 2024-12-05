@@ -196,7 +196,7 @@ class PayController {
   }
   async TotalPage(req, res) {
     try {
-      const email = req.body.email;
+      const email = JSON.parse(req.body.email);
       // Tìm người dùng qua email
       const result = await UserService.findByEmail(email);
       if (!result || result.status !== 200 || !result.data) {

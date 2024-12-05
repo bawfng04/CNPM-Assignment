@@ -80,10 +80,97 @@ async function logout(req, res) {
     });
   }
 }
+async function getIn4(req, res) {
+  try {
+    const email = JSON.parse(req.body.email);
+    const result = await UserService.findByEmail(email);
+    if (!result || result.status !== 200 || !result.data) {
+      const error = new Error("Can't find user");
+      error.statusCode = 401;
+      throw error;
+    }
+    const user = result.data;
+    const student = await UserService.findByID(user.id);
+    if (!student || student.status !== 200 || !student.data) {
+      const error = new Error("Can't find student");
+      error.statusCode = 401;
+      throw error;
+    }
+    res.status(200).json({
+      message: "get Information Successfully",
+      data: student.data,
+    });
+  } catch (err) {
+    const newErr = new Error(err);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: err.message,
+    });
+  }
+}
+async function updateProfile(req, res) {
+  try {
+    const { email, firstname, lastname, phonenumber, studentID } = req.body;
+
+    if (!email) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        error: "Email is required",
+      });
+    }
+
+    const result = await UserService.findByEmail(email);
+    if (!result || result.status !== 200 || !result.data) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error: "Can't find user",
+      });
+    }
+
+    const user = result.data;
+    user.firstname = firstname || null;
+    user.lastname = lastname || null;
+    user.phonenumber = phonenumber || null;
+
+    const student = await UserService.findByID(user.id);
+    if (!student || student.status !== 200 || !student.data) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error: "Can't find student",
+      });
+    }
+
+    student.data.student_id = studentID || null;
+
+    const updateResultu = await UserService.updateUser(user);
+    if (!updateResultu || updateResultu.status !== 200) {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        error: "Failed to update user",
+      });
+    }
+
+    const updateResults = await UserService.updateStudent(student.data);
+    if (!updateResults || updateResults.status !== 200) {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        error: "Failed to update student",
+      });
+    }
+
+    res.status(StatusCodes.OK).json({
+      message: "Update Information Successfully",
+      user: user, // Trả về thông tin đã cập nhật của user
+      student: student.data, // Trả về thông tin đã cập nhật của student
+    });
+  } catch (err) {
+    console.error("Error updating profile:", err.message);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: "An error occurred while updating profile",
+      details: err.message,
+    });
+  }
+}
 
 module.exports = {
   register,
   login,
   logout,
   verify,
+  getIn4,
+  updateProfile,
 };

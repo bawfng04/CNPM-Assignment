@@ -237,18 +237,18 @@ class UserService {
 
     try {
       const query = `
-       UPDATE users 
-  SET 
-    first_name = COALESCE($1, first_name), 
-    last_name = COALESCE($2, last_name), 
-    phone_number = COALESCE($3, phone_number), 
-    email = COALESCE($4, email), 
-    username = COALESCE($5, username), 
-    password = COALESCE($6, password), 
-    avatar_encoded = COALESCE($7, avatar_encoded), 
-    role = COALESCE($8, role),
-    updated_at = CURRENT_TIMESTAMP
-  WHERE id = $9
+        UPDATE users 
+        SET 
+          first_name = COALESCE($1, first_name), 
+          last_name = COALESCE($2, last_name), 
+          phone_number = COALESCE($3, phone_number), 
+          email = COALESCE($4, email), 
+          username = COALESCE($5, username), 
+          password = COALESCE($6, password), 
+          avatar_encoded = COALESCE($7, avatar_encoded), 
+          role = COALESCE($8, role),
+          updated_at = CURRENT_TIMESTAMP
+        WHERE id = $9
       `;
       const values = [
         user.first_name || null,
@@ -264,13 +264,14 @@ class UserService {
 
       const result = await client.query(query, values);
 
-      // if (result.affectedRows === 0) {
-      //   throw new Error("User not found or no changes made");
-      // }
+      if (result.rowCount === 0) {
+        throw new Error("User not found or no changes made");
+      }
+
       return {
-        success: true,
+        status: 200,
         message: "User updated successfully",
-        data: user,
+        data: user, // Trả về thông tin gốc
       };
     } catch (error) {
       console.error("Error updating user:", error.message);

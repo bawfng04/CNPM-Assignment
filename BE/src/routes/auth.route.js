@@ -16,6 +16,8 @@ router.get("/", (req, res, next) => {
 });
 
 router.use(verify.verifyToken);
+router.post("/getIn4", authController.getIn4);
+router.post("/update");
 router.get("/logout", authController.logout);
 
 module.exports = router;
