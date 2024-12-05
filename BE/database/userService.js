@@ -234,7 +234,6 @@ class UserService {
     if (!user || !user.id) {
       throw new Error("User object must have an 'id' property");
     }
-
     try {
       const query = `
         UPDATE users 

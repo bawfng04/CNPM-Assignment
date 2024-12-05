@@ -80,10 +80,10 @@ async function updateProfile(req, res, next) {
       })
       .trim()
       .strict(),
-    firstname: Joi.string().required().trim().strict(),
-    lastname: Joi.string().required().trim().strict(),
-    phonenumber: Joi.string().required().min(10).max(11).trim().strict(),
-    studentID: Joi.string().required().trim().strict(),
+    firstname: Joi.string().optional().trim().strict(),
+    lastname: Joi.string().optional().trim().strict(),
+    phonenumber: Joi.string().optional().min(10).max(11).trim().strict(),
+    studentID: Joi.string().optional().trim().strict(),
   });
 
   try {

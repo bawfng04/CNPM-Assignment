@@ -126,10 +126,9 @@ async function updateProfile(req, res) {
     }
 
     const user = result.data;
-    user.firstname = firstname || null;
-    user.lastname = lastname || null;
+    user.first_name = firstname || null;
+    user.last_name = lastname || null;
     user.phonenumber = phonenumber || null;
-
     const student = await UserService.findByID(user.id);
     if (!student || student.status !== 200 || !student.data) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
