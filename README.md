@@ -6,11 +6,11 @@ Deploy: https://smartprinterservice-86a9c.web.app/
 
 **routes:**
 
-- /login
-- /register
-- /main/user
-- /main/admin
-- /main/unauthorized
+- /login (trang login)
+- /register (trang register)
+- /main/user (trang cho user)
+- /main/admin (trang cho admin)
+- /main/unauthorized (redirect về trang này khi không có quyền truy cập)
 
 # Screenshots
 ![image](https://github.com/user-attachments/assets/7a678bf3-18ac-4fc8-9525-a9f1c0225e6e)
