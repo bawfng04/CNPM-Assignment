@@ -4,6 +4,8 @@ const { body, param } = require("express-validator");
 const { v4: uuidv4 } = require("uuid");
 const isAuth = require("../middleware/is-Auth");
 const PayController = require("../controllers/pay.Controller");
+const verify = require("../middleware/auth.js");
+router.use(verify.verifyToken);
 router.post(
   "/checkBalance",
   [
@@ -27,4 +29,5 @@ router.post(
   PayController.PayByAccount
 );
 router.post("/BuyPages", PayController.BuyPages);
+router.post("/Update", PayController.SuccessBuyPages);
 module.exports = router;

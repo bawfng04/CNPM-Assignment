@@ -50,7 +50,7 @@ async function register(req, res, next) {
       .trim()
       .strict()
       .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
-    role: Joi.string().optional().valid("user", "admin").trim().strict(),
+    role: Joi.string().optional().valid("student", "SPSO").trim().strict(),
   });
 
   try {

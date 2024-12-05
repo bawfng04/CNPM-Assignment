@@ -131,7 +131,8 @@ class PayController {
       });
   }
   async BuyPages(req, res) {
-    const sotien = req.body.number * PRICE_PER_PAGE_A4; // Tính số tiền
+    const sotien =
+      req.body.A4 * PRICE_PER_PAGE_A4 + req.body.A3 * 2 * PRICE_PER_PAGE_A4; // Tính số tiền
     const noidung = encodeURIComponent("Thanh toan mua trang in"); // Mã hóa nội dung để phù hợp với URL
     const qr = `https://img.vietqr.io/image/970436-1046583393-compact2.png?amount=${sotien}&addInfo=${noidung}&accountName=Thanh%20toan%20mua%20giay`;
 
@@ -147,47 +148,51 @@ class PayController {
     }
   }
   async SuccessBuyPages(req, res) {
-    const { email, number } = req.body;
+    try {
+      const email = req.body.email;
+      const A4 = Number(req.body.A4);
+      const A3 = Number(req.body.A3);
+      const number = A4 + 2 * A3;
 
-    // Kiểm tra input
-    if (!email || typeof number !== "number") {
-      const error = new Error("Invalid input: Email and number are required");
-      error.statusCode = 400;
-      throw error;
+      // Tìm người dùng qua email
+      const result = await UserService.findByEmail(email);
+      if (!result || result.status !== 200 || !result.data) {
+        const error = new Error("Can't find user");
+        error.statusCode = 401;
+        throw error;
+      }
+
+      const user = result.data;
+      const student = await UserService.findByID(user.id);
+      if (!student || student.status !== 200 || !student.data) {
+        const error = new Error("Can't find student");
+        error.statusCode = 401;
+        throw error;
+      }
+
+      // Cập nhật số trang còn lại
+      student.data.pages_remaining += number;
+
+      // Lưu người dùng sau khi cập nhật
+      const updateResult = await UserService.updateStudent(student.data);
+      if (updateResult.status !== 200) {
+        const error = new Error("Failed to update student pageNum");
+        error.statusCode = 500;
+        throw error;
+      }
+
+      // Trả về phản hồi thành công
+      res.status(200).json({
+        message: "Successfully updated student pages",
+        data: student.data,
+      });
+    } catch (err) {
+      console.error("Error in SuccessBuyPages:", err);
+      res.status(err.statusCode || 500).json({
+        error: err.message,
+        stack: err.stack,
+      });
     }
-
-    // Tìm người dùng qua email
-    const result = await UserService.findByEmail(email);
-    if (result.status !== 200) {
-      const error = new Error("Can't find user");
-      error.statusCode = 401;
-      throw error;
-    }
-
-    // Cập nhật số trang
-    const user = result.data;
-    user.pageNum += number;
-
-    // Lưu người dùng sau khi cập nhật
-    const updateResult = await UserService.updateUser(user);
-    if (updateResult.status !== 200) {
-      const error = new Error("Failed to update user pageNum");
-      error.statusCode = 500;
-      throw error;
-    }
-
-    // Trả kết quả thành công
-    res.status(200).json({
-      message: "Pages successfully added",
-      user: { email: user.email, pageNum: user.pageNum },
-    });
-  }
-  catch(err) {
-    const newErr = new Error(err);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: err.message,
-      stack: newErr.stack,
-    });
   }
 }
 

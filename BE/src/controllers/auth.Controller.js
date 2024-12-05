@@ -10,9 +10,7 @@ const { StatusCodes } = require("http-status-codes");
 
 async function register(req, res) {
   try {
-    // console.log(req.body);
     const data = await models.register(req.body);
-    // console.log("hehe");
     const token = jwt.sign(data, process.env.SECRET_TOKEN);
     const subject = "XÁC THỰC TÀI KHOẢN BK_Printing";
     // const htmlContent = `<h1>Click vào link sau để xác thực email</h1>
@@ -48,9 +46,8 @@ async function login(req, res) {
       token: token,
     });
   } catch (err) {
-    const newErr = new Error(err);
-    // console.log(err);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    const statusCode = err.statusCode || 500;
+    res.status(statusCode).json({
       error: err.message,
     });
   }

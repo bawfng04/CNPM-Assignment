@@ -2,52 +2,88 @@ const client = require("./database");
 const { v4: uuidv4 } = require("uuid");
 class UserService {
   constructor() {}
-  async createCustomer(studentID) {
-    return new Promise((resolve, reject) => {
-      client.query(
-        `INSERT INTO customers(stuID) VALUES($1)`,
-        [studentID],
-        (err, res) => {
-          if (err) {
-            reject({
-              status: 400,
-              msg: "Error in create new Student",
-              data: null,
-            });
-          } else {
-            resolve({
-              status: 200,
-              msg: "Create student successfully",
-              data: null,
-            });
-          }
-        }
-      );
-    });
-  }
 
-  async createUser(userId, username, password, email, role) {
+  async createUser(username, password, email, role) {
     return new Promise((resolve, reject) => {
-      client.query(
-        `INSERT INTO users( id, username, password, email, role) VALUES ($1, $2, $3, $4, $5)`,
-        [userId, username, password, email, role],
-        (err, res) => {
-          if (err) {
-            console.log(err);
-            reject({
-              status: 400,
-              msg: err.message,
-              data: null,
+      const userQuery = `
+      INSERT INTO users (username, password, email, role)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id
+    `;
+      const userValues = [username, password, email, role];
+
+      client.query(userQuery, userValues, (err, userRes) => {
+        if (err) {
+          console.error("Error inserting user:", err.message);
+          reject({
+            status: 400,
+            msg: err.message,
+            data: null,
+          });
+        } else {
+          const userId = userRes.rows[0].id; // Lấy `id` vừa tạo
+
+          if (role === "student") {
+            // Lưu vào bảng `students`
+            const studentQuery = `
+            INSERT INTO students (id, student_id)
+            VALUES ($1, $2)
+          `;
+            const studentValues = [userId, "0000000"];
+
+            client.query(studentQuery, studentValues, (studentErr) => {
+              if (studentErr) {
+                console.error("Error inserting student:", studentErr.message);
+                reject({
+                  status: 400,
+                  msg: studentErr.message,
+                  data: null,
+                });
+              } else {
+                resolve({
+                  status: 201,
+                  msg: "Student created successfully!",
+                  data: {
+                    id: userId,
+                    username,
+                    email,
+                    role,
+                  },
+                });
+              }
             });
           } else {
-            resolve({
-              status: 200,
-              msg: "Create successfully!",
-              data: null,
+            // Lưu vào bảng `SPSO`
+            const spsoQuery = `
+            INSERT INTO SPSO (id,status) 
+            VALUES ($1, $2)
+          `;
+            const spsoValues = [userId, "active"];
+
+            client.query(spsoQuery, spsoValues, (spsoErr) => {
+              if (spsoErr) {
+                console.error("Error inserting into SPSO:", spsoErr.message);
+                reject({
+                  status: 400,
+                  msg: spsoErr.message,
+                  data: null,
+                });
+              } else {
+                resolve({
+                  status: 201,
+                  msg: "SPSO created successfully!",
+                  data: {
+                    id: userId,
+                    username,
+                    email,
+                    role,
+                  },
+                });
+              }
             });
           }
         }
-      );
+      });
     });
   }
   async createPrinter(
@@ -76,7 +112,7 @@ class UserService {
         ],
         (err, res) => {
           if (err) {
-            console.log(err);
+            // console.log(err);
             reject({
               status: 400,
               msg: err.message,
@@ -115,30 +151,31 @@ class UserService {
   }
 
   async findByEmail(email) {
-    return new Promise((resolve, reject) => {
-      client.query(
+    try {
+      const res = await client.query(
         `
-                SELECT * FROM users
-                WHERE email = $1
-            `,
-        [email],
-        (err, res) => {
-          if (err) {
-            reject({
-              status: 400,
-              msg: err.message,
-              data: null,
-            });
-          } else {
-            resolve({
-              status: 200,
-              msg: "Fetch success",
-              data: res.rows[0],
-            });
-          }
-        }
+          SELECT * FROM users
+          WHERE email = $1
+        `,
+        [email]
       );
-    });
+
+      if (res.rowCount === 0) {
+        return {
+          status: 400,
+          msg: "Wrong email",
+          data: null,
+        };
+      }
+
+      return {
+        status: 200,
+        msg: "Fetch success",
+        data: res.rows[0], // Trả về thông tin người dùng đầu tiên
+      };
+    } catch (err) {
+      throw err;
+    }
   }
   async findByPrintername(printername) {
     return new Promise((resolve, reject) => {
@@ -172,9 +209,9 @@ class UserService {
       client.query(
         `
                 SELECT * FROM students
-                WHERE stuID = $1
+                WHERE id = $1
             `,
-        [email],
+        [id],
         (err, res) => {
           if (err) {
             reject({
@@ -192,6 +229,96 @@ class UserService {
         }
       );
     });
+  }
+  async updateUser(user) {
+    if (!user || !user.id) {
+      throw new Error("User object must have an 'id' property");
+    }
+
+    try {
+      const query = `
+       UPDATE users 
+  SET 
+    first_name = COALESCE($1, first_name), 
+    last_name = COALESCE($2, last_name), 
+    phone_number = COALESCE($3, phone_number), 
+    email = COALESCE($4, email), 
+    username = COALESCE($5, username), 
+    password = COALESCE($6, password), 
+    avatar_encoded = COALESCE($7, avatar_encoded), 
+    role = COALESCE($8, role),
+    updated_at = CURRENT_TIMESTAMP
+  WHERE id = $9
+      `;
+      const values = [
+        user.first_name || null,
+        user.last_name || null,
+        user.phone_number || null,
+        user.email || null,
+        user.username || null,
+        user.password || null,
+        user.avatar_encoded || null,
+        user.role || null,
+        user.id,
+      ];
+
+      const result = await client.query(query, values);
+
+      // if (result.affectedRows === 0) {
+      //   throw new Error("User not found or no changes made");
+      // }
+      return {
+        success: true,
+        message: "User updated successfully",
+        data: user,
+      };
+    } catch (error) {
+      console.error("Error updating user:", error.message);
+      throw new Error("Failed to update user");
+    }
+  }
+  async updateStudent(student) {
+    if (!student || !student.id) {
+      throw new Error("Student object must have an 'id' property");
+    }
+
+    try {
+      const query = `
+        UPDATE students
+        SET 
+          student_id = COALESCE($1, student_id),
+          account_balance = COALESCE($2, account_balance),
+          account_status = COALESCE($3, account_status),
+          pages_remaining = COALESCE($4, pages_remaining),
+          updated_at = CURRENT_TIMESTAMP
+        WHERE id = $5
+      `;
+      const values = [
+        student.student_id !== undefined ? student.student_id : null, // Kiểm tra rõ ràng giá trị undefined
+        student.account_balance !== undefined ? student.account_balance : 0.0,
+        student.account_status !== undefined
+          ? student.account_status
+          : "active",
+        student.pages_remaining !== undefined ? student.pages_remaining : 0,
+        student.id,
+      ];
+
+      // Sử dụng async/await và query của pg để lấy kết quả
+      const res = await client.query(query, values);
+
+      if (res.rowCount === 0) {
+        throw new Error("Student not found or no changes made");
+      }
+
+      return {
+        status: 200,
+        msg: "Student updated successfully",
+        data: student,
+      };
+    } catch (error) {
+      console.error("Error updating student:", error.message);
+      throw new Error("Failed to update student");
+    }
   }
 }
 

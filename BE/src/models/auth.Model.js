@@ -8,14 +8,25 @@ async function login(data) {
     const email = data.email;
     const password = data.password;
 
-    const result = await UserService.findByEmail(email);
+    // Kiểm tra nếu email và password không được cung cấp
+    if (!email || !password) {
+      const error = new Error("Email and password are required");
+      error.statusCode = 400;
+      throw error;
+    }
 
-    if (result.status !== 200) {
+    // Tìm người dùng qua email
+    const result = await UserService.findByEmail(email);
+    // console.log(result); // Log kết quả để kiểm tra
+    if (!result || result.status !== 200 || !result.data) {
       const error = new Error("Wrong email");
       error.statusCode = 401;
       throw error;
     }
+
     const loadedUser = result.data;
+
+    // So sánh mật khẩu đã mã hóa với mật khẩu người dùng nhập vào
     const isEqual = await bcrypt.compare(password, loadedUser.password);
     if (!isEqual) {
       const error = new Error("Wrong password");
@@ -23,8 +34,10 @@ async function login(data) {
       throw error;
     }
 
+    // Trả về người dùng nếu đăng nhập thành công
     return loadedUser;
   } catch (err) {
+    // console.log(err.statusCode);
     throw err;
   }
 }
@@ -32,8 +45,8 @@ async function login(data) {
 async function register(data) {
   try {
     data.userId = uuidv4();
-    console.log(data.role);
-    if (!data.role) data.role = "user";
+    // console.log(data.body);
+    if (!data.role) data.role = "student";
     data.username = data.username || data.email.split("@")[0];
 
     // console.log("Check email: ", data.email);
@@ -53,11 +66,10 @@ async function register(data) {
 async function verify(data) {
   try {
     const user = await UserService.findByEmail(data.email);
-    console.log(data);
+    // console.log(data);
     if (!user.data) {
       // console.log("BAO");
       await UserService.createUser(
-        data.userId,
         data.username,
         data.password,
         data.email,
@@ -66,7 +78,7 @@ async function verify(data) {
     }
     return data;
   } catch (err) {
-    // throw err;
+    throw err;
   }
 }
 module.exports = {
