@@ -12,7 +12,11 @@ import ManagePrinter from "./Cards-Admin/ManagePrinter/ManagePrinter";
 import { useNavigate } from "react-router-dom";
 
 const AdminStatic = () => {
-  const [activeComponent, setActiveComponent] = useState("general");
+  const [activeComponent, setActiveComponent] = useState(() => {
+    const savedComponent = localStorage.getItem("activeComponent");
+    return savedComponent || "general";
+  });
+
   const navigate = useNavigate();
 
   const renderContent = () => {
