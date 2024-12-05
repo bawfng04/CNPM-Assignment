@@ -149,7 +149,7 @@ class PayController {
   }
   async SuccessBuyPages(req, res) {
     try {
-      const email = req.body.email;
+      const email = JSON.parse(req.body.email);
       const A4 = Number(req.body.A4);
       const A3 = Number(req.body.A3);
       const number = A4 + 2 * A3;
