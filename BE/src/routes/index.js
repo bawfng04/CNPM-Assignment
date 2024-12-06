@@ -40,11 +40,12 @@ const upload = multer({
 });
 
 function route(app) {
-  app.post("/uploads/", upload.single("printFile"), PrinterController.postFile);
+  app.post("/uploads/", upload.single("printFile"), PrinterController.createOrder);
   app.use("/print", printerRouter);
   app.use("/pay", payRouter);
-  app.use("/", authRouter);
+
   app.use("/admin", SPSORouter);
+  app.use("/", authRouter);
 }
 
 module.exports = route;

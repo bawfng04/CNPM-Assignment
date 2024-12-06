@@ -15,7 +15,7 @@ router.get("/", (req, res, next) => {
   res.send("Hello World");
 });
 
-router.use(verify.verifyToken);
+// router.use(verify.verifyToken);
 router.get("/users", authController.fetchAllUsers);
 
 router.get("/logout", authController.logout);

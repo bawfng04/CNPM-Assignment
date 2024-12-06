@@ -7,7 +7,7 @@ const PayService = require("../../database/payService");
 const PRICE_PER_PAGE_A4 = 500;
 
 class PayController {
-  constructor() {}
+  constructor() { }
 
   changeToA4NumPage(pageSize, numPage, doubleSide = false) {
     const temp = +pageSize.slice(1);
@@ -165,6 +165,10 @@ class PayController {
       user: { email: user.email, pageNum: user.pageNum },
     });
   }
+
+  
+
+
   catch(err) {
     const newErr = new Error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
