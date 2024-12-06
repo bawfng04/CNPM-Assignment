@@ -145,23 +145,13 @@ function Dashboard() {
             <div className="c-dashboard__activity-item">
               <img src={p1} alt="Logo" />
               <h3>A4 paper</h3>
-              <p id="p-item1">51</p>
+              <p id="p-item1">{localStorage.getItem("A4plus") || 0}</p>
             </div>
 
             <div className="c-dashboard__activity-item">
               <img src={p2} alt="Logo" />
               <h3>A3 paper</h3>
-              <p id="p-item2">12</p>
-            </div>
-
-            <div className="c-dashboard__activity-item">
-              <img src={p3} alt="Logo" />
-              <h3>A2 paper</h3>
-              <p id="p-item3">19</p>
-            </div>
-
-            <div className="c-dashboard__activity-next">
-              <img src={iconNext} alt="Logo" />
+              <p id="p-item2">{localStorage.getItem("A3plus") || 0}</p>
             </div>
           </div>
         </div>

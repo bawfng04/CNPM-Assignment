@@ -346,7 +346,7 @@ function Market() {
 
             <div className="c-market__info-transaction">
               <div className="c-market__item-transaction">
-                <img src={ta1} alt="Logo" />
+                <img src={ta2} alt="Logo" />
                 <div className="c-market__head-info-transaction">
                   <h2>A4 paper</h2>
                   <p>17 Set 2024</p>
