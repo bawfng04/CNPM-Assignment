@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-const PrinterListAPI = "http://localhost:4000/admin/getPrinters";
+const PrinterListAPI = "http://localhost:4000/print/all";
+const handleDetailAPI = (id) => `http://localhost:4000/print/detail/${id}`;
+
+const clickCheckboxAPI = (id) =>
+  `http://localhost:4000/print/change-status/${id}`;
 
 const ListPrinter = () => {
   const [printers, setPrinters] = useState([]);
 
-  function isChecked(abc) {
-    if (abc && abc.status) {
-      return true;
-    }
-    return false;
-  }
-
-  useEffect(() => {
-    const fetchPrinters = async () => {
+  const fetchPrinters = async () => {
+    try {
       const response = await fetch(PrinterListAPI, {
         method: "GET",
         headers: {
@@ -21,10 +18,120 @@ const ListPrinter = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      let data = await response.json();
-      data = data.data;
+      let data2 = await response.json();
+
+      console.log("data2: ", data2);
+      let data = data2.data;
+
+      console.log("dddd", data2);
+
+      console.log("yyyyy", data2.totalPrinterEn.data);
+      const en = data2.totalPrinterEn.data;
+      const dis = data2.totalPrinterDis.data;
+
+      localStorage.setItem("enablePrinters", en);
+      localStorage.setItem("disablePrinters", dis);
+
+      console.log("--", dis);
+
       setPrinters(data);
+    } catch (error) {
+      console.error("Error fetching printers: ", error);
+    }
+  };
+
+  function handleOnClickCheckbox(id) {
+    console.log("api: ", clickCheckboxAPI(id));
+    const currentStatus = printers.find((printer) => printer.id === id).status;
+    let sent = "";
+    if (currentStatus && currentStatus === "available") {
+      sent = "disabled";
+    } else {
+      sent = "available";
+    }
+
+    console.log("sent: ", sent);
+    fetch(clickCheckboxAPI(id), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ status: sent }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data: ", data);
+        //re-fetch
+        fetchPrinters();
+      })
+      .catch((error) => {
+        console.error("Error changing printer status: ", error);
+      });
+  }
+
+  const showModal = (data) => {
+    console.log("showmodeldata: ", data[0]);
+
+    const modal = document.getElementById("printerDetailModal");
+    const span = document.getElementsByClassName("close")[0];
+    const details = document.getElementById("printerDetails");
+
+    // Populate the modal with data
+
+    data = data[0];
+
+    details.innerHTML = `
+    <strong>Brand Name:</strong> ${data.brand_name}<br>
+    <strong>Building Name:</strong> ${data.building_name}<br>
+    <strong>Campus Name:</strong> ${data.campus_name}<br>
+    <strong>Created At:</strong> ${data.created_at}<br>
+    <strong>Default Number of Pages:</strong> ${data.default_num_pages}<br>
+    <strong>File Types:</strong> ${data.file_types}<br>
+    <strong>ID:</strong> ${data.id}<br>
+    <strong>Model:</strong> ${data.model}<br>
+    <strong>Room Number:</strong> ${data.room_number}<br>
+    <strong>Status:</strong> ${data.status}<br>
+    <strong>Updated At:</strong> ${data.updated_at}
+  `;
+
+    // Show the modal
+    modal.style.display = "block";
+
+    // Close the modal when the user clicks on <span> (x)
+    span.onclick = function () {
+      modal.style.display = "none";
     };
+
+    // Close the modal when the user clicks anywhere outside of the modal
+    window.onclick = function (event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    };
+  };
+
+  const fetchDetail = async (id) => {
+    try {
+      const response = await fetch(handleDetailAPI(id), {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      let data = await response.json();
+      console.log("data: ", data);
+      console.log("dayn: ", data.data);
+
+      showModal(data.data);
+    } catch (error) {
+      console.error("Error fetching printer detail: ", error);
+    }
+  };
+
+  useEffect(() => {
     fetchPrinters();
   }, []);
 
@@ -37,9 +144,9 @@ const ListPrinter = () => {
         <table className="history-table">
           <thead>
             <tr>
-              <th className="table-header">SL No</th>
               <th className="table-header">Printer ID</th>
-              <th className="table-header">Printer Name</th>
+              <th className="table-header">Model</th>
+              <th className="table-header">Name</th>
               <th className="table-header">Status</th>
               <th className="table-header">Delete</th>
               <th className="table-header">Detail</th>
@@ -57,8 +164,10 @@ const ListPrinter = () => {
                     <label className="switch">
                       <input
                         type="checkbox"
-                        checked={isChecked(printer)}
-                        readOnly
+                        defaultChecked={
+                          printer.status === "available" ? true : false
+                        }
+                        onClick={() => handleOnClickCheckbox(printer.id)}
                       />
                       <span className="slider round"></span>
                     </label>
@@ -67,7 +176,19 @@ const ListPrinter = () => {
                     <button className="delete-btn">Delete</button>
                   </td>
                   <td className="table-data">
-                    <button className="delete-btn2">Detail</button>
+                    <button
+                      className="delete-btn2"
+                      onClick={() => fetchDetail(printer.id)}
+                    >
+                      Detail
+                    </button>
+                    <div id="printerDetailModal" class="modal">
+                      <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>Printer Details</h2>
+                        <p id="printerDetails"></p>
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ))

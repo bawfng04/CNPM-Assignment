@@ -179,47 +179,51 @@ const AddPrinter = () => {
 
           <div className="topp">
             <label className="kkkkk">File type</label>
-            <div>
-              <label>
+            <div className="cccc">
+              <div className="checkbox-container">
                 <input
+                  className="checkbox22"
                   type="checkbox"
                   name="file_types"
                   value="docx"
                   checked={formData.file_types.split(",").includes("docx")}
                   onChange={handleCheckboxChange}
                 />
-                docx
-              </label>
-              <label>
+                <label>docx</label>
+              </div>
+              <div className="checkbox-container">
                 <input
+                  className="checkbox22"
                   type="checkbox"
                   name="file_types"
                   value="pdf"
                   checked={formData.file_types.split(",").includes("pdf")}
                   onChange={handleCheckboxChange}
                 />
-                pdf
-              </label>
-              <label>
+                <label>pdf</label>
+              </div>
+              <div className="checkbox-container">
                 <input
+                  className="checkbox22"
                   type="checkbox"
                   name="file_types"
                   value="txt"
                   checked={formData.file_types.split(",").includes("txt")}
                   onChange={handleCheckboxChange}
                 />
-                txt
-              </label>
-              <label>
+                <label>txt</label>
+              </div>
+              <div className="checkbox-container">
                 <input
+                  className="checkbox22"
                   type="checkbox"
                   name="file_types"
                   value="jpg"
                   checked={formData.file_types.split(",").includes("jpg")}
                   onChange={handleCheckboxChange}
                 />
-                jpg
-              </label>
+                <label>jpg</label>
+              </div>
             </div>
             {errors.file_types && <p>{errors.file_types}</p>}
           </div>

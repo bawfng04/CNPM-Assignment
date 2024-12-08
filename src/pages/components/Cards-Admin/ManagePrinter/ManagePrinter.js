@@ -10,6 +10,7 @@ const ManagePrinter = () => {
   return (
     <div className="managePrinterContainer">
       <SumarySection />
+
       <div className="tabs">
         <div className="tabsDiv">
           <button className="settingsBtn" onClick={() => setActiveTab("list")}>
@@ -24,7 +25,9 @@ const ManagePrinter = () => {
           </button>
         </div>
       </div>
-      {activeTab === "list" ? <ListPrinter /> : <AddPrinter />}
+      <div key={activeTab} className="SS">
+        {activeTab === "list" ? <ListPrinter /> : <AddPrinter />}
+      </div>
     </div>
   );
 };
