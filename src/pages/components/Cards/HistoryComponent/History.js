@@ -1,7 +1,7 @@
 import React from "react";
 import "./History.css";
-import A4 from "../../../images/A4.png";
-import A3 from "../../../images/A3.png";
+// import A4 from "../../../images/A4.png";
+// import A3 from "../../../images/A3.png";
 // import A1 from "../../../images/A1.png";
 
 
@@ -12,7 +12,7 @@ const History = () => {
   return (
     <div className="history-container">
       <div className="summary-section">
-        <div className="card">
+        {/* <div className="card">
           <img src={A4} alt="A4" className="paperIcon" />
           <div className="info">
             <h3>A4 paper</h3>
@@ -25,8 +25,7 @@ const History = () => {
             <h3>A3 paper</h3>
             <p>{a3num }</p>
           </div>
-        </div>
-
+        </div> */}
       </div>
       <div className="printNfilter">
         <h2 className="printText">Print History</h2>
