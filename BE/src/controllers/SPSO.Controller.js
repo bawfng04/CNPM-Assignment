@@ -15,6 +15,7 @@ async function getPrinter(req, res) {
 }
 async function create(req, res) {
   try {
+    // console.log(req.body);
     res.status(StatusCodes.CREATED).json(await models.create(req.body));
   } catch (err) {
     const newErr = new Error(err);

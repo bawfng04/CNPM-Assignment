@@ -3,8 +3,8 @@ const { StatusCodes } = require("http-status-codes");
 
 const schema = Joi.object({
   model: Joi.string().required().trim().strict(),
-  brandname: Joi.string().required().trim().strict(),
-  campus_name: Joi.string().required().trim().strict(),
+  brand_name: Joi.string().required().trim().strict(),
+  campus_name: Joi.string().valid("1", "2").required().trim().strict(),
   building_name: Joi.string().required().trim().strict(),
   room_number: Joi.string().required().trim().strict(),
   default_num_pages: Joi.number().required().strict(),

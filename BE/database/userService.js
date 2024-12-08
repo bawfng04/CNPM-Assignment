@@ -29,7 +29,7 @@ class UserService {
             INSERT INTO students (id, student_id)
             VALUES ($1, $2)
           `;
-            const studentValues = [userId, "0000000"];
+            const studentValues = [userId, null];
 
             client.query(studentQuery, studentValues, (studentErr) => {
               if (studentErr) {
@@ -105,7 +105,7 @@ class UserService {
     room_number,
     status,
     default_num_pages,
-    file_types) VALUES ($1, $2, $3, $4, $5, $6,$7,$8)`,
+    file_types) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
         [
           model,
           brand_name,

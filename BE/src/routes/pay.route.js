@@ -6,7 +6,7 @@ const isAuth = require("../middleware/is-Auth");
 const PayController = require("../controllers/pay.Controller");
 
 const verify = require("../middleware/auth.js");
-router.use(verify.verifyToken);
+// router.use(verify.verifyToken);
 
 const PayValidation = require("../validations/pay.validation");
 const payValidation = require("../validations/pay.validation");
