@@ -155,6 +155,25 @@ class UserService {
       });
     });
   }
+  async fetchPrinter(limit = 10) {
+    return new Promise((resolve, reject) => {
+      client.query(`SELECT * FROM printers LIMIT $1`, [limit], (err, res) => {
+        if (err) {
+          reject({
+            status: 400,
+            msg: err.message,
+            data: null,
+          });
+        } else {
+          resolve({
+            status: 200,
+            msg: "Fetch success",
+            data: res.rows,
+          });
+        }
+      });
+    });
+  }
   async checkEmail(email) {
     try {
       const res = await client.query(

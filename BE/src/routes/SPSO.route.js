@@ -4,10 +4,11 @@ const controllers = require("../controllers/SPSO.Controller.js");
 const validations = require("../validations/SPSO.Validation.js");
 const verify = require("../middleware/auth.js");
 // Manage print system
-router.use(verify.verifyTokenAdmin);
+// router.use(verify.verifyTokenAdmin);
 
 // router.get("/", controllers.getPrinter);
 router.get("/getUsers", controllers.fetchAllUsers);
+router.get("/getPrinters", controllers.fetchAllPrinter);
 router.post("/creatprinter", validations.create, controllers.create);
 router.get("/test", (req, res, next) => {
   res.send("Hello World");
