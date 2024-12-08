@@ -18,7 +18,8 @@ function Dashboard() {
   const [name, setName] = useState("");
   const [studentID, setStudentID] = useState("");
   const getStudentInfo = async () => {
-    const email = localStorage.getItem("email");
+    let email = localStorage.getItem("email");
+    email = email.replace(/['"]+/g, "");
     try {
       const response = await fetch(getInfoAPI, {
         method: "POST",

@@ -4,7 +4,7 @@ import m1 from "../../../images/m1.png";
 import m2 from "../../../images/m2.png";
 import m3 from "../../../images/m3.png";
 import m4 from "../../../images/m4.png";
-import ta1 from "../../../images/ta1.png";
+// import ta1 from "../../../images/ta1.png";
 import ta2 from "../../../images/ta2.png";
 import ta3 from "../../../images/ta3.png";
 import pa1 from "../../../images/pa1.png";
@@ -38,12 +38,16 @@ function Market() {
   const handleDone = async () => {
     try {
       const userEmail = localStorage.getItem("email");
+      // userEmail = userEmail ? userEmail.replace(/"/g, "") : "";
+      // console.log("USER EMAIL: ", userEmail);
       const data = {
-        email: userEmail,
+        email: userEmail.replace(/"/g, ""),
         A3: A3num,
         A4: A4num,
       };
 
+
+      console.log("DATA: ", data);
       const response = await fetch(doneAPI, {
         method: "POST",
         headers: {
@@ -99,6 +103,7 @@ function Market() {
     const getTotal = async () => {
       try {
         const email = localStorage.getItem("email");
+        email = email ? email.replace(/"/g, "") : "";
         console.log("EEmail: ", email);
         const response = await fetch(getTotalAPI, {
           method: "POST",

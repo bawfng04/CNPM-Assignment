@@ -1,12 +1,42 @@
+import React, { useState } from "react";
+
 import HCMUTLogo from "../../images/HCMUTlogo.png";
 import notiButton from "../../images/notiButton.png";
 import settingsButton from "../../images/settingsButton.png";
 
 function Header({ activeComponent, setActiveComponent }) {
   let headerText;
+  const [displayLogout, setDisplayLogout] = useState(false);
+
+  const logoutAPI = "http://localhost:4000/logout/";
+
+  const handleLogout = async () => {
+    const response = await fetch(logoutAPI, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    console.log("TOKENNNN:", localStorage.getItem("token"));
+    const data = await response.json();
+    if (data.message) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("activeComponent");
+      window.location.href = "/";
+      alert("Logout success");
+    } else {
+      console.log(data.error);
+    }
+  };
 
   const handleOnClickAvatar = () => {
     setActiveComponent("general");
+  };
+
+  const handleOnClickSettingsHeader = () => {
+    setDisplayLogout(!displayLogout);
   };
 
   switch (activeComponent) {
@@ -53,8 +83,20 @@ function Header({ activeComponent, setActiveComponent }) {
           />
         </div>
         <button className="headerButton">
-          <img src={settingsButton} alt="settingsButton"></img>
+          <img
+            src={settingsButton}
+            alt="settingsButton"
+            onClick={handleOnClickSettingsHeader}
+          ></img>
         </button>
+
+        {displayLogout && (
+          <div className="logoutContainer">
+            <button className="logoutButton" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+        )}
         <button className="headerButton">
           <img src={notiButton} alt="notiButton"></img>
         </button>

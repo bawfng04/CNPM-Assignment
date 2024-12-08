@@ -1,4 +1,33 @@
+import React, { useState, useEffect } from "react";
+
+const PrinterListAPI = "http://localhost:4000/admin/getPrinters";
+
 const ListPrinter = () => {
+  const [printers, setPrinters] = useState([]);
+
+  function isChecked(abc) {
+    if (abc && abc.status) {
+      return true;
+    }
+    return false;
+  }
+
+  useEffect(() => {
+    const fetchPrinters = async () => {
+      const response = await fetch(PrinterListAPI, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      let data = await response.json();
+      data = data.data;
+      setPrinters(data);
+    };
+    fetchPrinters();
+  }, []);
+
   return (
     <div className="history-container">
       <div className="printNfilter">
@@ -17,27 +46,38 @@ const ListPrinter = () => {
             </tr>
           </thead>
           <tbody className="rounded-tbody">
-            {[...Array(10)].map((_, index) => (
-              <tr key={index} className="tableRow">
-                <td className="table-content">{index}</td>
-                <td className="table-content">#f43u9f03</td>
-                <td className="table-content">
-                  Canon PIXMA G7020 All-In-One MegaTank Printer
-                </td>
-                <td className="table-content">
-                  <label class="switch">
-                    <input type="checkbox"></input>
-                    <span class="slider round"></span>
-                  </label>
-                </td>
-                <td className="table-content">
-                  <button className="delete-btn">Delete</button>
-                </td>
-                <td className="table-content">
-                  <button className="detail-btn">Detail</button>
+            {Array.isArray(printers) && printers.length > 0 ? (
+              printers.map((printer, index) => (
+                <tr key={printer.id}>
+                  <td className="table-data">{printer.id}</td>
+                  <td className="table-data">{printer.brand_name}</td>
+                  <td className="table-data">{printer.model}</td>
+                  {/* <td className="table-data">{printer.status}</td> */}
+                  <td className="table-data checkbox-cell">
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={isChecked(printer)}
+                        readOnly
+                      />
+                      <span className="slider round"></span>
+                    </label>
+                  </td>
+                  <td className="table-data">
+                    <button className="delete-btn">Delete</button>
+                  </td>
+                  <td className="table-data">
+                    <button className="delete-btn2">Detail</button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="table-data">
+                  No printers available
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

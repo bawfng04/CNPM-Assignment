@@ -73,8 +73,8 @@ const Profile = () => {
         </div>
 
         <div className="settings-container">
-          <form className="form" onSubmit={handleSubmit}>
-            <div className="form">
+          <form className="form2" onSubmit={handleSubmit}>
+            <div className="form2">
               <div className="form-group">
                 <label>First Name</label>
                 <input

@@ -19,6 +19,22 @@
   transform: scale(1.1);
   background-color: #dedede;
 }
+
+.delete-btn2 {
+  padding: 10px 20px;
+  border: 2px solid #35a596;
+  border-radius: 20px;
+  color: #35a596;
+  background-color: white;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.delete-btn2:hover {
+  transform: scale(1.1);
+  background-color: #dedede;
+}
+
 .switch {
   position: relative;
   display: inline-block;
@@ -86,4 +102,42 @@ input:checked + .slider:before {
 .table-content {
   padding: 10px 20px !important;
   text-align: center !important;
+}
+
+.table-header, .table-data {
+  padding: 10px 20px !important;
+  text-align: center !important;
+  vertical-align: middle;
+}
+
+
+.checkbox-cell {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+}
+
+.checkbox-cell input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  appearance: none;
+  background-color: #e73030;
+  border: 2px solid #ff0000;
+  border-radius: 4px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.checkbox-cell input[type="checkbox"]:checked {
+  background-color: #16dbcc;
+  border-color: #16dbcc;
+}
+
+.checkbox-cell input[type="checkbox"]:focus {
+  outline: none;
+  box-shadow: 0 0 3px 2px rgba(22, 219, 204, 0.5);
+}
+
+.checkbox-cell input[type="checkbox"]:hover {
+  border-color: #16dbcc;
 }
