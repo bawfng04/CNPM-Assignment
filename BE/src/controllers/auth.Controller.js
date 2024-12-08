@@ -10,6 +10,8 @@ const { StatusCodes } = require("http-status-codes");
 
 async function register(req, res) {
   try {
+    // console.log("haha1");
+    // console.log(req.body);
     const data = await models.register(req.body);
     const token = jwt.sign(data, process.env.SECRET_TOKEN);
     const subject = "XÁC THỰC TÀI KHOẢN BK_Printing";

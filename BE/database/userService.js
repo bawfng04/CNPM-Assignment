@@ -155,17 +155,36 @@ class UserService {
       });
     });
   }
-
-  async findByEmail(email) {
+  async checkEmail(email) {
     try {
       const res = await client.query(
         `
-          SELECT * FROM users
-          WHERE email = $1
+        SELECT * FROM users
+        WHERE email = $1
         `,
         [email]
       );
+      // console.log("Query result:", res);s
+      if (res.rowCount === 0) {
+        return false; // Email không tồn tại
+      }
 
+      return true; // Email tồn tại
+    } catch (error) {
+      // console.error("Error checking email in database:", error.message);
+      throw new Error("Database error while checking email");
+    }
+  }
+  async findByEmail(email) {
+    try {
+      // console.log(email);
+      const res = await client.query(
+        `
+        SELECT * FROM users
+        WHERE email = $1
+        `,
+        [email]
+      );
       if (res.rowCount === 0) {
         return {
           status: 400,
@@ -173,7 +192,6 @@ class UserService {
           data: null,
         };
       }
-
       return {
         status: 200,
         msg: "Fetch success",
