@@ -1,8 +1,8 @@
 const { Result } = require('express-validator');
 const client = require('./database');
-const {v4: uuidv4} = require('uuid')
+const { v4: uuidv4 } = require('uuid')
 class PrinterService {
-    constructor() {};
+    constructor() { };
 
     async createOrder(orderID, cusID, printerID, fileName, filePath, fileType, pageNum, pageSize = 'A4', pageSide = 'single', startPTime, endPTime) {
         return new Promise((resolve, reject) => {
@@ -10,7 +10,7 @@ class PrinterService {
                 `INSERT INTO orders(orderID, cusID, printerID, fileName, filePath, fileType, pageNum, pageSize, pageSide, startPTime, endPTime) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
                 [orderID, cusID, printerID, fileName, filePath, fileType, pageNum, pageSize, pageSide, startPTime, endPTime],
                 (err, res) => {
-                    if(err) {
+                    if (err) {
                         console.log(err)
                         reject({
                             status: 400,
@@ -24,38 +24,38 @@ class PrinterService {
                             data: res.rows
                         })
                     }
-                } 
+                }
             )
         });
     }
-    
+
     async findOrderByID(orderID) {
         return new Promise((resolve, reject) => {
             client.query(`
                 SELECT * FROM orders 
                 WHERE orderID = $1
                 `, [orderID], (err, res) => {
-                    if(err) {
-                        reject({
-                            status: 400,
-                            msg: err.message,
-                            data: null
-                        })
-                    } else {
-                        resolve({
-                            status: 200,
-                            msg: `File order ${orderID}`,
-                            data: res.rows[0]
-                        })
-                    }
-                })
+                if (err) {
+                    reject({
+                        status: 400,
+                        msg: err.message,
+                        data: null
+                    })
+                } else {
+                    resolve({
+                        status: 200,
+                        msg: `File order ${orderID}`,
+                        data: res.rows[0]
+                    })
+                }
+            })
         })
     }
 
     async fetchOrders(limit = 10) {
         return new Promise((resolve, reject) => {
             client.query(
-                `SELECT * FROM users LIMIT $1`, 
+                `SELECT * FROM users LIMIT $1`,
                 [limit],
                 (err, res) => {
                     if (err) {
@@ -76,7 +76,124 @@ class PrinterService {
         });
     }
 
-    
+    async createPrinter(printerID, pirnterName, brandName, description, model, campus, building, room, status) {
+        return new Promise((resolve, reject) => {
+            client.query(
+                `INSERT INTO printers(printerID, pirnterName, brandName, description, model, campus, building, room, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+                [printerID, pirnterName, brandName, description, model, campus, building, room, status],
+                (err, res) => {
+                    if (err) {
+                        console.log(err)
+                        reject({
+                            status: 400,
+                            msg: err.message,
+                            data: null
+                        })
+                    } else {
+                        resolve({
+                            status: 200,
+                            msg: "Create printer successfully!",
+                            data: res.rows
+                        })
+                    }
+                }
+            )
+        });
+    }
+
+    async fetchAllPrinter(limit, offset) {
+        return new Promise((resolve, reject) => {
+            client.query(
+                `SELECT * FROM printers LIMIT $1 OFFSET $2`, [limit, offset],
+                (err, res) => {
+                    if (err) {
+                        console.log(err)
+                        reject({
+                            status: 400,
+                            msg: err.message,
+                            data: null
+                        })
+                    } else {
+                        resolve({
+                            data: res.rows
+                        })
+                    }
+                }
+            )
+        });
+    }
+
+    async countPrinter() {
+        return new Promise((resolve, reject) => {
+            client.query(
+                "SELECT COUNT(*) AS total_printers FROM printers",
+                (err, res) => {
+                    if (err) {
+                        console.log(err)
+                        reject({
+                            status: 400,
+                            msg: err.message,
+                            data: null
+                        })
+                    } else {
+                        resolve({
+                            msg: "Count printer",
+                            data: res.rows
+                        })
+                    }
+                }
+            )
+        })
+    }
+
+    async updatePrinterStatus(printerID, status) {
+        return new Promise((resolve, reject) => {
+            client.query(
+                `UPDATE printers
+                 SET status = $1
+                 WHERE printerID = $2
+                `, [status, printerID],
+                (err, res) => {
+                    if (err) {
+                        console.log(err)
+                        reject({
+                            status: 400,
+                            msg: err.message,
+                            data: null
+                        })
+                    } else {
+                        resolve({
+                            status: 200,
+                            data: res.rows
+                        })
+                    }
+                } 
+                )
+        })
+    }
+
+    async getDetail(printerID) {
+        return new Promise((resolve, reject) => {
+            client.query(
+                `SELECT * FROM printers WHERE printerID = $1 `, [printerID],
+                (err, res) => {
+                    if (err) {
+                        console.log(err)
+                        reject({
+                            status: 400,
+                            msg: err.message,
+                            data: null
+                        })
+                    } else {
+                        resolve({
+                            status: 200,
+                            data: res.rows
+                        })
+                    }
+                } 
+                )
+        })
+    }
 }
 
 

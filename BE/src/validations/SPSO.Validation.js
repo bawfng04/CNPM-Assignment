@@ -2,10 +2,13 @@ const Joi = require("joi");
 const { StatusCodes } = require("http-status-codes");
 
 const schema = Joi.object({
-  printername: Joi.string().required().trim().strict(),
-  printer_model: Joi.string().required().trim().strict(),
-  short_description: Joi.string().optional().trim().strict(),
-  location: Joi.string().required().trim().strict(),
+  model: Joi.string().required().trim().strict(),
+  brandname: Joi.string().required().trim().strict(),
+  campus_name: Joi.string().required().trim().strict(),
+  building_name: Joi.string().required().trim().strict(),
+  room_number: Joi.string().required().trim().strict(),
+  default_num_pages: Joi.number().required().strict(),
+  file_types: Joi.string().required().trim().strict(),
 });
 
 async function create(req, res, next) {

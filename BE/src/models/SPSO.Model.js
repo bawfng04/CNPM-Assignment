@@ -5,20 +5,21 @@ const UserService = require("../../database/userService");
 
 async function create(data) {
   try {
-    data.printerid = uuidv4();
     data.status = "active";
     data.short_description = data.short_description || "Normal";
-    const existPrinter = await UserService.findByPrintername(data.printername);
-    if (existPrinter.data) {
-      throw new Error("This printer has already existed");
-    }
+    // const existPrinter = await UserService.findByPrintername(data.printername);
+    // if (existPrinter.data) {
+    //   throw new Error("This printer has already existed");
+    // }
     await UserService.createPrinter(
-      data.printerid,
-      data.printername,
+      data.model,
+      data.brand_name,
+      data.campus_name,
+      data.building_name,
+      data.room_number,
       data.status,
-      data.printer_model,
-      data.short_description,
-      data.location
+      data.default_num_pages,
+      data.file_types
     );
     return data;
   } catch (err) {

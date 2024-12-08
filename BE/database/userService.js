@@ -87,28 +87,34 @@ class UserService {
     });
   }
   async createPrinter(
-    printerId,
-    printername,
+    model,
+    brand_name,
+    campus_name,
+    building_name,
+    room_number,
     status,
-    printer_model,
-    short_description,
-    location
+    default_num_pages,
+    file_types
   ) {
     return new Promise((resolve, reject) => {
       client.query(
-        `INSERT INTO printers( printerId,
-    printername,
+        `INSERT INTO printers( model,
+    brand_name,
+    campus_name,
+    building_name,
+    room_number,
     status,
-    printer_model,
-    short_description,
-    location) VALUES ($1, $2, $3, $4, $5, $6)`,
+    default_num_pages,
+    file_types) VALUES ($1, $2, $3, $4, $5, $6,$7,$8)`,
         [
-          printerId,
-          printername,
+          model,
+          brand_name,
+          campus_name,
+          building_name,
+          room_number,
           status,
-          printer_model,
-          short_description,
-          location,
+          default_num_pages,
+          file_types,
         ],
         (err, res) => {
           if (err) {
@@ -121,7 +127,7 @@ class UserService {
           } else {
             resolve({
               status: 200,
-              msg: "Create successfully!",
+              msg: "Create printer successfully!",
               data: null,
             });
           }
