@@ -135,12 +135,12 @@ class PrinterController {
     if (req.params.limit) limit = req.params.limit;
     else limit = 10;
 
-    if (req.params.page) page = req.params.page;
-    else page = 1;
     try {
-      const printerData = await printerService.fetchAllPrinter(limit, page);
-      const totalPrinter = await printerService.countPrinter();
-      const totalPage = Math.ceil(totalPrinter.data[0].total_printers / limit);
+      const printerData = await printerService.fetchAllPrinter(limit);
+      const totalPrinterEn = await printerService.countPrinterEn();
+      const totalPrinterDis = await printerService.countPrinterEn();
+
+      // const totalPage = Math.ceil(totalPrinter.data[0].total_printers / limit);
 
       if (!printerData) {
         return res.status(404).json({
@@ -153,8 +153,8 @@ class PrinterController {
         statusCode: 200,
         msg: "Fetch all printers",
         data: printerData.data,
-        totalPage: totalPage,
-        currentPage: page,
+        totalPrinterEn: totalPrinterEn,
+        totalPrinterDis: totalPrinterDis,
       });
     } catch (err) {
       next(err);

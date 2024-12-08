@@ -8,8 +8,10 @@ const verify = require("../middleware/auth.js");
 
 // router.get("/", controllers.getPrinter);
 router.get("/getUsers", controllers.fetchAllUsers);
-router.get("/getPrinters", controllers.fetchAllPrinter);
+// router.get("/getPrinters", controllers.fetchAllPrinter);
 router.post("/creatprinter", validations.create, controllers.create);
+router.get("/getAllUsers", controllers.countAllUsers);
+
 router.get("/test", (req, res, next) => {
   res.send("Hello World");
 });

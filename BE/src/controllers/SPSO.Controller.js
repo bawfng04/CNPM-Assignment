@@ -40,16 +40,15 @@ async function fetchAllUsers(req, res, next) {
     next(err);
   }
 }
-async function fetchAllPrinter(req, res, next) {
-  const limit = req.params.limit ? req.params.limit : 10;
+async function countAllUsers(req, res, next) {
   try {
-    const result = await UserService.fetchPrinter(limit);
+    const result = await UserService.countAllUsers();
     if (result.status !== 200) {
       statusCode: result.status, { ...result };
     }
     res.status(200).json({
       statusCode: 200,
-      msg: `Fetch users LIMI ${limit}`,
+      msg: `count users `,
       data: result.data,
     });
   } catch (err) {
@@ -57,4 +56,4 @@ async function fetchAllPrinter(req, res, next) {
   }
 }
 
-module.exports = { getPrinter, create, fetchAllUsers, fetchAllPrinter };
+module.exports = { getPrinter, create, fetchAllUsers, countAllUsers };

@@ -155,6 +155,25 @@ class UserService {
       });
     });
   }
+  async countAllUsers() {
+    return new Promise((resolve, reject) => {
+      client.query("SELECT COUNT(*) FROM users", (err, res) => {
+        if (err) {
+          reject({
+            status: 400,
+            msg: err.message,
+            data: null,
+          });
+        } else {
+          resolve({
+            status: 200,
+            msg: "Count success",
+            data: res.rows[0].count, // Lấy số lượng bản ghi từ kết quả
+          });
+        }
+      });
+    });
+  }
   async fetchPrinter(limit = 10) {
     return new Promise((resolve, reject) => {
       client.query(`SELECT * FROM printers LIMIT $1`, [limit], (err, res) => {
