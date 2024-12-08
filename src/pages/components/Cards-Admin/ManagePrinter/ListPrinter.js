@@ -6,7 +6,7 @@ const handleDetailAPI = (id) => `http://localhost:4000/print/detail/${id}`;
 const clickCheckboxAPI = (id) =>
   `http://localhost:4000/print/change-status/${id}`;
 
-const ListPrinter = () => {
+const ListPrinter = ({ updatePrinterCounts }) => {
   const [printers, setPrinters] = useState([]);
 
   const fetchPrinters = async () => {
@@ -19,20 +19,13 @@ const ListPrinter = () => {
         },
       });
       let data2 = await response.json();
-
-      console.log("data2: ", data2);
       let data = data2.data;
 
-      console.log("dddd", data2);
-
-      console.log("yyyyy", data2.totalPrinterEn.data);
       const en = data2.totalPrinterEn.data;
       const dis = data2.totalPrinterDis.data;
 
-      localStorage.setItem("enablePrinters", en);
-      localStorage.setItem("disablePrinters", dis);
-
-      console.log("--", dis);
+      // Update counts in the parent component
+      updatePrinterCounts(en, dis);
 
       setPrinters(data);
     } catch (error) {
@@ -132,7 +125,7 @@ const ListPrinter = () => {
   };
 
   useEffect(() => {
-    fetchPrinters();
+    fetchPrinters(); //eslint-disable-next-line
   }, []);
 
   return (

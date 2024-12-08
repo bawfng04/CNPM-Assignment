@@ -6,10 +6,20 @@ import AddPrinter from "./AddPrinter";
 
 const ManagePrinter = () => {
   const [activeTab, setActiveTab] = useState("list");
+  const [enablePrinters, setEnablePrinters] = useState(0);
+  const [disablePrinters, setDisablePrinters] = useState(0);
+
+  const updatePrinterCounts = (enableCount, disableCount) => {
+    setEnablePrinters(enableCount);
+    setDisablePrinters(disableCount);
+  };
 
   return (
     <div className="managePrinterContainer">
-      <SumarySection />
+      <SumarySection
+        enablePrinters={enablePrinters}
+        disablePrinters={disablePrinters}
+      />
 
       <div className="tabs">
         <div className="tabsDiv">
@@ -26,7 +36,11 @@ const ManagePrinter = () => {
         </div>
       </div>
       <div key={activeTab} className="SS">
-        {activeTab === "list" ? <ListPrinter /> : <AddPrinter />}
+        {activeTab === "list" ? (
+          <ListPrinter updatePrinterCounts={updatePrinterCounts} />
+        ) : (
+          <AddPrinter />
+        )}
       </div>
     </div>
   );
