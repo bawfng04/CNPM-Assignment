@@ -1,8 +1,6 @@
 const authRouter = require("./auth.route");
 const printerRouter = require("./printer.route");
 const payRouter = require("./pay.route");
-// const sellerRouter = require('./seller.route.js');
-// const productRouter = require('./customer.route.js');
 const SPSORouter = require("./SPSO.route");
 const PrinterController = require("../controllers/printer.Controller");
 
@@ -40,10 +38,9 @@ const upload = multer({
 });
 
 function route(app) {
-  app.post("/uploads/", upload.single("printFile"), PrinterController.createOrder);
+  app.post("/createOrder/", upload.single("printFile"), PrinterController.createOrder);
   app.use("/print", printerRouter);
   app.use("/pay", payRouter);
-
   app.use("/admin", SPSORouter);
   app.use("/", authRouter);
 }

@@ -12,6 +12,8 @@ const PayService = require("../../database/payService");
 const printerService = require("../../database/printerService");
 
 class PrinterController {
+
+  // [POST] /createOrder
   async createOrder(req, res, next) {
     console.log("Check file: ", req.file);
     if (!req.file) {
@@ -127,9 +129,10 @@ class PrinterController {
     }
   }
 
-  // [GET] /print/roders
+  // [GET] /print/orders
   async getAllOrders(req, res, next) {}
 
+  // [GET]
   async fetchAllPrinters(req, res, next) {
     let limit, page;
     if (req.params.limit) limit = req.params.limit;
