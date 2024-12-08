@@ -5,7 +5,7 @@ const UserService = require("../../database/userService");
 
 async function create(data) {
   try {
-    data.status = "active";
+    data.status = "available";
     // const existPrinter = await UserService.findByPrintername(data.printername);
     // if (existPrinter.data) {
     //   throw new Error("This printer has already existed");

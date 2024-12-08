@@ -145,7 +145,7 @@ class PrinterService {
     });
   }
 
-  async fetchPrinter(limit) {
+  async fetchAllPrinter(limit) {
     return new Promise((resolve, reject) => {
       client.query(`SELECT * FROM printers LIMIT $1`, [limit], (err, res) => {
         if (err) {
@@ -168,7 +168,7 @@ class PrinterService {
   async countPrinterEn() {
     return new Promise((resolve, reject) => {
       client.query(
-        "SELECT COUNT(*) AS total_printers FROM printers WHERE status = 'available'", // Updated query
+        "SELECT COUNT(*) AS total_printers FROM printers WHERE TRIM(status) = 'available'", // Trim status to avoid whitespace issues
         (err, res) => {
           if (err) {
             console.log(err);
@@ -178,19 +178,22 @@ class PrinterService {
               data: null,
             });
           } else {
+            const count = res.rows[0]
+              ? parseInt(res.rows[0].total_printers)
+              : 0;
             resolve({
-              msg: "Count available printers",
-              data: res.rows, // Result will now contain count of printers with status 'available'
+              msg: "Count of available printers",
+              data: count,
             });
           }
         }
       );
     });
   }
-  async countPrinterEn() {
+  async countPrinterDis() {
     return new Promise((resolve, reject) => {
       client.query(
-        "SELECT COUNT(*) AS total_printers FROM printers WHERE status = 'disabled'", // Updated query
+        "SELECT COUNT(*) AS total_printers FROM printers WHERE TRIM(status) = 'disabled'", // Trim status to avoid whitespace issues
         (err, res) => {
           if (err) {
             console.log(err);
@@ -200,9 +203,12 @@ class PrinterService {
               data: null,
             });
           } else {
+            const count = res.rows[0]
+              ? parseInt(res.rows[0].total_printers)
+              : 0;
             resolve({
-              msg: "Count available printers",
-              data: res.rows, // Result will now contain count of printers with status 'available'
+              msg: "Count of available printers",
+              data: count,
             });
           }
         }

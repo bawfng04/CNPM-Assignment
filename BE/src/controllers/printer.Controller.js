@@ -131,14 +131,14 @@ class PrinterController {
   async getAllOrders(req, res, next) {}
 
   async fetchAllPrinters(req, res, next) {
-    let limit, page;
+    let limit;
     if (req.params.limit) limit = req.params.limit;
     else limit = 10;
 
     try {
       const printerData = await printerService.fetchAllPrinter(limit);
       const totalPrinterEn = await printerService.countPrinterEn();
-      const totalPrinterDis = await printerService.countPrinterEn();
+      const totalPrinterDis = await printerService.countPrinterDis();
 
       // const totalPage = Math.ceil(totalPrinter.data[0].total_printers / limit);
 
