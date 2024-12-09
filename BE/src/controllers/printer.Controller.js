@@ -213,5 +213,34 @@ class PrinterController {
       stack: newErr.stack,
     });
   }
+  async deletePrinter(req, res) {
+    const printID = req.params.printerID;
+    try {
+      const reponse = await PrinterService.deletePrinter(printID);
+      if (reponse.status !== 200) {
+        return res.status(400).json({
+          statusCode: 400,
+          msg: "Error in delet",
+          data: null,
+        });
+      } else {
+        return res.status(200).json({
+          statusCode: 200,
+          msg: "Delete success",
+          data: reponse.data,
+        });
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  catch(err) {
+    const newErr = new Error(err);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: err.message,
+      stack: newErr.stack,
+    });
+  }
 }
 module.exports = new PrinterController();

@@ -14,7 +14,7 @@ async function login(data) {
       error.statusCode = 400;
       throw error;
     }
-    console.log(email);
+    // console.log(email);
     // Tìm người dùng qua email
     const result = await UserService.findByEmail(email);
     // console.log(result); // Log kết quả để kiểm tra

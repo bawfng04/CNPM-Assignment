@@ -3,16 +3,7 @@ require("dotenv").config();
 const UserService = require("../../database/userService.js");
 const models = require("../models/SPSO.Model.js");
 const { StatusCodes } = require("http-status-codes");
-async function getPrinter(req, res) {
-  try {
-    res.status(StatusCodes.OK).json(await models.getPrinter());
-  } catch (err) {
-    const newErr = new Error(err);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: err.message,
-    });
-  }
-}
+const printerService = require("../../database/printerService.js");
 async function create(req, res) {
   try {
     // console.log(req.body);
@@ -28,6 +19,8 @@ async function fetchAllUsers(req, res, next) {
   const limit = req.params.limit ? req.params.limit : 10;
   try {
     const result = await UserService.fetchUsers(limit);
+    const totaluser = await UserService.countAllUsers();
+    const totaloder = await printerService.countAllOder();
     if (result.status !== 200) {
       statusCode: result.status, { ...result };
     }
@@ -35,25 +28,12 @@ async function fetchAllUsers(req, res, next) {
       statusCode: 200,
       msg: `Fetch users LIMI ${limit}`,
       data: result.data,
-    });
-  } catch (err) {
-    next(err);
-  }
-}
-async function countAllUsers(req, res, next) {
-  try {
-    const result = await UserService.countAllUsers();
-    if (result.status !== 200) {
-      statusCode: result.status, { ...result };
-    }
-    res.status(200).json({
-      statusCode: 200,
-      msg: `count users `,
-      data: result.data,
+      Totaluser: totaluser,
+      Totaloder: totaloder,
     });
   } catch (err) {
     next(err);
   }
 }
 
-module.exports = { getPrinter, create, fetchAllUsers, countAllUsers };
+module.exports = { create, fetchAllUsers };

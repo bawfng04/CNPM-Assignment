@@ -100,34 +100,13 @@ class PrinterService {
     });
   }
 
-  async createPrinter(
-    printerID,
-    pirnterName,
-    brandName,
-    description,
-    model,
-    campus,
-    building,
-    room,
-    status
-  ) {
+  async fetchAllPrinter(limit) {
     return new Promise((resolve, reject) => {
       client.query(
-        `INSERT INTO printers(printerID, pirnterName, brandName, description, model, campus, building, room, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
-        [
-          printerID,
-          pirnterName,
-          brandName,
-          description,
-          model,
-          campus,
-          building,
-          room,
-          status,
-        ],
+        `SELECT * FROM printers ORDER BY id ASC LIMIT $1`,
+        [limit],
         (err, res) => {
           if (err) {
-            console.log(err);
             reject({
               status: 400,
               msg: err.message,
@@ -136,32 +115,12 @@ class PrinterService {
           } else {
             resolve({
               status: 200,
-              msg: "Create printer successfully!",
+              msg: "Fetch success",
               data: res.rows,
             });
           }
         }
       );
-    });
-  }
-
-  async fetchAllPrinter(limit) {
-    return new Promise((resolve, reject) => {
-      client.query(`SELECT * FROM printers LIMIT $1`, [limit], (err, res) => {
-        if (err) {
-          reject({
-            status: 400,
-            msg: err.message,
-            data: null,
-          });
-        } else {
-          resolve({
-            status: 200,
-            msg: "Fetch success",
-            data: res.rows,
-          });
-        }
-      });
     });
   }
 
@@ -221,7 +180,7 @@ class PrinterService {
       client.query(
         `UPDATE printers
                  SET status = $1
-                 WHERE printerID = $2
+                 WHERE id = $2
                 `,
         [status, printerID],
         (err, res) => {
@@ -242,11 +201,35 @@ class PrinterService {
       );
     });
   }
-
+  async deletePrinter(printerID) {
+    return new Promise((resolve, reject) => {
+      client.query(
+        `DELETE FROM printers
+         WHERE id = $1`,
+        [printerID],
+        (err, res) => {
+          if (err) {
+            console.log(err);
+            reject({
+              status: 400,
+              msg: err.message,
+              data: null,
+            });
+          } else {
+            resolve({
+              status: 200,
+              msg: "Printer deleted successfully",
+              data: res.rowCount, // Số hàng bị ảnh hưởng
+            });
+          }
+        }
+      );
+    });
+  }
   async getDetail(printerID) {
     return new Promise((resolve, reject) => {
       client.query(
-        `SELECT * FROM printers WHERE printerID = $1 `,
+        `SELECT * FROM printers WHERE id = $1 `,
         [printerID],
         (err, res) => {
           if (err) {
@@ -264,6 +247,25 @@ class PrinterService {
           }
         }
       );
+    });
+  }
+  async countAllOder() {
+    return new Promise((resolve, reject) => {
+      client.query("SELECT COUNT(*) FROM print_job", (err, res) => {
+        if (err) {
+          reject({
+            status: 400,
+            msg: err.message,
+            data: null,
+          });
+        } else {
+          resolve({
+            status: 200,
+            msg: "Count success",
+            data: res.rows[0].count, // Lấy số lượng bản ghi từ kết quả
+          });
+        }
+      });
     });
   }
 }
