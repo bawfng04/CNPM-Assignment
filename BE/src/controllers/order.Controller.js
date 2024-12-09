@@ -8,12 +8,18 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const pdf = require('pdf-parse');
+const OrderService = require('../../database/orderService');
+const UserService = require('../../database/userService');
 
 class OrderController {
     // [POST] order/create
-    // request: printFile (file), userID, printerID, pageSize, double_sided, numCopy, 
+    // request: printFile (file), userID, printerID, pageSize, doubleSize, numCopy, 
     async createOrder(req, res, next) {
-        console.log("Check file: ", req.file);
+        // console.log("Check file: ", req.file);
+        const {email, printerID, pageSize, doubleSize, numCopy} = req.body;
+        const userData = await UserService.findByEmail2(email); 
+        const userID = userData.data;
+        console.log("Check userID: ", userID);
         if (!req.file) {
             return res.status(400).json({
                 statusCode: 400,
@@ -21,9 +27,7 @@ class OrderController {
                 data: null,
             });
         }
-        // const { userID, printerID, pageSize, double_sided, numCopy } = req.body;
-        
-        // const fileSize = req.file.fileSize;
+    
         let filePath = req.file.path;
         filePath = filePath.replace(/\\/g, "/");
         let pageNum = 1;
@@ -41,37 +45,31 @@ class OrderController {
             "utf8"
         );
         const fileType = req.file.mimetype;
-        // try {
-        //     // const data = await PrinterService.createOrder(orderId, studentID, printerID, fileName, filePath, fileType, pageNum);
-        //     const data = await PrinterService.createOrder(
-        //         orderId,
-        //         studentID,
-        //         printerID,
-        //         fileName,
-        //         filePath,
-        //         fileType,
-        //         pageNum,
-        //         pageSize,
-        //         pageSide,
-        //         new Date(),
-        //         new Date()
-        //     );
-        //     console.log("Check respone: ", data);
-        //     if (data.status !== 200) {
-        //         return res.status(data.status).json({
-        //             statusCode: data.status,
-        //             ...data,
-        //         });
-        //     } else {
-        //         // const orderData = await 
-        //         // return res.status(data.status).json({
-        //         // statusCode: data.status,
-        //         // ...data,
-        //         // });
-        //     }
-        // } catch (err) {
-        //     next(err);
-        // }
+        const fileSize = req.file.size;
+
+        try {
+            const documentData = await OrderService.createDocument(fileName, fileType, filePath, fileSize);
+            console.log(documentData);
+            const docsID = documentData.data;
+            console.log("Docs ID: ", docsID);
+            const result = await OrderService.createOrder(printerID, docsID, userID, new Date().toISOString().slice(0, 19).replace('T', ' '), new Date().toISOString().slice(0, 19).replace('T', ' '), new Date().toISOString().slice(0, 19).replace('T', ' '), pageSize, pageNum*numCopy, numCopy, doubleSize);
+            if(result.status !== 200) {
+                res.status(400).json({
+                    statusCode: 400,
+                    msg: result.msg,
+                    data: null
+                })
+            } else {
+                res.status(200).json({
+                    statusCode: 200,
+                    msg: "Create order successfully!",
+                    data: null
+                })
+            }
+            
+        } catch (err) {
+            next(err);
+        }
     }
 
     // [GET] /print/file/:orderID
@@ -122,10 +120,76 @@ class OrderController {
     }
 
 
-    // [GET] /order/all
-    async getAllOrders(req, res, next) { }
+    // [GET] /order/all by email, sort by tme
+    async getAllOrders(req, res, next) {
+        const {email} = req.body;
+        const userData = await UserService.findByEmail2(email);
+        if(userData.data === null) {
+            res.status(400).json({
+                statusCode: 400,
+                msg: "Cannot find user by email",
+                data: null
+            })
+        }
+        const userID = userData.data;
+        console.log("CHECK userID: ", userID);
+        try {
+            const result = await OrderService.fetchOrderByUserID(userID);
+            // console.log("Check result: ", result);
+            if(result.status !== 200) {
+                 return res.status(400).json({
+                    statusCode: 400,
+                    msg: result.msg,
+                    data: null
+                })
+            }
+            return res.status(200).json({
+                statusCode: 200,
+                msg: "Fetch successfully!",
+                data: result.data
+            })
+        } catch(err) {
+            next(err);
+        }
+     }
+
+
+    async getOrderByRange(req, res, next) {
+        const {startDate, endDate, email} = req.body;
+        const userData = await UserService.findByEmail2(email);
+        if(userData.data === null) {
+            res.status(400).json({
+                statusCode: 400,
+                msg: "Cannot find user by email",
+                data: null
+            })
+        }
+        const userID = userData.data;
+        const startDateTime = new Date(`${startDate}T00:00:00`);
+        const endDateTime = new Date(`${endDate}T23:59:59`);
+        try {
+            const result = await OrderService.filterOrderTimeRange(userID, startDateTime, endDateTime);
+            if(result.status !== 200) {
+                res.status(400).json({
+                    statusCode: 400,
+                    msg: result.msg,
+                    data: null
+                })
+            } else {
+                res.status(200).json({
+                    statusCode: 200,
+                    msg: "Fetch success",
+                    data: result.data
+                })
+            }
+        } catch (err) {
+            next(err);
+        }
+
+    }
 
     catch(err) {
+        console.log("ERROR")
         const newErr = new Error(err);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             error: err.message,

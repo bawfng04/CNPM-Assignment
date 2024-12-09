@@ -1,15 +1,17 @@
 const authRouter = require("./auth.route");
 const printerRouter = require("./printer.route");
 const payRouter = require("./pay.route");
-const SPSORouter = require("./SPSO.route");
 const orderRouter = require("./order.route");
-const OrderController = require('../controllers/order.Controller')
+// const sellerRouter = require('./seller.route.js');
+// const productRouter = require('./customer.route.js');
+const SPSORouter = require("./SPSO.route");
+const PrinterController = require("../controllers/printer.Controller");
+const OrderController = require("../controllers/order.Controller");
 
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const { required } = require("joi");
-const orderController = require("../controllers/order.Controller");
 
 // const fileFilter = (req, file, cb) => {
 //     if(file.mimetype === "application/pdf" || file.mimetype === "application/msword" || file.mimetype === 'image/png' || file.mimetype === 'image/jpeg') {
@@ -40,12 +42,13 @@ const upload = multer({
 });
 
 function route(app) {
-  // app.use('/order', orderRouter);
-  app.post("/createOrder", upload.single("printFile"), orderController.createOrder);
+  app.post("/createOrder", upload.single("printFile"), OrderController.createOrder);
+  app.use("/order", orderRouter);
   app.use("/print", printerRouter);
   app.use("/pay", payRouter);
   app.use("/admin", SPSORouter);
   app.use("/", authRouter);
+  
 }
 
 module.exports = route;

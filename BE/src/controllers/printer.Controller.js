@@ -13,8 +13,6 @@ const printerService = require("../../database/printerService");
 
 class PrinterController {
 
-
-  // [GET]
   async fetchAllPrinters(req, res, next) {
     let limit, page;
     if (req.params.limit) limit = req.params.limit;
