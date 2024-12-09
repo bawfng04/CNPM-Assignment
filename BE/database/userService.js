@@ -221,6 +221,32 @@ class UserService {
     }
   }
 
+  
+  async findByEmail2(email) {
+    return new Promise((resolve, reject) => {
+      client.query(
+          ` SELECT * FROM users
+          WHERE email = $1
+            `,
+        [email],
+        (err, res) => {
+          if(res.rowCount  < 1) {
+              reject({
+                status: 400,
+                msg: "no user"
+              })
+          } else {
+              resolve({
+                status: 200,
+                msg: "find user",
+                data: res.rows[0].id
+              })
+          }
+        }
+      );
+    });
+  }
+
   async findByID(id) {
     return new Promise((resolve, reject) => {
       client.query(
