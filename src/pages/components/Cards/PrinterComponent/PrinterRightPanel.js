@@ -50,6 +50,8 @@ const PrinterRightPanel = ({
     );
     formData.append("numCopy", formData.copies);
 
+    console.log("Form Data:", formData);
+
     const response = await fetch(checkNumPageAPI, {
       method: "POST",
       headers: {
@@ -59,10 +61,9 @@ const PrinterRightPanel = ({
       body: formData,
     });
 
-    console.log("formdata", formData);
-
     //log form
     console.log({
+      file: file,
       userId: userId,
       email: email,
       printerID: selectedPrinterID,

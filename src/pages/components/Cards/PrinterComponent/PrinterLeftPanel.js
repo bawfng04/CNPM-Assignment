@@ -13,39 +13,39 @@ const PrinterLeftPanel = ({ setFilee }) => {
     setFilee(fileName);
   };
 
-  const uploadFile = async (file) => {
-    // const formData = new FormData();
-    // formData.append("printFile", file);
+  // const uploadFile = async (file) => {
+  //   const formData = new FormData();
+  //   formData.append("printFile", file);
 
-    // try {
-    //   const response = await fetch(uploadAPI, {
-    //     method: "POST",
-    //     headers: {
-    //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-    //     },
-    //     body: formData,
-    //   });
+  //   try {
+  //     const response = await fetch(uploadAPI, {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //       body: formData,
+  //     });
 
-    handleFile(file);
+  //     handleFile(file);
 
-    //   if (response.headers.get("content-type")?.includes("application/json")) {
-    //     const data = await response.json();
-    //     if (data.error) {
-    //       console.log(data.error);
-    //       setErrorUpload(true);
-    //     } else {
-    //       console.log(data.message);
-    //       setUploadSuccess(true);
-    //     }
-    //   } else {
-    //     alert("File uploaded successfully");
-    //     setUploadSuccess(true);
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   setErrorUpload(true);
-    // }
-  };
+  //     if (response.headers.get("content-type")?.includes("application/json")) {
+  //       const data = await response.json();
+  //       if (data.error) {
+  //         console.log(data.error);
+  //         setErrorUpload(true);
+  //       } else {
+  //         console.log(data.message);
+  //         setUploadSuccess(true);
+  //       }
+  //     } else {
+  //       alert("File uploaded successfully");
+  //       setUploadSuccess(true);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     setErrorUpload(true);
+  //   }
+  // };
 
   const handleFileChange = (e) => {
     const allowedFileTypes = ["jpg", "png", "pdf", "docx"];
@@ -58,7 +58,10 @@ const PrinterLeftPanel = ({ setFilee }) => {
       setFile(uploadedFile);
       setUploadSuccess(false);
       setErrorUpload(false);
-      uploadFile(uploadedFile);
+      // uploadFile(uploadedFile);
+
+      //gửi props
+      handleFile(uploadedFile);
     } else {
       setFile(null);
       setUploadSuccess(false);
