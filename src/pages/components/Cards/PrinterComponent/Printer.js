@@ -8,12 +8,14 @@ const Printer = () => {
   const [selectedPrinterName, setSelectedPrinterName] = useState("");
   const [selectedPrinterModel, setSelectedPrinterModel] = useState("");
   const [selectedPrinterID, setSelectedPrinterID] = useState("");
+  const [selectedPrinterStatus, setSelectedPrinterStatus] = useState("");
   const [file, setFile] = useState("");
 
-  const handleSelectPrinter = (id, name, model) => {
+  const handleSelectPrinter = (id, name, model, status) => {
     setSelectedPrinterID(id);
     setSelectedPrinterName(name);
     setSelectedPrinterModel(model);
+    setSelectedPrinterStatus(status);
   };
 
   const handleSelectFile = (file) => {
@@ -31,6 +33,7 @@ const Printer = () => {
             selectedPrinterName={selectedPrinterName}
             selectedPrinterModel={selectedPrinterModel}
             selectedPrinterID={selectedPrinterID}
+            selectedPrinterStatus={selectedPrinterStatus}
             file={file}
           />
         </div>

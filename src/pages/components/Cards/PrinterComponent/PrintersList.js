@@ -9,8 +9,14 @@ const PrinterListAPI = "http://localhost:4000/print/all";
 const PrintersList = ({ onSelectPrinter }) => {
   const [printers, setPrinters] = useState([]);
 
-  const handleClickPrinter = (id, name, model) => {
-    onSelectPrinter(id, name, model);
+  const handleClickPrinter = (id, name, model, status) => {
+    if (status === "disabled") {
+      alert("ERROR: This printer is disabled, please select another printer");
+      return;
+    } else {
+      alert("Printer selected: " + name + " " + model);
+    }
+    onSelectPrinter(id, name, model, status);
   };
 
   const fetchPrinters = async () => {
@@ -78,7 +84,8 @@ const PrintersList = ({ onSelectPrinter }) => {
                     handleClickPrinter(
                       printer.id,
                       printer.brand_name,
-                      printer.model
+                      printer.model,
+                      printer.status
                     )
                   }
                 >

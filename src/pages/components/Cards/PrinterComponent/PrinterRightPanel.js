@@ -6,6 +6,7 @@ const PrinterRightPanel = ({
   selectedPrinterName,
   selectedPrinterModel,
   selectedPrinterID,
+  selectedPrinterStatus,
   file,
 }) => {
   const [formData, setFormData] = useState({
@@ -30,6 +31,10 @@ const PrinterRightPanel = ({
       return;
     } else if (!file) {
       alert("Please upload a file");
+      return;
+    }
+    if (selectedPrinterStatus === "disabled") {
+      alert("Please select a printer that is not disabled");
       return;
     }
     let email = localStorage.getItem("email");

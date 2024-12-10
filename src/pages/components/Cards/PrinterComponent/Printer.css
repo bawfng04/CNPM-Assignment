@@ -338,3 +338,21 @@
   border-radius: 10px;
 }
 
+.chooseOptions{
+  display: flex;
+  flex-direction: column;
+}
+
+.pagesss{
+  display: flex;
+  flex-direction: column;
+}
+
+.alal{
+  display: flex;
+  flex-direction: column;
+}
+
+.iPage{
+  margin-left: 20px;
+}

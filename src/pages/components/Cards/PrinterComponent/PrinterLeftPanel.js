@@ -9,6 +9,10 @@ const PrinterLeftPanel = ({ setFilee }) => {
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [errorUpload, setErrorUpload] = useState(false);
 
+  const [pageOption, setPageOption] = useState("current-page");
+  const [startPage, setStartPage] = useState("");
+  const [endPage, setEndPage] = useState("");
+
   const handleFile = (fileName) => {
     setFilee(fileName);
   };
@@ -116,44 +120,58 @@ const PrinterLeftPanel = ({ setFilee }) => {
 
       <div className="print-range">
         <h3>Print Range</h3>
-
-        <div className="option">
-          <input
-            type="radio"
-            name="range"
-            id="current-page"
-            className="radio-option"
-          />
-          <label htmlFor="current-page">Current Page</label>
-        </div>
-
-        <div className="option2">
-          <div className="pagesNum">
-            <div className="l">
+        <form>
+          <div className="chooseOptions">
+            <label>
               <input
                 type="radio"
-                name="range"
-                id="pages"
-                className="radio-option"
+                value="current"
+                checked={pageOption === "current"}
+                onChange={() => setPageOption("current")}
               />
-              <label htmlFor="pages">Pages</label>
-            </div>
-            <div className="r">
-              <input type="number" name="startpage" id="pages" />
-              <input type="number" name="endpage" id="pages" />
+              Current Page
+            </label>
+            <div className="pagesss">
+              <label>
+                <input
+                  type="radio"
+                  value="pages"
+                  checked={pageOption === "pages"}
+                  onChange={() => setPageOption("pages")}
+                />
+                Pages
+              </label>
+
+              {pageOption === "pages" && (
+                <div>
+                  <div className="alal">
+                    <label>
+                      Start Page:
+                      <input
+                        type="number"
+                        value={startPage}
+                        onChange={(e) => setStartPage(e.target.value)}
+                        required
+                        className="iPage"
+                      />
+                    </label>
+                  </div>
+                  <div className="alal">
+                    <label>
+                      End Page:{" "}
+                      <input
+                        type="number"
+                        value={endPage}
+                        onChange={(e) => setEndPage(e.target.value)}
+                        required
+                        className="iPage"
+                      />
+                    </label>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        </div>
-
-        <form className="print-settings">
-          <input
-            type="radio"
-            name="range"
-            id="pages"
-            className="radio-option"
-          />
-          <input type="number" name="startpage" id="pages" />
-          <input type="number" name="endpage" id="pages" />
         </form>
       </div>
     </div>
