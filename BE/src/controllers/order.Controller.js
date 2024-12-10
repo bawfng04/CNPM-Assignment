@@ -153,6 +153,26 @@ class OrderController {
         }
      }
 
+    async fetchRecentOrder(req, res, next) {
+        try {
+            const response = await OrderService.fetchLastOrders();
+            if(response.status !== 200) {
+                res.status(400).json({
+                    statusCode: 400,
+                    msg: response.msg,
+                    data: null
+                })
+            }  else {
+                res.status(200).json({
+                    statusCode: 200,
+                    msg: "10 recent orders",
+                    data: response.data
+                })
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
 
     async getOrderByRange(req, res, next) {
         const {startDate, endDate, email} = req.body;

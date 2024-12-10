@@ -154,10 +154,37 @@ class OrderService {
         })
     }
 
+    async fetchLastOrders() {
+        return new Promise((resolve, reject) => {
+            client.query(`
+                SELECT * FROM print_job 
+                ORDER BY start_time DESC
+                LIMIT 10 OFFSET 0;
+            `, (err, res) => {
+                if (err) {
+                    reject({
+                        status: 400,
+                        msg: err.message,
+                        data: null
+                    });
+                } else {
+                    resolve({
+                        status: 200,
+                        msg: 'Fetch success',
+                        data: res.rows
+                    });
+                }
+            })
+        })
+    }
+
     async fetchOrders(limit = 10) {
         return new Promise((resolve, reject) => {
             client.query(
-                `SELECT * FROM users LIMIT $1`,
+                `SELECT * FROM print_job 
+                ORDER BY start_time DESC
+                LIMIT $1 OFFSET $2;
+                `,
                 [limit],
                 (err, res) => {
                     if (err) {

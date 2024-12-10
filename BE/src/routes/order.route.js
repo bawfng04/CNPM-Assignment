@@ -5,6 +5,7 @@ const OrderController = require("../controllers/order.Controller");
 
 router.post("/all", OrderController.getAllOrders);
 router.post("/all-filter", OrderController.getOrderByRange);
+router.get("/recentOrder", OrderController.fetchRecentOrder );
 // router.post("/test", OrderController.getAllOrders);
 
 
