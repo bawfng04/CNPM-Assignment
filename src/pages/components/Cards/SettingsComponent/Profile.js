@@ -94,25 +94,6 @@ const Profile = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Password</label>
-                <input
-                  readOnly
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
                 <label>Student ID</label>
                 <input
                   type="text"

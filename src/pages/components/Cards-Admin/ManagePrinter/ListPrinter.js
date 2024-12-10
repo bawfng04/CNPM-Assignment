@@ -6,6 +6,10 @@ const handleDetailAPI = (id) => `http://localhost:4000/print/detail/${id}`;
 const clickCheckboxAPI = (id) =>
   `http://localhost:4000/print/change-status/${id}`;
 
+
+
+const deleteAPI = (id) => `http://localhost:4000/print/delete/${id}`;
+
 const ListPrinter = ({ updatePrinterCounts }) => {
   const [printers, setPrinters] = useState([]);
 
@@ -31,6 +35,25 @@ const ListPrinter = ({ updatePrinterCounts }) => {
     } catch (error) {
       console.error("Error fetching printers: ", error);
     }
+  };
+
+  const handleDelete = (id) => {
+    fetch(deleteAPI(id), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data: ", data);
+        //re-fetch
+        fetchPrinters();
+      })
+      .catch((error) => {
+        console.error("Error deleting printer: ", error);
+      });
   };
 
   function handleOnClickCheckbox(id) {
@@ -75,16 +98,16 @@ const ListPrinter = ({ updatePrinterCounts }) => {
     data = data[0];
 
     details.innerHTML = `
-    <strong>Brand Name:</strong> ${data.brand_name}<br>
-    <strong>Building Name:</strong> ${data.building_name}<br>
-    <strong>Campus Name:</strong> ${data.campus_name}<br>
-    <strong>Created At:</strong> ${data.created_at}<br>
-    <strong>Default Number of Pages:</strong> ${data.default_num_pages}<br>
-    <strong>File Types:</strong> ${data.file_types}<br>
     <strong>ID:</strong> ${data.id}<br>
+    <strong>Brand Name:</strong> ${data.brand_name}<br>
     <strong>Model:</strong> ${data.model}<br>
+    <strong>Campus Name:</strong> ${data.campus_name}<br>
+    <strong>Building Name:</strong> ${data.building_name}<br>
     <strong>Room Number:</strong> ${data.room_number}<br>
+    <strong>File Types:</strong> ${data.file_types}<br>
     <strong>Status:</strong> ${data.status}<br>
+    <strong>Default Number of Pages:</strong> ${data.default_num_pages}<br>
+    <strong>Created At:</strong> ${data.created_at}<br>
     <strong>Updated At:</strong> ${data.updated_at}
   `;
 
@@ -166,7 +189,12 @@ const ListPrinter = ({ updatePrinterCounts }) => {
                     </label>
                   </td>
                   <td className="table-data">
-                    <button className="delete-btn">Delete</button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(printer.id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                   <td className="table-data">
                     <button

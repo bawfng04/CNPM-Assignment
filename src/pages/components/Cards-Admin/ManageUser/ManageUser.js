@@ -1,23 +1,115 @@
+import React, { useState, useEffect } from "react";
 import "./ManageUser.css";
-import totalUser from "../../../images/totalUser.png";
-import totalTransaction from "../../../images/totalTransaction.png";
+import totalUserz from "../../../images/totalUser.png";
+import totalTransactionz from "../../../images/totalTransaction.png";
+
+const fetchAllUser = "http://localhost:4000/admin/getUsers";
+const handleDetailAPI = (id) => `http://localhost:4000/print/detail/${id}`;
 
 const ManageUser = () => {
+  const [totalUser, setTotalUser] = useState(0);
+  const [totalTransaction, setTotalTransaction] = useState(0);
+  const [allUser, setAllUser] = useState([]);
+
+  useEffect(() => {
+    fetch(fetchAllUser, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log("data: ", data);
+        // console.log("a: ", data.Totaloder);
+        // console.log("b: ", data.Totaluser);
+        // console.log("c: ", data);
+
+        setTotalTransaction(data.Totaloder.data);
+        setTotalUser(data.Totaluser.data);
+        setAllUser(data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching printers: ", error);
+      });
+  }, []);
+
+  const showModal = (data) => {
+    console.log("showmodeldata: ", data[0]);
+
+    const modal = document.getElementById("printerDetailModal");
+    const span = document.getElementsByClassName("close")[0];
+    const details = document.getElementById("printerDetails");
+
+    // Populate the modal with data
+
+    data = data[0];
+
+    console.log("data: ", data);
+
+    details.innerHTML = `
+    <strong>ID:</strong> ${data.id}<br>
+    <strong>Brand Name:</strong> ${data.brand_name}<br>
+    <strong>Model:</strong> ${data.model}<br>
+    <strong>Campus Name:</strong> ${data.campus_name}<br>
+    <strong>Building Name:</strong> ${data.building_name}<br>
+    <strong>Room Number:</strong> ${data.room_number}<br>
+    <strong>File Types:</strong> ${data.file_types}<br>
+    <strong>Status:</strong> ${data.status}<br>
+    <strong>Default Number of Pages:</strong> ${data.default_num_pages}<br>
+    <strong>Created At:</strong> ${data.created_at}<br>
+    <strong>Updated At:</strong> ${data.updated_at}
+  `;
+
+    // Show the modal
+    modal.style.display = "block";
+
+    // Close the modal when the user clicks on <span> (x)
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    // Close the modal when the user clicks anywhere outside of the modal
+    window.onclick = function (event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    };
+  };
+
+  const fetchDetail = async (id) => {
+    try {
+      const response = await fetch(handleDetailAPI(id), {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const data = await response.json();
+      console.log("data: ", data);
+      showModal(data.data);
+    } catch (error) {
+      console.error("Error fetching printer detail: ", error);
+    }
+  };
+
   return (
     <div className="history-container">
       <div className="summary-section">
         <div className="card">
-          <img src={totalUser} alt="A4" className="paperIcon" />
+          <img src={totalUserz} alt="A4" className="paperIcon" />
           <div className="info">
             <h3>Total Users</h3>
-            <p>200</p>
+            <p>{totalUser}</p>
           </div>
         </div>
         <div className="card">
-          <img src={totalTransaction} alt="A3" className="paperIcon" />
+          <img src={totalTransactionz} alt="A3" className="paperIcon" />
           <div className="info">
-            <h3>Total Transactions</h3>
-            <p>49</p>
+            <h3>Total Orders</h3>
+            <p>{totalTransaction}</p>
           </div>
         </div>
       </div>
@@ -29,23 +121,32 @@ const ManageUser = () => {
         <thead>
           <tr>
             <th className="table-header">SL No</th>
-            <th className="table-header">Student ID</th>
             <th className="table-header">Full Name</th>
             <th className="table-header">Email</th>
-            <th className="table-header">Faculty</th>
-            <th className="table-header">Detail</th>
+            <th className="table-header">Role</th>
+            <th className="table-header">Printing history</th>
           </tr>
         </thead>
         <tbody className="rounded-tbody">
-          {[...Array(10)].map((_, index) => (
+          {allUser.map((user, index) => (
             <tr key={index}>
-              <td className="table-content">{index}</td>
-              <td className="table-content">2210298</td>
-              <td className="table-content">🥰😑🤡🙂😭🔑✅😂🤣🤯🥹😱</td>
-              <td className="table-content">abcdef@hcmut.edu.vn</td>
-              <td className="table-content">CSE</td>
-              <td className="table-content">
-                <button className="detail-btn">Detail</button>
+              <td className="table-data">{index + 1}</td>
+              <td className="table-data">
+                {user.first_name + " " + user.last_name}
+              </td>
+              <td className="table-data">{user.email}</td>
+              <td className="table-data">{user.role}</td>
+              <td className="table-data">
+                <button className="detail-btn" onClick={() => fetchDetail(55)}>
+                  Detail
+                </button>
+                <div id="printerDetailModal" class="modal">
+                  <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Printer Details</h2>
+                    <p id="printerDetails"></p>
+                  </div>
+                </div>
               </td>
             </tr>
           ))}

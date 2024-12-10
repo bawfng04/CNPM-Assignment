@@ -35,6 +35,11 @@ function Market() {
 
   const [totalPaper, setTotalPaper] = useState(0);
 
+
+
+
+
+
   const handleDone = async () => {
     try {
       const userEmail = localStorage.getItem("email");
@@ -45,7 +50,6 @@ function Market() {
         A3: A3num,
         A4: A4num,
       };
-
 
       console.log("DATA: ", data);
       const response = await fetch(doneAPI, {
@@ -99,10 +103,36 @@ function Market() {
     setA4plus(oldA4);
   }, []);
 
+  //update total when component mount
   useEffect(() => {
     const getTotal = async () => {
       try {
-        const email = localStorage.getItem("email");
+        let email = localStorage.getItem("email");
+        email = email ? email.replace(/"/g, "") : "";
+        console.log("EEmail: ", email);
+        const response = await fetch(getTotalAPI, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ email: email }),
+        });
+
+        const res = await response.json();
+        const totalPage = res.data;
+        setTotalPaper(totalPage);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTotal();
+  });
+
+  useEffect(() => {
+    const getTotal = async () => {
+      try {
+        let email = localStorage.getItem("email");
         email = email ? email.replace(/"/g, "") : "";
         console.log("EEmail: ", email);
         const response = await fetch(getTotalAPI, {
