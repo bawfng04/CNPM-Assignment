@@ -8,6 +8,7 @@ const Printer = () => {
   const [selectedPrinterName, setSelectedPrinterName] = useState("");
   const [selectedPrinterModel, setSelectedPrinterModel] = useState("");
   const [selectedPrinterID, setSelectedPrinterID] = useState("");
+  const [file, setFile] = useState("");
 
   const handleSelectPrinter = (id, name, model) => {
     setSelectedPrinterID(id);
@@ -15,23 +16,29 @@ const Printer = () => {
     setSelectedPrinterModel(model);
   };
 
+  const handleSelectFile = (file) => {
+    setFile(file);
+  };
+
   return (
     <div className="printer-container">
       <h2>Upload file</h2>
+
       <div className="printer-main">
         <div className="printer-content">
-          <PrinterLeftPanel />
+          <PrinterLeftPanel setFilee={handleSelectFile} />
           <PrinterRightPanel
             selectedPrinterName={selectedPrinterName}
             selectedPrinterModel={selectedPrinterModel}
             selectedPrinterID={selectedPrinterID}
+            file={file}
           />
         </div>
-        <div className="list-printer"></div>
         <PrintersList onSelectPrinter={handleSelectPrinter} />
       </div>
     </div>
   );
 };
+
 
 export default Printer;

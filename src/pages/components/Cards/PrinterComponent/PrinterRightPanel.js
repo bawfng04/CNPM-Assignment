@@ -6,6 +6,7 @@ const PrinterRightPanel = ({
   selectedPrinterName,
   selectedPrinterModel,
   selectedPrinterID,
+  file,
 }) => {
   const [formData, setFormData] = useState({
     paperType: "A4",
@@ -24,7 +25,12 @@ const PrinterRightPanel = ({
 
   //email, printerID, pageSize, doubleSize, numCopy
 
-  const check = async () => {
+  const check = async (event) => {
+    event.preventDefault();
+    if (!selectedPrinterID) {
+      alert("Please select a printer");
+      return;
+    }
     let email = localStorage.getItem("email");
     let userId = localStorage.getItem("userId");
     email = email.replace(/['"]+/g, "");
@@ -32,22 +38,28 @@ const PrinterRightPanel = ({
     userId = userId.replace(/['"]+/g, "");
     userId = parseInt(userId);
 
+    const formData = new FormData();
+    formData.append("printFile", file);
+    formData.append("userID", userId);
+    formData.append("email", email);
+    formData.append("printerID", selectedPrinterID);
+    formData.append("pageSize", formData.paperType);
+    formData.append(
+      "doubleSize",
+      formData.numSide === "One Side" ? false : true
+    );
+    formData.append("numCopy", formData.copies);
+
     const response = await fetch(checkNumPageAPI, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-
-      body: JSON.stringify({
-        userID: userId,
-        email: email,
-        printerID: selectedPrinterID,
-        pageSize: formData.paperType,
-        doubleSize: formData.numSide === "One Side" ? false : true,
-        numCopy: formData.copies,
-      }),
+      body: formData,
     });
+
+    console.log("formdata", formData);
 
     //log form
     console.log({
