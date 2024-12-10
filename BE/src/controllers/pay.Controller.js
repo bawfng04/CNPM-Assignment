@@ -212,12 +212,13 @@ class PayController {
         error.statusCode = 401;
         throw error;
       }
+
       // Trả về phản hồi thành công
       res.status(200).json({
         message: "Successfully",
         data: {
-          pages_remainingA4: student.data.pages_remainingA4 || 0,
-          pages_remainingA3: student.data.pages_remainingA3 || 0,
+          pages_remainingA4: student.data.pages_remaininga4,
+          pages_remainingA3: student.data.pages_remaininga3,
         },
       });
     } catch (err) {

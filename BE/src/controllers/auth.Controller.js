@@ -193,6 +193,7 @@ async function checkPage(req, res) {
       return res.status(StatusCodes.FORBIDDEN).json({
         message: "Not enough pages remaining A4",
         flag: false,
+        pageA4: num_pages - student.data.pages_remaininga4,
       });
     }
 
@@ -201,6 +202,7 @@ async function checkPage(req, res) {
       return res.status(StatusCodes.FORBIDDEN).json({
         message: "Not enough pages remaining  A3",
         flag: false,
+        pageA3: num_pages - student.data.pages_remaininga3,
       });
     }
 

@@ -345,9 +345,10 @@ class UserService {
           student_id = COALESCE($1, student_id),
           account_balance = COALESCE($2, account_balance),
           account_status = COALESCE($3, account_status),
-          pages_remaining = COALESCE($4, pages_remaining),
+          pages_remaininga4 = COALESCE($4, pages_remaininga4),
+          pages_remaininga3 = COALESCE($5, pages_remaininga3),
           updated_at = CURRENT_TIMESTAMP
-        WHERE id = $5
+        WHERE id = $6
       `;
       const values = [
         student.student_id !== undefined ? student.student_id : null, // Kiểm tra rõ ràng giá trị undefined
@@ -355,7 +356,9 @@ class UserService {
         student.account_status !== undefined
           ? student.account_status
           : "active",
-        student.pages_remaining !== undefined ? student.pages_remaining : 0,
+        student.pages_remaininga4 !== undefined ? student.pages_remaininga4 : 0,
+        student.pages_remaininga3 !== undefined ? student.pages_remaininga3 : 0,
+
         student.id,
       ];
 
