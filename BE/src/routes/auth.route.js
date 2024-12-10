@@ -19,7 +19,7 @@ router.get("/", (req, res, next) => {
 
 router.post("/getIn4", authController.getIn4);
 router.post("/update", validations.updateProfile, authController.updateProfile);
-
+router.post("/checkpage", authController.checkPage);
 router.get("/logout", authController.logout);
 
 module.exports = router;

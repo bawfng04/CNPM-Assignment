@@ -7,6 +7,7 @@ const models = require("../models/auth.Model.js");
 const sendMail = require("../provider.js");
 const Mail = require("../constant.js");
 const { StatusCodes } = require("http-status-codes");
+const { boolean } = require("joi");
 
 async function register(req, res) {
   try {
@@ -167,6 +168,55 @@ async function updateProfile(req, res) {
     });
   }
 }
+async function checkPage(req, res) {
+  const num_pages = req.body.num_pages; // Số trang yêu cầu
+  const userID = req.body.userID; // ID người dùng
+  let flag = false;
+
+  // Kiểm tra nếu cần xử lý riêng với A3
+  if (req.body.A3) {
+    flag = true;
+  }
+
+  try {
+    const student = await UserService.findByID(userID);
+
+    // Kiểm tra nếu không tìm thấy sinh viên
+    if (!student || student.status !== 200 || !student.data) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error: "Can't find student",
+      });
+    }
+
+    // Kiểm tra số trang còn lại
+    if (student.data.pages_remaining < num_pages) {
+      return res.status(StatusCodes.FORBIDDEN).json({
+        message: "Not enough pages remaining",
+        flag: false,
+      });
+    }
+
+    // Kiểm tra điều kiện đặc biệt nếu flag bật (A3)
+    if (flag && student.data.pages_remaining < 2 * num_pages) {
+      return res.status(StatusCodes.FORBIDDEN).json({
+        message: "Not enough pages remaining for A3",
+        flag: false,
+      });
+    }
+
+    // Nếu tất cả điều kiện đều đạt
+    return res.status(StatusCodes.OK).json({
+      message: "Enough pages remaining",
+      flag: true,
+    });
+  } catch (error) {
+    // Xử lý lỗi không mong muốn
+    console.error("Error in checkPage:", error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: "An error occurred while processing the request",
+    });
+  }
+}
 
 module.exports = {
   register,
@@ -175,4 +225,5 @@ module.exports = {
   verify,
   getIn4,
   updateProfile,
+  checkPage,
 };
