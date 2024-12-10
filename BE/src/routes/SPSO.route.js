@@ -10,6 +10,7 @@ const verify = require("../middleware/auth.js");
 // router.get("/getPrinters", controllers.fetchAllPrinter);
 router.post("/creatprinter", validations.create, controllers.create);
 router.get("/getUsers", controllers.fetchAllUsers);
+router.get("/detail/:userID", controllers.getDetail);
 router.get("/test", (req, res, next) => {
   res.send("Hello World");
 });

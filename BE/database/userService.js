@@ -221,26 +221,25 @@ class UserService {
     }
   }
 
-  
   async findByEmail2(email) {
     return new Promise((resolve, reject) => {
       client.query(
-          ` SELECT * FROM users
+        ` SELECT * FROM users
           WHERE email = $1
             `,
         [email],
         (err, res) => {
-          if(res.rowCount  < 1) {
-              reject({
-                status: 400,
-                msg: "no user"
-              })
+          if (res.rowCount < 1) {
+            reject({
+              status: 400,
+              msg: "no user",
+            });
           } else {
-              resolve({
-                status: 200,
-                msg: "find user",
-                data: res.rows[0].id
-              })
+            resolve({
+              status: 200,
+              msg: "find user",
+              data: res.rows[0].id,
+            });
           }
         }
       );
@@ -376,6 +375,29 @@ class UserService {
       console.error("Error updating student:", error.message);
       throw new Error("Failed to update student");
     }
+  }
+  async getDetail(userID) {
+    return new Promise((resolve, reject) => {
+      client.query(
+        `SELECT * FROM users WHERE id = $1 `,
+        [userID],
+        (err, res) => {
+          if (err) {
+            console.log(err);
+            reject({
+              status: 400,
+              msg: err.message,
+              data: null,
+            });
+          } else {
+            resolve({
+              status: 200,
+              data: res.rows,
+            });
+          }
+        }
+      );
+    });
   }
 }
 

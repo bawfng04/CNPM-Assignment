@@ -189,17 +189,17 @@ async function checkPage(req, res) {
     }
 
     // Kiểm tra số trang còn lại
-    if (student.data.pages_remaining < num_pages) {
+    if (student.data.pages_remaininga4 < num_pages) {
       return res.status(StatusCodes.FORBIDDEN).json({
-        message: "Not enough pages remaining",
+        message: "Not enough pages remaining A4",
         flag: false,
       });
     }
 
     // Kiểm tra điều kiện đặc biệt nếu flag bật (A3)
-    if (flag && student.data.pages_remaining < 2 * num_pages) {
+    if (flag && student.data.pages_remaininga3 < num_pages) {
       return res.status(StatusCodes.FORBIDDEN).json({
-        message: "Not enough pages remaining for A3",
+        message: "Not enough pages remaining  A3",
         flag: false,
       });
     }

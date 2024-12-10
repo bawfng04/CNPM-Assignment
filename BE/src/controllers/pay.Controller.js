@@ -171,7 +171,8 @@ class PayController {
       }
 
       // Cập nhật số trang còn lại
-      student.data.pages_remaining += number;
+      student.data.pages_remaininga4 += A4;
+      student.data.pages_remaininga3 += A3;
 
       // Lưu người dùng sau khi cập nhật
       const updateResult = await UserService.updateStudent(student.data);
@@ -214,7 +215,10 @@ class PayController {
       // Trả về phản hồi thành công
       res.status(200).json({
         message: "Successfully",
-        data: student.data.pages_remaining,
+        data: {
+          pages_remainingA4: student.data.pages_remainingA4 || 0,
+          pages_remainingA3: student.data.pages_remainingA3 || 0,
+        },
       });
     } catch (err) {
       console.error("Error :", err);
