@@ -145,7 +145,7 @@ const PrinterLeftPanel = () => {
               <label htmlFor="pages">Pages</label>
             </div>
             <div className="r">
-              <h4>1-10</h4>
+              <input type="number" name="pages" id="pages" />
             </div>
           </div>
         </div>

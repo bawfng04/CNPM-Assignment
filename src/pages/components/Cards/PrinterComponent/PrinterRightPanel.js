@@ -8,10 +8,9 @@ const PrinterRightPanel = ({
   selectedPrinterID,
 }) => {
   const [formData, setFormData] = useState({
-    email: "",
     paperType: "A4",
-    numPaper: "One Side",
-    numSide: "",
+    numPaper: "",
+    numSide: "One Side",
     copies: "",
   });
 
@@ -23,34 +22,53 @@ const PrinterRightPanel = ({
     });
   };
 
+  //email, printerID, pageSize, doubleSize, numCopy
+
   const check = async () => {
     let email = localStorage.getItem("email");
+    let userId = localStorage.getItem("userId");
     email = email.replace(/['"]+/g, "");
+
+    userId = userId.replace(/['"]+/g, "");
+    userId = parseInt(userId);
+
     const response = await fetch(checkNumPageAPI, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
+
       body: JSON.stringify({
+        userID: userId,
         email: email,
         printerID: selectedPrinterID,
-        paperType: formData.paperType,
-        numPaper: formData.numPaper,
-        numSide: formData.numSide,
-        copies: formData.copies,
+        pageSize: formData.paperType,
+        doubleSize: formData.numSide === "One Side" ? false : true,
+        numCopy: formData.copies,
       }),
     });
 
-    //log the form
-    console.log("email: ", email);
-    console.log("printerID: ", selectedPrinterID);
-    console.log("paperType: ", formData.paperType);
-    console.log("numPaper: ", formData.numPaper);
-    console.log("numSide: ", formData.numSide);
+    //log form
+    console.log({
+      userId: userId,
+      email: email,
+      printerID: selectedPrinterID,
+      pageSize: formData.paperType,
+      doubleSize: formData.numSide === "One Side" ? false : true,
+      numCopy: formData.copies,
+    });
 
     const data = await response.json();
     console.log(data);
+
+    if (data.flag) {
+      alert("Print success");
+    } else {
+      localStorage.setItem("activeComponent", "market");
+      //refresh page
+      window.location.reload(); //chuyển trang market
+    }
   };
 
   return (
@@ -64,7 +82,7 @@ const PrinterRightPanel = ({
         </span>
       </div>
 
-      <form className="print-settings">
+      <form className="print-settings" onSubmit={check}>
         <div className="setting">
           <label>Paper Type</label>
           <select
@@ -100,29 +118,23 @@ const PrinterRightPanel = ({
           <label>Copies</label>
           <input type="number" name="copies" onChange={handleChange} required />
         </div>
+
+        <div className="soleSetting">
+          <label>Print Handing</label>
+          <select>
+            <option>Scale</option>
+            <option>Tile Large Pages</option>
+          </select>
+        </div>
+        <div className="soleSetting">
+          <label>Orientation</label>
+          <select>
+            <option>Portrait</option>
+            <option>Landscape</option>
+          </select>
+        </div>
+        <button className="print-button">Print</button>
       </form>
-
-      <div className="soleSetting">
-        <label>Print Handing</label>
-        <select>
-          <option>Scale</option>
-          <option>Tile Large Pages</option>
-        </select>
-      </div>
-      <div className="soleSetting">
-        <label>Orientation</label>
-        <select>
-          <option>Portrait</option>
-          <option>Landscape</option>
-        </select>
-      </div>
-
-      <div className="buttons">
-        <button className="print-button" onClick={check}>
-          Print
-        </button>
-        <button className="cancel-button">Cancel</button>
-      </div>
     </div>
   );
 };
