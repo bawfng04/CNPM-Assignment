@@ -23,64 +23,65 @@ const PrinterRightPanel = ({
     });
   };
 
-  //email, printerID, pageSize, doubleSize, numCopy
-
   const check = async (event) => {
     event.preventDefault();
     if (!selectedPrinterID) {
       alert("Please select a printer");
       return;
+    } else if (!file) {
+      alert("Please upload a file");
+      return;
     }
     let email = localStorage.getItem("email");
     let userId = localStorage.getItem("userId");
     email = email.replace(/['"]+/g, "");
+    userId = parseInt(userId.replace(/['"]+/g, ""));
 
-    userId = userId.replace(/['"]+/g, "");
-    userId = parseInt(userId);
-
-    const formData = new FormData();
-    formData.append("printFile", file);
-    formData.append("userID", userId);
-    formData.append("email", email);
-    formData.append("printerID", selectedPrinterID);
-    formData.append("pageSize", formData.paperType);
-    formData.append(
+    const formDataToSend = new FormData();
+    formDataToSend.append("printFile", file);
+    formDataToSend.append("userID", userId);
+    formDataToSend.append("email", email);
+    formDataToSend.append("printerID", selectedPrinterID);
+    formDataToSend.append("pageSize", formData.paperType);
+    formDataToSend.append(
       "doubleSize",
       formData.numSide === "One Side" ? false : true
     );
-    formData.append("numCopy", formData.copies);
+    formDataToSend.append("numCopy", formData.copies);
 
-    console.log("Form Data:", formData);
+    try {
+      const response = await fetch(checkNumPageAPI, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formDataToSend,
+      });
 
-    const response = await fetch(checkNumPageAPI, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: formData,
-    });
+      // console.log("Form data to send", formDataToSend);
+      // console.log(
+      //   file,
+      //   userId,
+      //   email,
+      //   selectedPrinterID,
+      //   formData.paperType,
+      //   formData.numSide,
+      //   formData.copies
+      // );
 
-    //log form
-    console.log({
-      file: file,
-      userId: userId,
-      email: email,
-      printerID: selectedPrinterID,
-      pageSize: formData.paperType,
-      doubleSize: formData.numSide === "One Side" ? false : true,
-      numCopy: formData.copies,
-    });
-
-    const data = await response.json();
-    console.log(data);
-
-    if (data.flag) {
-      alert("Print success");
-    } else {
-      localStorage.setItem("activeComponent", "market");
-      //refresh page
-      window.location.reload(); //chuyển trang market
+      const data = await response.json();
+      if (data) {
+        if (data.flag) {
+          alert("Print success");
+        } else {
+          // localStorage.setItem("activeComponent", "market");
+          // window.location.reload();
+          console.log("Route 2");
+          console.log("data", data);
+        }
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
