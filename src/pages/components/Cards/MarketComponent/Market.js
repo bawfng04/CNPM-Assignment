@@ -20,6 +20,8 @@ const marketAPI = "http://localhost:4000/pay/BuyPages";
 const doneAPI = "http://localhost:4000/pay/Update";
 const getTotalAPI = "http://localhost:4000/pay/TotalPage";
 
+
+
 function Market() {
   const [A0num, setA0num] = useState(0);
   const [A1num, setA1num] = useState(0);
@@ -35,10 +37,8 @@ function Market() {
 
   const [totalPaper, setTotalPaper] = useState(0);
 
-
-
-
-
+  const [a3new, setA3new] = useState(0);
+  const [a4new, setA4new] = useState(0);
 
   const handleDone = async () => {
     try {
@@ -61,8 +61,19 @@ function Market() {
         body: JSON.stringify(data),
       });
       const res = await response.json();
-      if (res && res.data.pages_remaining) {
-        const totalPaper = res.data.pages_remaining;
+
+      console.log("RESSS: ", res);
+
+      if (res) {
+        const a3 = res.data.pages_remaininga3;
+        const a4 = res.data.pages_remaininga4;
+
+        setA3new(a3);
+        setA4new(a4);
+
+        console.log("A3: ", a3new);
+        console.log("A4: ", a4new);
+
         setTotalPaper(totalPaper);
         setA3plus(parseInt(A3num));
         setA4plus(parseInt(A4num));
@@ -78,6 +89,8 @@ function Market() {
         oldA4 += parseInt(A4num);
         localStorage.setItem("A3plus", oldA3);
         localStorage.setItem("A4plus", oldA4);
+
+        localStorage.setItem("newTotal", totalPaper);
 
         alert("Transaction completed");
         setQrDisplay(false);
@@ -109,7 +122,7 @@ function Market() {
       try {
         let email = localStorage.getItem("email");
         email = email ? email.replace(/"/g, "") : "";
-        console.log("EEmail: ", email);
+        // console.log("EEmail: ", email);
         const response = await fetch(getTotalAPI, {
           method: "POST",
           headers: {
@@ -120,8 +133,17 @@ function Market() {
         });
 
         const res = await response.json();
-        const totalPage = res.data;
-        setTotalPaper(totalPage);
+
+        console.log("resss: ", res);
+
+        // console.log("A3: ", res.data.pages_remainingA3);
+        let total = res.data.pages_remainingA3 + res.data.pages_remainingA4;
+        setTotalPaper(total);
+        setA3new(res.data.pages_remainingA3);
+        setA4new(res.data.pages_remainingA4);
+
+        localStorage.setItem("newA33", res.data.pages_remainingA3);
+        localStorage.setItem("newA44", res.data.pages_remainingA4);
       } catch (error) {
         console.log(error);
       }
@@ -134,7 +156,7 @@ function Market() {
       try {
         let email = localStorage.getItem("email");
         email = email ? email.replace(/"/g, "") : "";
-        console.log("EEmail: ", email);
+        // console.log("EEmail: ", email);
         const response = await fetch(getTotalAPI, {
           method: "POST",
           headers: {
@@ -145,8 +167,11 @@ function Market() {
         });
 
         const res = await response.json();
-        const totalPage = res.data;
-        setTotalPaper(totalPage);
+        // const totalPage = res.data;
+        // setTotalPaper(totalPage);
+        // console.log("TOTALLLL: ", totalPage);
+        let total = res.data.pages_remainingA3 + res.data.pages_remainingA4;
+        setTotalPaper(total);
       } catch (error) {
         console.log(error);
       }
@@ -520,11 +545,7 @@ function Market() {
                 <h3>A4 paper</h3>
                 <p>5h ago</p>
               </div>
-              <span>
-                {localStorage.getItem("A4plus")
-                  ? localStorage.getItem("A4plus")
-                  : 0}
-              </span>
+              <span>{a4new || 0}</span>
             </div>
 
             <div className="c-market__item-current">
@@ -533,11 +554,7 @@ function Market() {
                 <h3>A3 paper</h3>
                 <p>5h ago</p>
               </div>
-              <span>
-                {localStorage.getItem("A3plus")
-                  ? localStorage.getItem("A3plus")
-                  : 0}
-              </span>
+              <span>{a3new || 0}</span>
             </div>
 
             <div className="c-market__item-current">

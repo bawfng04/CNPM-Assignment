@@ -1,33 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import PrinterIcon from "../../../images/printerIcon.png";
 import nextIcon from "../../../images/nextIcon.png";
 import prevIcon from "../../../images/prevIcon.png";
 
-const printers = [
-  { id: "CN102101", status: "available" },
-  { id: "CN019201", status: "available" },
-  { id: "CN102101", status: "processing" },
-  { id: "CN102101", status: "fixing" },
-  { id: "CN102101", status: "available" },
-  { id: "CN102101", status: "processing" },
-  { id: "CN102102", status: "available" },
-  { id: "CN019202", status: "available" },
-  { id: "CN102103", status: "processing" },
-  { id: "CN102104", status: "fixing" },
-  { id: "CN102101", status: "available" },
-  { id: "CN019201", status: "available" },
-  { id: "CN102101", status: "processing" },
-  { id: "CN102101", status: "fixing" },
-  { id: "CN102101", status: "available" },
-  { id: "CN102101", status: "processing" },
-  { id: "CN102102", status: "available" },
-  { id: "CN019202", status: "available" },
-  { id: "CN102103", status: "processing" },
-  { id: "CN102104", status: "fixing" },
-];
+const PrinterListAPI = "http://localhost:4000/print/all";
 
-const PrintersList = () => {
+const PrintersList = ({ onSelectPrinter }) => {
+  const [printers, setPrinters] = useState([]);
+
+  const handleClickPrinter = (id, name, model) => {
+    onSelectPrinter(id, name, model);
+  };
+
+  const fetchPrinters = async () => {
+    try {
+      const response = await fetch(PrinterListAPI, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      let data2 = await response.json();
+      let data = data2.data;
+      console.log("data: ", data);
+
+      setPrinters(data);
+    } catch (error) {
+      console.error("Error fetching printers: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPrinters();
+  }, []);
+
   const [currentPage, setCurrentPage] = useState(0);
   const printersPerPage = 6;
 
@@ -63,13 +71,25 @@ const PrintersList = () => {
             )}
             <div className="printer-list">
               {currentPrinters.map((printer, index) => (
-                <div key={`${printer.id}-${index}`} className="printer-item">
+                <div
+                  key={`${printer.id}-${index}`}
+                  className="printer-item"
+                  onClick={() =>
+                    handleClickPrinter(
+                      printer.id,
+                      printer.brand_name,
+                      printer.model
+                    )
+                  }
+                >
                   <img
                     className="printer-icon"
                     src={PrinterIcon}
                     alt="Printer Icon"
                   />
-                  <div className="printer-name">Canon 3000</div>
+                  <div className="printer-name">
+                    {printer.brand_name + " " + printer.model}{" "}
+                  </div>
                   <div className="printer-id">#{printer.id}</div>
                   <div className={`printer-status ${printer.status}`}>
                     {printer.status}

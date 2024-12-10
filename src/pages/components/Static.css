@@ -186,17 +186,20 @@ body {
 }
 
 .replaceCard {
-  animation: replaceCard 0.5s ease-in-out;
+  animation: replaceCard 0.7s ease-in-out;
 }
 
 @keyframes replaceCard {
   0% {
     opacity: 0;
-    transform: translateX(-20px);
+    transform: translateX(-50px);
+    /* rotate: -7200deg; */
+
   }
   100% {
     opacity: 1;
     transform: translateX(0);
+    /* rotate: 0deg; */
   }
 }
 
@@ -218,6 +221,17 @@ body {
 }
 
 
+@keyframes slide222{
+  0%{
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100%{
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .logoutContainer {
   position: absolute;
   top: 10%;
@@ -226,7 +240,8 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   padding: 20px;
   z-index: 1;
-  animation: fadeIn 1s;
+  animation: slide222 1s;
+  border-radius: 50px;
 }
 
 .logoutButton{

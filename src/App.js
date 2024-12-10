@@ -13,7 +13,7 @@ import Main from "./pages/Main";
 
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false); // eslint-disable-line
 
   useEffect(() => {
     const loggedIn = localStorage.getItem("isLoggedIn");

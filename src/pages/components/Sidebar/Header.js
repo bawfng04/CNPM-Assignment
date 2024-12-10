@@ -14,7 +14,7 @@ const handleLogout = async () => {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
-  console.log("TOKENNNN:", localStorage.getItem("token"));
+  // console.log("TOKENNNN:", localStorage.getItem("token"));
   const data = await response.json();
   if (data.message) {
     localStorage.removeItem("token");
