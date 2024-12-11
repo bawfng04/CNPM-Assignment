@@ -20,13 +20,13 @@ class OrderController {
     const userData = await UserService.findByEmail2(email);
     const userID = userData.data;
     console.log("Check userID: ", userID);
-    if (!req.file) {
-      return res.status(400).json({
-        statusCode: 400,
-        msg: "Error in uploaded file!",
-        data: null,
-      });
-    }
+    // if (!req.file) {
+    //   return res.status(400).json({
+    //     statusCode: 400,
+    //     msg: "Error in uploaded file!",
+    //     data: null,
+    //   });
+    // }
 
     // let filePath = req.file.path;
     // filePath = filePath.replace(/\\/g, "/");
@@ -46,7 +46,7 @@ class OrderController {
     // );
     // const fileType = req.file.mimetype;
     // const fileSize = req.file.size;
-    const fileName = req.fileName;
+    const fileName = req.body.fileName;
     const fileType = fileName.split(".").pop();
     const fileSize = req.fileSize;
     try {
@@ -59,12 +59,16 @@ class OrderController {
       console.log(documentData);
       const docsID = documentData.data;
       console.log("Docs ID: ", docsID);
+      let numPage;
+      if (doubleSize) {
+        numPage = num_pages * numCopy * 2;
+      } else numPage = num_pages * numCopy;
       // Lấy thời gian hiện tại
       const currentDate = new Date();
 
       // Tính toán thời gian mới (giữa), tăng thêm 1 giây * pageNum * numCopy
       const adjustedDate = new Date(
-        currentDate.getTime() + 1000 * pageNum * numCopy
+        currentDate.getTime() + 1000 * numPage * numCopy
       );
       // Định dạng thời gian theo yêu cầu
       const formattedCurrentDate = currentDate
@@ -75,10 +79,7 @@ class OrderController {
         .toISOString()
         .slice(0, 19)
         .replace("T", " ");
-      let numPage;
-      if (doubleSize) {
-        numPage = num_pages * numCopy * 2;
-      } else numPage = num_pages * numCopy;
+
       // Gọi hàm createOrder với các giá trị đã tính toán
       const result = await OrderService.createOrder(
         printerID,
