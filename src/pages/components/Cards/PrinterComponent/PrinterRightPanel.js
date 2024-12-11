@@ -43,13 +43,15 @@ const PrinterRightPanel = ({
       pageNumber = 1;
     } else if (selectedStartPage && selectedEndPage) {
       pageNumber = selectedEndPage - selectedStartPage + 1;
+    } else {
+      alert("Please select a valid page range");
+      return;
     }
 
-    console.log("PAGE NUMBER: ", pageNumber);
-
-    console.log("selectedPageOption: ", selectedPageOption);
-    console.log("selectedStartPage: ", selectedStartPage);
-    console.log("selectedEndPage: ", selectedEndPage);
+    // console.log("PAGE NUMBER: ", pageNumber);
+    // console.log("selectedPageOption: ", selectedPageOption);
+    // console.log("selectedStartPage: ", selectedStartPage);
+    // console.log("selectedEndPage: ", selectedEndPage);
 
     if (selectedPrinterStatus === "disabled") {
       alert("Please select a printer that is not disabled");
@@ -57,45 +59,72 @@ const PrinterRightPanel = ({
     }
     let email = localStorage.getItem("email");
     let userId = localStorage.getItem("userId");
-    email = email.replace(/['"]+/g, "");
-    userId = parseInt(userId.replace(/['"]+/g, ""));
 
-    const formDataToSend = new FormData();
-    formDataToSend.append("printFile", file);
-    formDataToSend.append("userID", userId);
-    formDataToSend.append("email", email);
-    formDataToSend.append("printerID", selectedPrinterID);
-    formDataToSend.append("pageSize", formData.paperType);
-    formDataToSend.append(
-      "doubleSize",
-      formData.numSide === "One Side" ? false : true
-    );
-    formDataToSend.append("numCopy", formData.copies);
+    email = email.replace(/['"]+/g, "").trim();
+    userId = parseInt(userId.replace(/['"]+/g, "").trim());
+    // userId = userId.replace(/^\s+|\s+$/gm, "");
+
+    // const formDataToSend = new FormData();
+    // formDataToSend.append("printFile", file);
+    // formDataToSend.append("userID", userId);
+    // formDataToSend.append("email", email);
+    // formDataToSend.append("printerID", selectedPrinterID);
+    // formDataToSend.append("pageSize", formData.paperType);
+    // formDataToSend.append(
+    //   "doubleSize",
+    //   formData.numSide === "One Side" ? false : true
+    // );
+    // formDataToSend.append("numCopy", formData.copies);
+    // formDataToSend.append("num_pages", pageNumber);
+
+    const formDataToSend = {
+      printFile: file.name,
+      userID: userId,
+      email: email,
+      printerID: selectedPrinterID,
+      pageSize: formData.paperType,
+      doubleSize: formData.numSide === "One Side" ? false : true,
+      numCopy: formData.copies,
+      num_pages: pageNumber,
+    };
 
     try {
       const response = await fetch(checkNumPageAPI, {
         method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: formDataToSend,
+        // body: formDataToSend,
+        body: JSON.stringify(formDataToSend),
       });
 
-      // console.log("Form data to send", formDataToSend);
-      // console.log(
-      //   file,
-      //   userId,
-      //   email,
-      //   selectedPrinterID,
-      //   formData.paperType,
-      //   formData.numSide,
-      //   formData.copies
-      // );
+      console.log("Form data to send", formDataToSend);
+      console.log(
+        "File:",
+        file,
+        "userID:",
+        userId,
+        "email:",
+        email,
+        "printerID:",
+        selectedPrinterID,
+        "pageSize:",
+        formData.paperType,
+        "doubleSize:",
+        formData.numSide === "One Side" ? false : true,
+        "numCopy:",
+        formData.copies,
+        "num_pages:",
+        pageNumber
+      );
+
+      console.log("UID:", userId);
 
       const data = await response.json();
       if (data) {
         if (data.flag) {
-          alert("Print success");
+          alert("Print success!");
         } else {
           // localStorage.setItem("activeComponent", "market");
           // window.location.reload();
