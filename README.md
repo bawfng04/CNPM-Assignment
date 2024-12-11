@@ -1,8 +1,13 @@
 
 
-Deploy: https://smartprinterservice-86a9c.web.app/
+# Smart Printer Service
 
-**Note:** Chạy backend server (localhost:4000) mới truy cập được.
+Smart Printer Service is a web application designed to manage and monitor printing services efficiently. It provides user authentication, role-based access control, printer management, order tracking, and payment integration. The application supports real-time notifications and offers a user-friendly interface for both users and administrators.
+
+Deploy: [https://smartprinterservice-86a9c.web.app/](https://smartprinterservice-86a9c.web.app/)
+
+**Note:** Ensure that the backend server (localhost:4000) are running to access the application.
+
 
 ## Routes
 
