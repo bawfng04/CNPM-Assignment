@@ -8,6 +8,9 @@ const PrinterRightPanel = ({
   selectedPrinterID,
   selectedPrinterStatus,
   file,
+  selectedPageOption,
+  selectedStartPage,
+  selectedEndPage,
 }) => {
   const [formData, setFormData] = useState({
     paperType: "A4",
@@ -33,6 +36,21 @@ const PrinterRightPanel = ({
       alert("Please upload a file");
       return;
     }
+
+    let pageNumber = 0;
+
+    if (selectedPageOption === "current-page") {
+      pageNumber = 1;
+    } else if (selectedStartPage && selectedEndPage) {
+      pageNumber = selectedEndPage - selectedStartPage + 1;
+    }
+
+    console.log("PAGE NUMBER: ", pageNumber);
+
+    console.log("selectedPageOption: ", selectedPageOption);
+    console.log("selectedStartPage: ", selectedStartPage);
+    console.log("selectedEndPage: ", selectedEndPage);
+
     if (selectedPrinterStatus === "disabled") {
       alert("Please select a printer that is not disabled");
       return;

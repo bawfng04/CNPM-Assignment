@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import uploadIcon from "../../../images/uploadIcon.png";
 
-const uploadAPI = "http://localhost:4000/uploads/";
+// const uploadAPI = "http://localhost:4000/uploads/";
 
-
-const PrinterLeftPanel = ({ setFilee }) => {
+const PrinterLeftPanel = ({ setFilee, handlePages }) => {
   const [file, setFile] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [errorUpload, setErrorUpload] = useState(false);
@@ -16,6 +15,23 @@ const PrinterLeftPanel = ({ setFilee }) => {
   const handleFile = (fileName) => {
     setFilee(fileName);
   };
+
+  const handlePagesIn = useCallback(
+    (option, start, end) => {
+      if (start && end && start > end) {
+        alert("Start page must be less than end page");
+        setStartPage("");
+        setEndPage("");
+        return;
+      }
+      handlePages(option, start, end);
+    },
+    [handlePages]
+  );
+
+  useEffect(() => {
+    handlePagesIn(pageOption, startPage, endPage);
+  }, [handlePagesIn, pageOption, startPage, endPage]);
 
   // const uploadFile = async (file) => {
   //   const formData = new FormData();
@@ -125,9 +141,9 @@ const PrinterLeftPanel = ({ setFilee }) => {
             <label>
               <input
                 type="radio"
-                value="current"
-                checked={pageOption === "current"}
-                onChange={() => setPageOption("current")}
+                value="current-page"
+                checked={pageOption === "current-page"}
+                onChange={() => setPageOption("current-page")}
               />
               Current Page
             </label>
