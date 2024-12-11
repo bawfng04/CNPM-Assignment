@@ -8,6 +8,7 @@ const sendMail = require("../provider.js");
 const Mail = require("../constant.js");
 const { StatusCodes } = require("http-status-codes");
 const { boolean } = require("joi");
+const { use } = require("../routes/printer.route.js");
 
 async function register(req, res) {
   try {
@@ -148,8 +149,8 @@ async function updateProfile(req, res) {
     }
 
     student.data.student_id = studentID || null;
-    student.faculty = faculty || null;
-    student.address = address || null;
+    student.data.faculty = faculty || null;
+    student.data.address = address || null;
     const updateResultu = await UserService.updateUser(user);
     if (!updateResultu || updateResultu.status !== 200) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -168,6 +169,50 @@ async function updateProfile(req, res) {
       message: "Update Information Successfully",
       user: user, // Trả về thông tin đã cập nhật của user
       student: student.data, // Trả về thông tin đã cập nhật của student
+    });
+  } catch (err) {
+    console.error("Error updating profile:", err.message);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: "An error occurred while updating profile",
+      details: err.message,
+    });
+  }
+}
+async function updatePass(req, res) {
+  try {
+    const { email, oldPassword, newPassword } = req.body;
+
+    if (!email) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        error: "Email is required",
+      });
+    }
+
+    const result = await UserService.findByEmail(email);
+    if (!result || result.status !== 200 || !result.data) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error: "Can't find user",
+      });
+    }
+    const user = result.data;
+    const isEqual = await bcrypt.compare(oldPassword, user.password);
+    if (!isEqual) {
+      const error = new Error("Wrong password");
+      error.statusCode = 401;
+      throw error;
+    }
+    user.password = newPassword;
+    const hashPassword = await bcrypt.hash(user.password, 12);
+    user.password = hashPassword;
+    const updateResultu = await UserService.updateUser(user);
+    if (!updateResultu || updateResultu.status !== 200) {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        error: "Failed to update user",
+      });
+    }
+    res.status(StatusCodes.OK).json({
+      message: "Update Password Successfully",
+      user: user, // Trả về thông tin đã cập nhật của user
     });
   } catch (err) {
     console.error("Error updating profile:", err.message);
@@ -237,4 +282,5 @@ module.exports = {
   getIn4,
   updateProfile,
   checkPage,
+  updatePass,
 };

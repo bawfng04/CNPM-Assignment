@@ -17,9 +17,8 @@ async function create(req, res) {
   }
 }
 async function fetchAllUsers(req, res, next) {
-  const limit = req.params.limit ? req.params.limit : 10;
   try {
-    const result = await UserService.fetchUsers(limit);
+    const result = await UserService.fetchUsers();
     const totaluser = await UserService.countAllUsers();
     const totaloder = await printerService.countAllOder();
     if (result.status !== 200) {
@@ -27,7 +26,7 @@ async function fetchAllUsers(req, res, next) {
     }
     res.status(200).json({
       statusCode: 200,
-      msg: `Fetch users LIMI ${limit}`,
+      msg: `Fetch users `,
       data: result.data,
       Totaluser: totaluser,
       Totaloder: totaloder,

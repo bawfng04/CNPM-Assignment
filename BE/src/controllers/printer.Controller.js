@@ -19,7 +19,8 @@ class PrinterController {
 
     try {
       const printerData = await printerService.fetchAllPrinter();
-      const totalPrinterEn = await printerService.countPrinterEn();
+      const totalPrinterEn = await printerService.countPrin;
+      terEn();
       const totalPrinterDis = await printerService.countPrinterDis();
 
       // const totalPage = Math.ceil(totalPrinter.data[0].total_printers / limit);
