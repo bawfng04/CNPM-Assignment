@@ -215,17 +215,25 @@ body {
 
 /* LOGIN.CSS */
 
+/* LOGIN.CSS */
+
 @keyframes fadeInTick {
   0% {
-    transform: scale(0);
+    transform: scale(0) rotate(-360deg);
     opacity: 0;
   }
   50% {
-    transform: scale(1.2);
+    transform: scale(1.2) rotate(-200deg);
     opacity: 1;
   }
+  50% {
+    transform: scale(0.9) rotate(-90deg);
+  }
+  75% {
+    transform: scale(1.1) rotate(-45deg);
+  }
   100% {
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
   }
 }
 

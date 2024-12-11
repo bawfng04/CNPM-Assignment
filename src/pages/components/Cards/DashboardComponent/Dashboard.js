@@ -8,21 +8,24 @@ import boxChart from "../../../images/box-chart.jpg";
 import boxBalance from "../../../images/box-balance.jpg";
 import p1 from "../../../images/p1.jpg";
 import p2 from "../../../images/p2.jpg";
-// import p3 from "../../../images/p3.jpg";
-// import iconNext from "../../../images/icon-next.png";
 import Chart from "chart.js/auto";
 
 const getInfoAPI = "http://localhost:4000/getIn4";
 const getTotalAPI = "http://localhost:4000/pay/TotalPage";
+const PrinterListAPI = "http://localhost:4000/print/all";
 
 function Dashboard() {
   const chartRef = useRef(null);
+  const printerChartRef = useRef(null);
   const [name, setName] = useState("");
   const [studentID, setStudentID] = useState("");
   const [faculty, setFaculty] = useState("");
   const [address, setAddress] = useState("");
   const [a33, setA33] = useState(0);
   const [a44, setA44] = useState(0);
+  const [enabledPrinters, setEnabledPrinters] = useState(0);
+  const [disabledPrinters, setDisabledPrinters] = useState(0);
+
   const getStudentInfo = async () => {
     let email = localStorage.getItem("email");
     email = email.replace(/['"]+/g, "");
@@ -60,7 +63,34 @@ function Dashboard() {
     }
   };
 
-  //get a3 a4
+  const fetchPrinters = async () => {
+    try {
+      const response = await fetch(PrinterListAPI, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const data = await response.json();
+      const printers = data.data;
+
+      const enabled = printers.filter(
+        (printer) => printer.status === "available"
+      ).length;
+      const disabled = printers.filter(
+        (printer) => printer.status === "disabled"
+      ).length;
+
+      setEnabledPrinters(enabled);
+      setDisabledPrinters(disabled);
+      console.log("enablePrinter: ", enabled);
+      console.log("disablePrinter: ", disabled);
+    } catch (error) {
+      console.error("Error fetching printers: ", error);
+    }
+  };
+
   useEffect(() => {
     const getTotal = async () => {
       try {
@@ -86,7 +116,8 @@ function Dashboard() {
       }
     };
     getTotal();
-  });
+    fetchPrinters();
+  }, []);
 
   useEffect(() => {
     getStudentInfo();
@@ -122,13 +153,42 @@ function Dashboard() {
     };
   }, [a33, a44]);
 
+  // Printer chart
+  useEffect(() => {
+    let printerChartInstance;
+    if (printerChartRef.current) {
+      const ctx = printerChartRef.current.getContext("2d");
+      printerChartInstance = new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: ["Enabled", "Disabled"],
+          datasets: [
+            {
+              data: [enabledPrinters, disabledPrinters],
+              backgroundColor: ["#FF6384", "#36A2EB"],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        },
+      });
+    }
+
+    return () => {
+      if (printerChartInstance) {
+        printerChartInstance.destroy();
+      }
+    };
+  }, [enabledPrinters, disabledPrinters]);
+
   return (
     <section className="c-dashboard">
       <div className="c-dashboard__box-1">
         <div className="c-dashboard__box-info">
           <div className="c-dashboard__head">
             <h2>My Identify</h2>
-            <p>See All</p>
           </div>
           <div className="c-dashboard__box-card">
             <div className="c-dashboard__detail">
@@ -185,15 +245,6 @@ function Dashboard() {
       </div>
 
       <div className="c-dashboard__box-2">
-        <div className="c-dashboard__box-chart">
-          <div className="c-dashboard__chart-head">
-            <h2>Weekly Activity</h2>
-          </div>
-          <div className="c-dashboard__chart-box">
-            <img src={boxChart} alt="Logo" />
-          </div>
-        </div>
-
         <div className="c-dashboard__box-circle">
           <div className="c-dashboard__circle-head">
             <h2>Expense Statistics</h2>
@@ -202,12 +253,21 @@ function Dashboard() {
             <canvas ref={chartRef}></canvas>
           </div>
         </div>
+
+        <div className="c-dashboard__box-printer">
+          <div className="c-dashboard__printer-head">
+            <h2>Printers Status</h2>
+          </div>
+          <div className="c-dashboard__printer-box">
+            <canvas ref={printerChartRef}></canvas>
+          </div>
+        </div>
       </div>
 
       <div className="c-dashboard__box-3">
         <div className="c-dashboard__box-activity">
           <div className="c-dashboard__activity-head">
-            <h2>Paper Remaining</h2>
+            <h2 className="h2p">Paper Remaining</h2>
           </div>
           <div className="c-dashboard__activity-box">
             <div className="c-dashboard__activity-item">
