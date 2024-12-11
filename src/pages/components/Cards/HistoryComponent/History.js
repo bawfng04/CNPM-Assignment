@@ -9,6 +9,7 @@ const History = () => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [visibleItems, setVisibleItems] = useState(10); // New state variable
+  const safeFilteredHistory = filteredHistory || [];
 
   const fetchHistory = async () => {
     try {
@@ -40,6 +41,7 @@ const History = () => {
   }, [startTime, endTime, history]);
 
   const filterHistory = () => {
+    if (!history) return;
     const filtered = history.filter((item) => {
       const itemStartTime = new Date(item.start_time);
 
@@ -93,7 +95,7 @@ const History = () => {
             </tr>
           </thead>
           <tbody className="rounded-tbody">
-            {Array.isArray(filteredHistory) && filteredHistory.length > 0 ? (
+            {Array.isArray(filteredHistory) && filteredHistory?.length > 0 ? (
               filteredHistory.slice(0, visibleItems).map((item, index) => (
                 <tr key={index}>
                   <td className="table-data">{index + 1}</td>
@@ -118,7 +120,7 @@ const History = () => {
             )}
           </tbody>
         </table>
-        {visibleItems < filteredHistory.length && (
+        {filteredHistory && visibleItems < filteredHistory.length && (
           <div className="smContainer">
             <button onClick={showMoreItems} className="show-more-button">
               Show More
