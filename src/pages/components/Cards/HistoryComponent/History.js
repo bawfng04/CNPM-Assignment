@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./History.css";
+import moment from "moment-timezone";
 
 const fetchHistoryAPI = "http://localhost:4000/order/all";
 
@@ -102,10 +103,14 @@ const History = () => {
                   <td className="table-data">{item.printer_id}</td>
                   <td className="table-data">{item.file_name}</td>
                   <td className="table-data">
-                    {new Date(item.start_time).toLocaleString()}
+                    {moment(item.start_time)
+                      .utcOffset("+14:00")
+                      .format("YYYY-MM-DD HH:mm:ss")}
                   </td>
                   <td className="table-data">
-                    {new Date(item.end_time).toLocaleString()}
+                    {moment(item.end_time)
+                      .utcOffset("+14:00")
+                      .format("YYYY-MM-DD HH:mm:ss")}
                   </td>
                   <td className="table-data">{item.pages_printed}</td>
                   <td className="table-data">{item.num_copies}</td>

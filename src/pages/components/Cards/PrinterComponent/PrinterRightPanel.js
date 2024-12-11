@@ -172,7 +172,7 @@ const PrinterRightPanel = ({
           localStorage.setItem("num_pages", pageNumber);
 
           console.log("data", data);
-          // window.location.reload();
+          window.location.reload();
         } else {
           alert("Error");
         }
