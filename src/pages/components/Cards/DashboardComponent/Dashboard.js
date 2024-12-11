@@ -9,14 +9,17 @@ import boxBalance from "../../../images/box-balance.jpg";
 import p1 from "../../../images/p1.jpg";
 import p2 from "../../../images/p2.jpg";
 import Chart from "chart.js/auto";
+import moment from "moment-timezone";
 
 const getInfoAPI = "http://localhost:4000/getIn4";
 const getTotalAPI = "http://localhost:4000/pay/TotalPage";
 const PrinterListAPI = "http://localhost:4000/print/all";
+const fetchHistoryAPI = "http://localhost:4000/order/all";
 
 function Dashboard() {
   const chartRef = useRef(null);
   const printerChartRef = useRef(null);
+  const historyChartRef = useRef(null);
   const [name, setName] = useState("");
   const [studentID, setStudentID] = useState("");
   const [faculty, setFaculty] = useState("");
@@ -25,6 +28,7 @@ function Dashboard() {
   const [a44, setA44] = useState(0);
   const [enabledPrinters, setEnabledPrinters] = useState(0);
   const [disabledPrinters, setDisabledPrinters] = useState(0);
+  const [monthlyPrints, setMonthlyPrints] = useState([]);
 
   const getStudentInfo = async () => {
     let email = localStorage.getItem("email");
@@ -91,6 +95,33 @@ function Dashboard() {
     }
   };
 
+  const fetchHistory = async () => {
+    try {
+      let email = localStorage.getItem("email");
+      email = email.replace(/['"]+/g, "");
+      const response = await fetch(fetchHistoryAPI, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+      const history = data.data;
+
+      const monthlyCounts = Array(12).fill(0);
+      history.forEach((item) => {
+        const month = moment(item.start_time).month();
+        monthlyCounts[month]++;
+      });
+
+      setMonthlyPrints(monthlyCounts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const getTotal = async () => {
       try {
@@ -117,6 +148,7 @@ function Dashboard() {
     };
     getTotal();
     fetchPrinters();
+    fetchHistory();
   }, []);
 
   useEffect(() => {
@@ -165,7 +197,7 @@ function Dashboard() {
           datasets: [
             {
               data: [enabledPrinters, disabledPrinters],
-              backgroundColor: ["#FF6384", "#36A2EB"],
+              backgroundColor: ["#43A5BE", "#FF6666"],
             },
           ],
         },
@@ -182,6 +214,50 @@ function Dashboard() {
       }
     };
   }, [enabledPrinters, disabledPrinters]);
+
+  // History chart
+  useEffect(() => {
+    let historyChartInstance;
+    if (historyChartRef.current) {
+      const ctx = historyChartRef.current.getContext("2d");
+      historyChartInstance = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ],
+          datasets: [
+            {
+              label: "Print Jobs",
+              data: monthlyPrints,
+              backgroundColor: "#36A2EB",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        },
+      });
+    }
+
+    return () => {
+      if (historyChartInstance) {
+        historyChartInstance.destroy();
+      }
+    };
+  }, [monthlyPrints]);
 
   return (
     <section className="c-dashboard">
@@ -284,12 +360,12 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="c-dashboard__box-balance">
-          <div className="c-dashboard__balance-head">
-            <h2>Balance History</h2>
+        <div className="c-dashboard__box-history">
+          <div className="c-dashboard__history-head">
+            <h2>Print Jobs Per Month</h2>
           </div>
-          <div className="c-dashboard__balance-box">
-            <img src={boxBalance} alt="Logo" />
+          <div className="c-dashboard__history-box">
+            <canvas ref={historyChartRef}></canvas>
           </div>
         </div>
       </div>

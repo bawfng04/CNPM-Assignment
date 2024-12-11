@@ -1,7 +1,13 @@
 .c-dashboard {
-  background-color: #f5f7fa;
+  background-color: #ffffff;
   height: calc(100vh - 101px);
   padding: 24px 40px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.mainDiv{
+  overflow: hidden
 }
 
 .c-dashboard__box-1 {
@@ -83,7 +89,7 @@
 }
 
 .c-dashboard__box-circle{
-  background-color: #fff;
+  background-color: #f5f7fa;;
   border-radius: 26px;
   padding: 20px;
   display: flex;
@@ -257,7 +263,7 @@
 }
 
 .c-dashboard__box-printer {
-  background-color: #fff;
+  background-color: #f5f7fa;
   border-radius: 26px;
   padding: 20px;
   display: flex;
@@ -284,5 +290,35 @@
 
 .h2p{
   padding: 0px;
-  background-color: #f5f7fa;;
+  background-color: #ffffff;;
 }
+
+.c-dashboard__box-history {
+  background-color: #fff;
+  border-radius: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+  width: 100%;
+}
+
+.c-dashboard__history-head h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #343c6a;
+  margin-bottom: 17px;
+  letter-spacing: 0.01em;
+}
+
+.c-dashboard__history-box {
+  background-color: #ffffff;
+  border-radius: 26px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 750px;
+}
+
