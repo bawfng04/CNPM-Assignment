@@ -152,7 +152,8 @@ class OrderController {
   }
   async fetchRecentOrder(req, res, next) {
     try {
-      const response = await OrderService.fetchLastOrders();
+      const userID = req.params.userID;
+      const response = await OrderService.fetchOrderByUserID(userID);
       if (response.status !== 200) {
         res.status(400).json({
           statusCode: 400,

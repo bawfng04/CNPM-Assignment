@@ -9,7 +9,7 @@ const Mail = require("../constant.js");
 const { StatusCodes } = require("http-status-codes");
 const { boolean } = require("joi");
 const { use } = require("../routes/printer.route.js");
-
+const bcrypt = require("bcrypt");
 async function register(req, res) {
   try {
     // console.log("haha1");
@@ -182,46 +182,64 @@ async function updatePass(req, res) {
   try {
     const { email, oldPassword, newPassword } = req.body;
 
-    if (!email) {
+    // Kiểm tra nếu email hoặc mật khẩu cũ/mới không được cung cấp
+    if (!email || !oldPassword || !newPassword) {
       return res.status(StatusCodes.BAD_REQUEST).json({
-        error: "Email is required",
+        error: "Email, oldPassword, and newPassword are required",
       });
     }
 
+    // Tìm người dùng theo email
     const result = await UserService.findByEmail(email);
     if (!result || result.status !== 200 || !result.data) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         error: "Can't find user",
       });
     }
+
     const user = result.data;
+
+    // Kiểm tra mật khẩu cũ
     const isEqual = await bcrypt.compare(oldPassword, user.password);
     if (!isEqual) {
-      const error = new Error("Wrong password");
-      error.statusCode = 401;
-      throw error;
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error: "Wrong password",
+      });
     }
-    user.password = newPassword;
-    const hashPassword = await bcrypt.hash(user.password, 12);
-    user.password = hashPassword;
-    const updateResultu = await UserService.updateUser(user);
-    if (!updateResultu || updateResultu.status !== 200) {
+
+    // Kiểm tra mật khẩu mới có giống với mật khẩu cũ không
+    if (oldPassword === newPassword) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        error: "New password cannot be the same as the old password",
+      });
+    }
+
+    // Băm mật khẩu mới
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+    user.password = hashedPassword;
+
+    // Cập nhật người dùng với mật khẩu mới
+    const updateResult = await UserService.updateUser(user);
+    if (!updateResult || updateResult.status !== 200) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         error: "Failed to update user",
       });
     }
+
+    // Trả về thông báo thành công và thông tin người dùng
     res.status(StatusCodes.OK).json({
       message: "Update Password Successfully",
-      user: user, // Trả về thông tin đã cập nhật của user
+      user: { email: user.email, updatedAt: user.updatedAt }, // Trả về thông tin người dùng cần thiết
     });
   } catch (err) {
-    console.error("Error updating profile:", err.message);
+    // Xử lý lỗi tổng thể
+    console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: "An error occurred while updating profile",
-      details: err.message,
+      error: "An error occurred while updating the password",
     });
   }
 }
+
 async function checkPage(req, res) {
   const num_pages = req.body.num_pages; // Số trang yêu cầu
   const userID = req.body.userID; // ID người dùng
