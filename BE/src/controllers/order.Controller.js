@@ -63,7 +63,6 @@ class OrderController {
       const adjustedDate = new Date(
         currentDate.getTime() + 1000 * pageNum * numCopy
       );
-
       // Định dạng thời gian theo yêu cầu
       const formattedCurrentDate = currentDate
         .toISOString()
@@ -151,7 +150,26 @@ class OrderController {
       next(err);
     }
   }
-
+  async fetchRecentOrder(req, res, next) {
+    try {
+      const response = await OrderService.fetchLastOrders();
+      if (response.status !== 200) {
+        res.status(400).json({
+          statusCode: 400,
+          msg: response.msg,
+          data: null,
+        });
+      } else {
+        res.status(200).json({
+          statusCode: 200,
+          msg: "10 recent orders",
+          data: response.data,
+        });
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
   // [GET] /order/all by email, sort by tme
   async getAllOrders(req, res, next) {
     const { email } = req.body;
