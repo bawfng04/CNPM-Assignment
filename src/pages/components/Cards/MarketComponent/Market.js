@@ -40,6 +40,28 @@ function Market() {
   const [a3new, setA3new] = useState(0);
   const [a4new, setA4new] = useState(0);
 
+  const [a3NumToBuy, setA3NumToBuy] = useState(
+    localStorage.getItem("A3numToBuy") || 0
+  );
+
+  const [a4NumToBuy, setA4NumToBuy] = useState(
+    localStorage.getItem("A4numToBuy") || 0
+  );
+
+  //check xem có phải từ printer -> market
+
+  useEffect(() => {
+    //reset
+    setTimeout(() => {
+      if (a3NumToBuy && a3NumToBuy !== "0") {
+        localStorage.setItem("A3numToBuy", 0);
+      }
+      if (a4NumToBuy && a4NumToBuy !== "0") {
+        localStorage.setItem("A4numToBuy", 0);
+      }
+    }, 2000);
+  }, []);
+
   const handleDone = async () => {
     try {
       const userEmail = localStorage.getItem("email");
@@ -466,7 +488,11 @@ function Market() {
                   <p>A4 paper</p>
                 </div>
                 <div className="c-market__bottom-paper">
-                  <input type="number" onChange={(e) => handleChange(4, e)} />
+                  <input
+                    type="number"
+                    defaultValue={a4NumToBuy || 0}
+                    onChange={(e) => handleChange(4, e)}
+                  />
                   <img src={iconPlus} alt="Logo" />
                 </div>
               </div>
@@ -477,7 +503,11 @@ function Market() {
                   <p>A3 paper</p>
                 </div>
                 <div className="c-market__bottom-paper">
-                  <input type="number" onChange={(e) => handleChange(3, e)} />
+                  <input
+                    type="number"
+                    defaultValue={a3NumToBuy || 0}
+                    onChange={(e) => handleChange(3, e)}
+                  />
                   <img src={iconPlus} alt="Logo" />
                 </div>
               </div>

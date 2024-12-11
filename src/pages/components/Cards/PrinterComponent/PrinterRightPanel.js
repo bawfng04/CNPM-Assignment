@@ -42,9 +42,13 @@ const PrinterRightPanel = ({
     if (selectedPageOption === "current-page") {
       pageNumber = 1;
     } else if (selectedStartPage && selectedEndPage) {
+      if (selectedStartPage > selectedEndPage) {
+        alert("Please select a valid page range");
+        return;
+      }
       pageNumber = selectedEndPage - selectedStartPage + 1;
     } else {
-      alert("Please select a valid page range");
+      alert("Error");
       return;
     }
 
@@ -100,36 +104,25 @@ const PrinterRightPanel = ({
       });
 
       console.log("Form data to send", formDataToSend);
-      console.log(
-        "File:",
-        file,
-        "userID:",
-        userId,
-        "email:",
-        email,
-        "printerID:",
-        selectedPrinterID,
-        "pageSize:",
-        formData.paperType,
-        "doubleSize:",
-        formData.numSide === "One Side" ? false : true,
-        "numCopy:",
-        formData.copies,
-        "num_pages:",
-        pageNumber
-      );
 
       console.log("UID:", userId);
 
       const data = await response.json();
       if (data) {
-        if (data.flag) {
+        if (!data.flag) {
           alert("Print success!");
         } else {
-          // localStorage.setItem("activeComponent", "market");
-          // window.location.reload();
+          // vd aA3 bA4
+          let a = 30;
+          let b = 20;
+
+          localStorage.setItem("A3numToBuy", a);
+          localStorage.setItem("A4numToBuy", b);
+          localStorage.setItem("activeComponent", "market");
+
           console.log("Route 2");
           console.log("data", data);
+          window.location.reload();
         }
       }
     } catch (error) {

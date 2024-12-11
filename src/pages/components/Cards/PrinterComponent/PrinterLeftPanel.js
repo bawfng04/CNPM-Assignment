@@ -18,12 +18,7 @@ const PrinterLeftPanel = ({ setFilee, handlePages }) => {
 
   const handlePagesIn = useCallback(
     (option, start, end) => {
-      if (start && end && start > end) {
-        alert("Start page must be less than end page");
-        setStartPage("");
-        setEndPage("");
-        return;
-      }
+
       handlePages(option, start, end);
     },
     [handlePages]
