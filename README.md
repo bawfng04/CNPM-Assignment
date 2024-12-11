@@ -2,15 +2,27 @@
 
 Deploy: https://smartprinterservice-86a9c.web.app/
 
-[Phải chạy server BE (localhost:4000) và PostgreSQL mới vào được]
+**Note:** Chạy backend server (localhost:4000) mới truy cập được.
 
-**routes:**
+## Routes
 
-- /login (trang login)
-- /register (trang register)
-- /main/user (trang cho user)
-- /main/admin (trang cho admin)
-- /main/unauthorized (redirect về trang này nếu không có quyền truy cập)
+- `/login` - Login page
+- `/register` - Register page
+- `/main/user` - User dashboard
+- `/main/admin` - Admin dashboard
+- `/main/unauthorized` - Unauthorized access page
+
+
+## Features
+
+- **User Authentication:** Secure login and registration.
+- **Role-Based Access Control:** Different views for users and admins.
+- **Printer Management:** Add, update, and delete printers.
+- **User Management:** Admins can manage user accounts.
+- **Order Management:** Track and manage print orders.
+- **Payment Integration:** Handle payments for print services.
+- **Real-Time Notifications:** Get notified about important events.
+
 
 # Screenshots
 ![image](https://github.com/user-attachments/assets/7a678bf3-18ac-4fc8-9525-a9f1c0225e6e)
@@ -22,3 +34,30 @@ Deploy: https://smartprinterservice-86a9c.web.app/
 ![image](https://github.com/user-attachments/assets/664efbbf-75cc-4743-85eb-1da4758f58de)
 ![image](https://github.com/user-attachments/assets/d56b3db2-5a43-4ee9-b80f-7226f8a7e0fd)
 ![image](https://github.com/user-attachments/assets/01889a67-aad2-450f-b49f-f72cc338830a)
+
+
+### Prerequisites
+
+- NodeJS
+- ReactJS
+- PostgreSQL
+- Firebase CLI
+
+### Installation
+
+1. Clone the repository:
+
+2. Install dependencies for backend and start the server:
+    ```sh
+    cd BE
+    npm install
+    npm start
+    ```
+
+3. Install dependencies for frontend and start the server:
+    ```sh
+    cd cnpm-client
+    npm install
+    npm start
+    ```
+
