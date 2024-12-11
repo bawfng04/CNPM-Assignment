@@ -123,3 +123,26 @@
   color: rgb(155, 155, 255);
   text-align: center;
 }
+
+.smContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.show-more-button{
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: rgb(255, 115, 0);
+  font-weight: bold;
+  color: white;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.show-more-button:hover{
+  background-color: rgb(255, 72, 0);;
+  transform: scale(1.1);
+}

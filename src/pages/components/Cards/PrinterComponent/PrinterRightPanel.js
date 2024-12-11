@@ -120,7 +120,14 @@ const PrinterRightPanel = ({
 
           localStorage.setItem("A3numToBuy", a3);
           localStorage.setItem("A4numToBuy", a4);
+          localStorage.setItem("printFlag", "true");
           localStorage.setItem("activeComponent", "market");
+          //lưu thông tin form vào local storage
+          localStorage.setItem("printerID", selectedPrinterID);
+          localStorage.setItem("pageSize", formData.paperType);
+          localStorage.setItem("doubleSize", formData.numSide);
+          localStorage.setItem("numCopy", formData.copies);
+          localStorage.setItem("num_pages", pageNumber);
 
           console.log("data", data);
           window.location.reload();
@@ -156,15 +163,7 @@ const PrinterRightPanel = ({
             <option value="A3">A3</option>
           </select>
         </div>
-        <div className="setting">
-          <label>Number of Paper</label>
-          <input
-            type="number"
-            name="numPaper"
-            onChange={handleChange}
-            required
-          />
-        </div>
+
         <div className="setting">
           <label>Number Side</label>
           <select
@@ -195,6 +194,7 @@ const PrinterRightPanel = ({
             <option>Landscape</option>
           </select>
         </div>
+
         <button className="print-button">Print</button>
       </form>
     </div>

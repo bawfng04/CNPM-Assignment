@@ -52,14 +52,15 @@ function Market() {
 
   useEffect(() => {
     //reset
-    setTimeout(() => {
-      if (a3NumToBuy && a3NumToBuy !== "0") {
-        localStorage.setItem("A3numToBuy", 0);
-      }
-      if (a4NumToBuy && a4NumToBuy !== "0") {
-        localStorage.setItem("A4numToBuy", 0);
-      }
-    }, 2000);
+
+    if (a3NumToBuy && a3NumToBuy !== "0") {
+      localStorage.setItem("A3numToBuy", 0);
+      setA3num(a3NumToBuy);
+    }
+    if (a4NumToBuy && a4NumToBuy !== "0") {
+      localStorage.setItem("A4numToBuy", 0);
+      setA4num(a4NumToBuy);
+    }
   }, []);
 
   const handleDone = async () => {
@@ -125,6 +126,13 @@ function Market() {
         parentElement2.innerHTML = "";
         parentElement3.innerHTML = "";
         parentElement.innerHTML = "";
+
+        //nếu từ printer -> market
+        if (localStorage.getItem("printFlag")) {
+          localStorage.setItem("printFlag", false);
+          localStorage.setItem("activeComponent", "printer");
+          window.location.reload();
+        }
       }
     } catch (error) {
       console.log(error);
@@ -212,15 +220,12 @@ function Market() {
         body: JSON.stringify(data),
       });
       const res = await response.json();
+      console.log("Response from backend:", res);
 
       console.log(res);
       if (res) {
         const qrUrl = res.qrUrl;
         const total = res.total;
-        if (total === 0) {
-          alert("Please select at least 1 item to buy");
-          return;
-        }
 
         let parentElement2 = document.getElementById("TOTAL");
         let parentElement3 = document.getElementById("Vietnamse");
