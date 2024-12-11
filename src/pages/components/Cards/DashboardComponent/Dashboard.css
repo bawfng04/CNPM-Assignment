@@ -238,3 +238,9 @@
   margin-bottom: 19px;
   letter-spacing: 0.01em;
 }
+
+.avLogo{
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}

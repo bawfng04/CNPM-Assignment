@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const checkNumPageAPI = "http://localhost:4000/checkPage";
 
@@ -13,10 +13,10 @@ const PrinterRightPanel = ({
   selectedEndPage,
 }) => {
   const [formData, setFormData] = useState({
-    paperType: "A4",
+    paperType: localStorage.getItem("pageSize") || "A4",
     numPaper: "",
-    numSide: "One Side",
-    copies: "",
+    numSide: localStorage.getItem("doubleSize") || "One Side",
+    copies: localStorage.getItem("numCopy") || 1,
   });
 
   const handleChange = (e) => {
@@ -26,6 +26,18 @@ const PrinterRightPanel = ({
       [name]: value,
     });
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("printFlag") === "false") {
+      // Restore values then clear storage
+      localStorage.removeItem("pageSize");
+      localStorage.removeItem("doubleSize");
+      localStorage.removeItem("numCopy");
+      localStorage.removeItem("printFlag");
+      localStorage.removeItem("printerID");
+      localStorage.removeItem("num_pages");
+    }
+  }, []);
 
   const check = async (event) => {
     event.preventDefault();
@@ -177,7 +189,13 @@ const PrinterRightPanel = ({
         </div>
         <div className="setting">
           <label>Copies</label>
-          <input type="number" name="copies" onChange={handleChange} required />
+          <input
+            type="number"
+            name="copies"
+            onChange={handleChange}
+            required
+            value={formData.copies}
+          />
         </div>
 
         <div className="soleSetting">

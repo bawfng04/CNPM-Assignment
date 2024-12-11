@@ -9,7 +9,7 @@ const History = () => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [visibleItems, setVisibleItems] = useState(10); // New state variable
-  const safeFilteredHistory = filteredHistory || [];
+  // const safeFilteredHistory = filteredHistory || [];
 
   const fetchHistory = async () => {
     try {
@@ -33,11 +33,11 @@ const History = () => {
   };
 
   useEffect(() => {
-    fetchHistory();
+    fetchHistory(); // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    filterHistory();
+    filterHistory(); // eslint-disable-next-line
   }, [startTime, endTime, history]);
 
   const filterHistory = () => {

@@ -40,13 +40,10 @@ function Market() {
   const [a3new, setA3new] = useState(0);
   const [a4new, setA4new] = useState(0);
 
-  const [a3NumToBuy, setA3NumToBuy] = useState(
-    localStorage.getItem("A3numToBuy") || 0
-  );
 
-  const [a4NumToBuy, setA4NumToBuy] = useState(
-    localStorage.getItem("A4numToBuy") || 0
-  );
+  let a3NumToBuy = localStorage.getItem("A3numToBuy") || 0;
+
+  let a4NumToBuy = localStorage.getItem("A4numToBuy") || 0;
 
   //check xem có phải từ printer -> market
 
@@ -60,7 +57,7 @@ function Market() {
     if (a4NumToBuy && a4NumToBuy !== "0") {
       localStorage.setItem("A4numToBuy", 0);
       setA4num(a4NumToBuy);
-    }
+    } // eslint-disable-next-line
   }, []);
 
   const handleDone = async () => {

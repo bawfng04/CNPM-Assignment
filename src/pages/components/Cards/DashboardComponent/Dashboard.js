@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./Dashboard.css";
-import avatarDashboard from "../../../images/avatar-dashboard.png";
+import avatarDashboard from "../../../images/avatar-dashboard2.png";
 import t1 from "../../../images/t1.png";
 import t2 from "../../../images/t2.png";
 import t3 from "../../../images/t3.png";
 import boxChart from "../../../images/box-chart.jpg";
-import boxCircle from "../../../images/box-circle.jpg";
 import boxBalance from "../../../images/box-balance.jpg";
 import p1 from "../../../images/p1.jpg";
 import p2 from "../../../images/p2.jpg";
-import p3 from "../../../images/p3.jpg";
-import iconNext from "../../../images/icon-next.png";
+// import p3 from "../../../images/p3.jpg";
+// import iconNext from "../../../images/icon-next.png";
 import Chart from "chart.js/auto";
 
 const getInfoAPI = "http://localhost:4000/getIn4";
@@ -142,7 +141,7 @@ function Dashboard() {
               </h3>
             </div>
             <div className="c-dashboard__box-avatar">
-              <img src={avatarDashboard} alt="Logo" />
+              <img src={avatarDashboard} alt="Logo" className="avLogo" />
             </div>
           </div>
         </div>
