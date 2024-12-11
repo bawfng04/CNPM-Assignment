@@ -45,7 +45,7 @@ Deploy: https://smartprinterservice-86a9c.web.app/
 
 ### Installation
 
-1. Clone the repository:
+1. Clone the repository
 
 2. Install dependencies for backend and start the server:
     ```sh
@@ -54,7 +54,7 @@ Deploy: https://smartprinterservice-86a9c.web.app/
     npm start
     ```
 
-3. Install dependencies for frontend and start the server:
+3. Install dependencies for frontend and start:
     ```sh
     cd cnpm-client
     npm install
