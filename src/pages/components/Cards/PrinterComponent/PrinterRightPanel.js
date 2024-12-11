@@ -109,20 +109,23 @@ const PrinterRightPanel = ({
 
       const data = await response.json();
       if (data) {
-        if (!data.flag) {
+        if (data.flag) {
+          // nếu in thành công
           alert("Print success!");
-        } else {
-          // vd aA3 bA4
-          let a = 30;
-          let b = 20;
+        } else if (!data.flag) {
+          // nếu in không thành công
+          // lấy trang a3 a4 cần mua
+          let a3 = data.pageA3 || 0;
+          let a4 = data.pageA4 || 0;
 
-          localStorage.setItem("A3numToBuy", a);
-          localStorage.setItem("A4numToBuy", b);
+          localStorage.setItem("A3numToBuy", a3);
+          localStorage.setItem("A4numToBuy", a4);
           localStorage.setItem("activeComponent", "market");
 
-          console.log("Route 2");
           console.log("data", data);
           window.location.reload();
+        } else {
+          alert("Error");
         }
       }
     } catch (error) {
@@ -150,7 +153,7 @@ const PrinterRightPanel = ({
             onChange={handleChange}
           >
             <option value="A4">A4</option>
-            <option value="A5">A5</option>
+            <option value="A3">A3</option>
           </select>
         </div>
         <div className="setting">
