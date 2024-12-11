@@ -15,7 +15,8 @@ class OrderController {
   // request: printFile (file), userID, printerID, pageSize, doubleSize, numCopy,
   async createOrder(req, res, next) {
     // console.log("Check file: ", req.file);
-    const { email, printerID, pageSize, doubleSize, numCopy } = req.body;
+    const { email, printerID, pageSize, doubleSize, numCopy, num_pages } =
+      req.body;
     const userData = await UserService.findByEmail2(email);
     const userID = userData.data;
     console.log("Check userID: ", userID);
@@ -27,30 +28,32 @@ class OrderController {
       });
     }
 
-    let filePath = req.file.path;
-    filePath = filePath.replace(/\\/g, "/");
-    let pageNum = 1;
-    let dataBuffer = fs.readFileSync(filePath);
-    if (req.file.mimetype === "application/pdf") {
-      pdf(dataBuffer).then(function (data) {
-        pageNum = data.numpages;
-        console.log(`Number of pages: ${data.numpages}`);
-      });
-      const dataFile = await pdf(dataBuffer);
-      pageNum = dataFile.numpages;
-    }
-    console.log("CHECK PAGENUM: ", pageNum);
-    const fileName = Buffer.from(req.file.originalname, "latin1").toString(
-      "utf8"
-    );
-    const fileType = req.file.mimetype;
-    const fileSize = req.file.size;
-
+    // let filePath = req.file.path;
+    // filePath = filePath.replace(/\\/g, "/");
+    // let pageNum = 1;
+    // let dataBuffer = fs.readFileSync(filePath);
+    // if (req.file.mimetype === "application/pdf") {
+    //   pdf(dataBuffer).then(function (data) {
+    //     pageNum = data.numpages;
+    //     console.log(`Number of pages: ${data.numpages}`);
+    //   });
+    //   const dataFile = await pdf(dataBuffer);
+    //   pageNum = dataFile.numpages;
+    // }
+    // console.log("CHECK PAGENUM: ", pageNum);
+    // const fileName = Buffer.from(req.file.originalname, "latin1").toString(
+    //   "utf8"
+    // );
+    // const fileType = req.file.mimetype;
+    // const fileSize = req.file.size;
+    const fileName = req.fileName;
+    const fileType = fileName.split(".").pop();
+    const fileSize = req.fileSize;
     try {
       const documentData = await OrderService.createDocument(
         fileName,
         fileType,
-        filePath,
+        null,
         fileSize
       );
       console.log(documentData);
@@ -72,7 +75,10 @@ class OrderController {
         .toISOString()
         .slice(0, 19)
         .replace("T", " ");
-
+      let numPage;
+      if (doubleSize) {
+        numPage = num_pages * numCopy * 2;
+      } else numPage = num_pages * numCopy;
       // Gọi hàm createOrder với các giá trị đã tính toán
       const result = await OrderService.createOrder(
         printerID,
@@ -82,7 +88,7 @@ class OrderController {
         formattedAdjustedDate,
         formattedCurrentDate, // Hoặc tính toán giá trị khác nếu cần
         pageSize,
-        pageNum * numCopy,
+        numPage,
         numCopy,
         doubleSize
       );
