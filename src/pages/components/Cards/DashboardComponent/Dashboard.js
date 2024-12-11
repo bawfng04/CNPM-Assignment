@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./Dashboard.css";
 import avatarDashboard from "../../../images/avatar-dashboard.png";
 import t1 from "../../../images/t1.png";
@@ -11,12 +11,17 @@ import p1 from "../../../images/p1.jpg";
 import p2 from "../../../images/p2.jpg";
 import p3 from "../../../images/p3.jpg";
 import iconNext from "../../../images/icon-next.png";
+import Chart from "chart.js/auto";
 
 const getInfoAPI = "http://localhost:4000/getIn4";
+const getTotalAPI = "http://localhost:4000/pay/TotalPage";
 
 function Dashboard() {
+  const chartRef = useRef(null);
   const [name, setName] = useState("");
   const [studentID, setStudentID] = useState("");
+  const [a33, setA33] = useState(0);
+  const [a44, setA44] = useState(0);
   const getStudentInfo = async () => {
     let email = localStorage.getItem("email");
     email = email.replace(/['"]+/g, "");
@@ -51,9 +56,67 @@ function Dashboard() {
     }
   };
 
+  //get a3 a4
+  useEffect(() => {
+    const getTotal = async () => {
+      try {
+        let email = localStorage.getItem("email");
+        email = email ? email.replace(/"/g, "") : "";
+        const response = await fetch(getTotalAPI, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ email: email }),
+        });
+
+        const res = await response.json();
+
+        console.log("resss: ", res);
+
+        setA33(res.data.pages_remainingA3);
+        setA44(res.data.pages_remainingA4);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTotal();
+  });
+
   useEffect(() => {
     getStudentInfo();
   }, []);
+
+  //chart
+  useEffect(() => {
+    let chartInstance;
+    if (chartRef.current) {
+      const ctx = chartRef.current.getContext("2d");
+      chartInstance = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: ["A3", "A4"],
+          datasets: [
+            {
+              data: [a33, a44],
+              backgroundColor: ["#FF6384", "#36A2EB"],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        },
+      });
+    }
+
+    return () => {
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+    };
+  }, [a33, a44]);
 
   return (
     <section className="c-dashboard">
@@ -132,7 +195,7 @@ function Dashboard() {
             <h2>Expense Statistics</h2>
           </div>
           <div className="c-dashboard__circle-box">
-            <img src={boxCircle} alt="Logo" />
+            <canvas ref={chartRef}></canvas>
           </div>
         </div>
       </div>
@@ -146,13 +209,13 @@ function Dashboard() {
             <div className="c-dashboard__activity-item">
               <img src={p1} alt="Logo" />
               <h3>A4 paper</h3>
-              <p id="p-item1">{localStorage.getItem("newA44") || 0}</p>
+              <p id="p-item1">{a44 || " 0 "}</p>
             </div>
 
             <div className="c-dashboard__activity-item">
               <img src={p2} alt="Logo" />
               <h3>A3 paper</h3>
-              <p id="p-item2">{localStorage.getItem("newA33") || 0}</p>
+              <p id="p-item2">{a33 || " 0 "}</p>
             </div>
           </div>
         </div>

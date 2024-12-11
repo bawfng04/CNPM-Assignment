@@ -10,6 +10,8 @@ const Profile = () => {
     email: "",
     studentID: "",
     PhoneNumber: "",
+    faculty: "",
+    address: "",
   });
 
   const handleChange = (e) => {
@@ -35,6 +37,8 @@ const Profile = () => {
       lastname: formData.lastName,
       phonenumber: formData.PhoneNumber,
       studentID: formData.studentID,
+      faculty: formData.faculty,
+      address: formData.address,
     };
 
     console.log("fff", formDataToSend);
@@ -121,29 +125,11 @@ const Profile = () => {
                 />
               </div>
               <div className="form-group">
-                <label>City</label>
+                <label>Address</label>
                 <input
                   type="text"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Class</label>
-                <input
-                  type="text"
-                  name="class"
-                  value={formData.class}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Country</label>
-                <input
-                  type="text"
-                  name="country"
-                  value={formData.country}
+                  name="address"
+                  value={formData.address}
                   onChange={handleChange}
                 />
               </div>

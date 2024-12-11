@@ -42,10 +42,12 @@ const History = () => {
   const filterHistory = () => {
     const filtered = history.filter((item) => {
       const itemStartTime = new Date(item.start_time);
-      const itemEndTime = new Date(item.end_time);
+
       const start = startTime ? new Date(startTime) : null;
       const end = endTime ? new Date(endTime) : null;
-      return (!start || itemStartTime >= start) && (!end || itemEndTime <= end);
+      return (
+        (!start || itemStartTime >= start) && (!end || itemStartTime <= end)
+      );
     });
     setFilteredHistory(filtered);
     setVisibleItems(10); // Reset visible items when filter changes
@@ -97,8 +99,12 @@ const History = () => {
                   <td className="table-data">{index + 1}</td>
                   <td className="table-data">{item.printer_id}</td>
                   <td className="table-data">{item.file_name}</td>
-                  <td className="table-data">{item.start_time}</td>
-                  <td className="table-data">{item.end_time}</td>
+                  <td className="table-data">
+                    {new Date(item.start_time).toLocaleString()}
+                  </td>
+                  <td className="table-data">
+                    {new Date(item.end_time).toLocaleString()}
+                  </td>
                   <td className="table-data">{item.pages_printed}</td>
                   <td className="table-data">{item.num_copies}</td>
                 </tr>
