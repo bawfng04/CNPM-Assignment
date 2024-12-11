@@ -2,13 +2,9 @@
   background-color: #ffffff;
   height: calc(100vh - 101px);
   padding: 24px 40px;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 
-.mainDiv{
-  overflow: hidden
-}
+
 
 .c-dashboard__box-1 {
   display: flex;
