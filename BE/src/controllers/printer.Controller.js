@@ -12,14 +12,13 @@ const PayService = require("../../database/payService");
 const printerService = require("../../database/printerService");
 
 class PrinterController {
-
   async fetchAllPrinters(req, res, next) {
-    let limit;
-    if (req.params.limit) limit = req.params.limit;
-    else limit = 10;
+    // let limit;
+    // if (req.params.limit) limit = req.params.limit;
+    // else limit = 10;
 
     try {
-      const printerData = await printerService.fetchAllPrinter(limit);
+      const printerData = await printerService.fetchAllPrinter();
       const totalPrinterEn = await printerService.countPrinterEn();
       const totalPrinterDis = await printerService.countPrinterDis();
 

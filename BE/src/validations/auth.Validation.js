@@ -11,8 +11,7 @@ async function login(req, res, next) {
       })
       .message("Sử dụng email hcmut.edu.vn")
       .trim()
-      .strict()
-      ,
+      .strict(),
     password: Joi.string()
       .required()
       .trim()
@@ -84,6 +83,8 @@ async function updateProfile(req, res, next) {
     lastname: Joi.string().optional().trim().strict(),
     phonenumber: Joi.string().optional().min(10).max(11).trim().strict(),
     studentID: Joi.string().optional().trim().strict(),
+    faculty: Joi.string().optional().trim().strict(),
+    address: Joi.string().optional().trim().strict(),
   });
 
   try {

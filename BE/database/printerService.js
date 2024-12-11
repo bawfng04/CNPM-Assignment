@@ -4,30 +4,25 @@ const { v4: uuidv4 } = require("uuid");
 class PrinterService {
   constructor() {}
 
-  async fetchAllPrinter(limit) {
+  async fetchAllPrinter() {
     return new Promise((resolve, reject) => {
-      client.query(
-        `SELECT * FROM printers ORDER BY id ASC LIMIT $1`,
-        [limit],
-        (err, res) => {
-          if (err) {
-            reject({
-              status: 400,
-              msg: err.message,
-              data: null,
-            });
-          } else {
-            resolve({
-              status: 200,
-              msg: "Fetch success",
-              data: res.rows,
-            });
-          }
+      client.query(`SELECT * FROM printers ORDER BY id`, (err, res) => {
+        if (err) {
+          reject({
+            status: 400,
+            msg: err.message,
+            data: null,
+          });
+        } else {
+          resolve({
+            status: 200,
+            msg: "Fetch success",
+            data: res.rows,
+          });
         }
-      );
+      });
     });
   }
-
   async countPrinterEn() {
     return new Promise((resolve, reject) => {
       client.query(

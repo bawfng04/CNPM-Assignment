@@ -347,8 +347,10 @@ class UserService {
           account_status = COALESCE($3, account_status),
           pages_remaininga4 = COALESCE($4, pages_remaininga4),
           pages_remaininga3 = COALESCE($5, pages_remaininga3),
+          faculty=COALESCE($6, faculty),
+          address=COALESCE($7, address),
           updated_at = CURRENT_TIMESTAMP
-        WHERE id = $6
+        WHERE id = $8
       `;
       const values = [
         student.student_id !== undefined ? student.student_id : null, // Kiểm tra rõ ràng giá trị undefined
@@ -358,7 +360,8 @@ class UserService {
           : "active",
         student.pages_remaininga4 !== undefined ? student.pages_remaininga4 : 0,
         student.pages_remaininga3 !== undefined ? student.pages_remaininga3 : 0,
-
+        student.faculty !== undefined ? student.faculty : 0,
+        student.address !== undefined ? student.address : 0,
         student.id,
       ];
 

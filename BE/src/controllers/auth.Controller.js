@@ -113,7 +113,15 @@ async function getIn4(req, res) {
 }
 async function updateProfile(req, res) {
   try {
-    const { email, firstname, lastname, phonenumber, studentID } = req.body;
+    const {
+      email,
+      firstname,
+      lastname,
+      phonenumber,
+      studentID,
+      faculty,
+      address,
+    } = req.body;
 
     if (!email) {
       return res.status(StatusCodes.BAD_REQUEST).json({
@@ -140,7 +148,8 @@ async function updateProfile(req, res) {
     }
 
     student.data.student_id = studentID || null;
-
+    student.faculty = faculty || null;
+    student.address = address || null;
     const updateResultu = await UserService.updateUser(user);
     if (!updateResultu || updateResultu.status !== 200) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
