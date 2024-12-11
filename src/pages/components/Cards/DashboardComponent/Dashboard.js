@@ -19,6 +19,8 @@ function Dashboard() {
   const chartRef = useRef(null);
   const [name, setName] = useState("");
   const [studentID, setStudentID] = useState("");
+  const [faculty, setFaculty] = useState("");
+  const [address, setAddress] = useState("");
   const [a33, setA33] = useState(0);
   const [a44, setA44] = useState(0);
   const getStudentInfo = async () => {
@@ -35,7 +37,7 @@ function Dashboard() {
       });
 
       const data = await response.json();
-      console.log(data);
+      console.log("dddd", data);
 
       if (!data.student) {
         setStudentID("-------");
@@ -43,6 +45,9 @@ function Dashboard() {
         const studentID = data.student.student_id;
         setStudentID(studentID);
       }
+
+      setFaculty(data.student.faculty);
+      setAddress(data.student.address);
 
       if (!data.user.first_name && !data.user.last_name) {
         setName("");
@@ -134,10 +139,10 @@ function Dashboard() {
                 Student ID: <span id="span2">{studentID}</span>
               </h3>
               <h3>
-                Faculty: <span id="span3">Computer Science</span>
+                Faculty: <span id="span3">{faculty || ""}</span>
               </h3>
               <h3>
-                Address: <span id="span4">Thu Duc City</span>
+                Address: <span id="span4">{address || ""}</span>
               </h3>
             </div>
             <div className="c-dashboard__box-avatar">

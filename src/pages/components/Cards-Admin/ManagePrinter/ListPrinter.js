@@ -12,6 +12,7 @@ const deleteAPI = (id) => `http://localhost:4000/print/delete/${id}`;
 
 const ListPrinter = ({ updatePrinterCounts }) => {
   const [printers, setPrinters] = useState([]);
+  const [visiblePrinter, setVisiblePrinter] = useState(10);
 
   const fetchPrinters = async () => {
     try {
@@ -35,6 +36,10 @@ const ListPrinter = ({ updatePrinterCounts }) => {
     } catch (error) {
       console.error("Error fetching printers: ", error);
     }
+  };
+
+  const handleShowMore = () => {
+    setVisiblePrinter((prevVisiblePrinter) => prevVisiblePrinter + 10);
   };
 
   const handleDelete = (id) => {
@@ -170,7 +175,7 @@ const ListPrinter = ({ updatePrinterCounts }) => {
           </thead>
           <tbody className="rounded-tbody">
             {Array.isArray(printers) && printers.length > 0 ? (
-              printers.map((printer, index) => (
+              printers.slice(0, visiblePrinter).map((printer, index) => (
                 <tr key={printer.id}>
                   <td className="table-data">{printer.id}</td>
                   <td className="table-data">{printer.brand_name}</td>
@@ -222,6 +227,15 @@ const ListPrinter = ({ updatePrinterCounts }) => {
             )}
           </tbody>
         </table>
+        {printers.length &&
+          visiblePrinter &&
+          printers.length > visiblePrinter && (
+            <div className="show-more-container">
+              <button className="show-more-button" onClick={handleShowMore}>
+                Show More
+              </button>
+            </div>
+          )}
       </div>
     </div>
   );

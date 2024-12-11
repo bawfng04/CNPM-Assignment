@@ -4,12 +4,13 @@ import totalUserz from "../../../images/totalUser.png";
 import totalTransactionz from "../../../images/totalTransaction.png";
 
 const fetchAllUser = "http://localhost:4000/admin/getUsers";
-const handleDetailAPI = (id) => `http://localhost:4000/print/detail/${id}`;
+const handleDetailAPI = (id) => `http://localhost:4000/order/recentOrder/${id}`;
 
 const ManageUser = () => {
   const [totalUser, setTotalUser] = useState(0);
   const [totalTransaction, setTotalTransaction] = useState(0);
   const [allUser, setAllUser] = useState([]);
+  const [visibleUser, setVisibleUser] = useState(10);
 
   useEffect(() => {
     fetch(fetchAllUser, {
@@ -35,6 +36,10 @@ const ManageUser = () => {
       });
   }, []);
 
+  const handleShowMore = () => {
+    setVisibleUser((prevVisibleUser) => prevVisibleUser + 10);
+  };
+
   const showModal = (data) => {
     console.log("showmodeldata: ", data[0]);
 
@@ -44,23 +49,46 @@ const ManageUser = () => {
 
     // Populate the modal with data
 
-    data = data[0];
+    // data = data[000];
 
-    console.log("data: ", data);
+    console.log("dataa: ", data);
 
-    details.innerHTML = `
-    <strong>ID:</strong> ${data.id}<br>
-    <strong>Brand Name:</strong> ${data.brand_name}<br>
-    <strong>Model:</strong> ${data.model}<br>
-    <strong>Campus Name:</strong> ${data.campus_name}<br>
-    <strong>Building Name:</strong> ${data.building_name}<br>
-    <strong>Room Number:</strong> ${data.room_number}<br>
-    <strong>File Types:</strong> ${data.file_types}<br>
-    <strong>Status:</strong> ${data.status}<br>
-    <strong>Default Number of Pages:</strong> ${data.default_num_pages}<br>
-    <strong>Created At:</strong> ${data.created_at}<br>
-    <strong>Updated At:</strong> ${data.updated_at}
-  `;
+    if (!data) {
+      alert("No data found");
+    } else {
+      details.innerHTML = `
+    <table className="history-table">
+      <thead>
+        <tr>
+          <th className="table-header">No.</th>
+          <th className="table-header">Printer ID</th>
+          <th className="table-header">File Name</th>
+          <th className="table-header">Start Time</th>
+          <th className="table-header">End Time</th>
+          <th className="table-header">Pages Printed</th>
+          <th className="table-header">Number of Copies</th>
+        </tr>
+      </thead>
+      <tbody className="rounded-tbody">
+        ${data
+          .map(
+            (item, index) => `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.printer_id}</td>
+            <td>${item.file_name}</td>
+            <td>${item.start_time}</td>
+            <td>${item.end_time}</td>
+            <td>${item.pages_printed}</td>
+            <td>${item.num_copies}</td>
+          </tr>
+        `
+          )
+          .join("")}
+      </tbody>
+    </table>
+    `;
+    }
 
     // Show the modal
     modal.style.display = "block";
@@ -80,6 +108,7 @@ const ManageUser = () => {
 
   const fetchDetail = async (id) => {
     try {
+      console.log("id: ", id);
       const response = await fetch(handleDetailAPI(id), {
         method: "GET",
         headers: {
@@ -89,6 +118,10 @@ const ManageUser = () => {
       });
       const data = await response.json();
       console.log("data: ", data);
+      if (!data.data) {
+        alert("No history");
+        return;
+      }
       showModal(data.data);
     } catch (error) {
       console.error("Error fetching printer detail: ", error);
@@ -128,7 +161,7 @@ const ManageUser = () => {
           </tr>
         </thead>
         <tbody className="rounded-tbody">
-          {allUser.map((user, index) => (
+          {allUser.slice(0, visibleUser).map((user, index) => (
             <tr key={index}>
               <td className="table-data">{index + 1}</td>
               <td className="table-data">
@@ -137,7 +170,10 @@ const ManageUser = () => {
               <td className="table-data">{user.email}</td>
               <td className="table-data">{user.role}</td>
               <td className="table-data">
-                <button className="detail-btn" onClick={() => fetchDetail(55)}>
+                <button
+                  className="detail-btn"
+                  onClick={() => fetchDetail(user.id)}
+                >
                   Detail
                 </button>
                 <div id="printerDetailModal" class="modal">
@@ -151,6 +187,17 @@ const ManageUser = () => {
             </tr>
           ))}
         </tbody>
+        {allUser.length && visibleUser && allUser.length > visibleUser && (
+          <tr>
+            <td colSpan="5" className="table-data">
+              <div className="show-more-container">
+                <button className="show-more-button" onClick={handleShowMore}>
+                  Show More
+                </button>
+              </div>
+            </td>
+          </tr>
+        )}
       </table>
     </div>
   );

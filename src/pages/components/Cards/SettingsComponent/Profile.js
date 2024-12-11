@@ -54,7 +54,10 @@ const Profile = () => {
       });
       if (response.ok) {
         alert("Update successfully");
+        localStorage.setItem("activeComponent", "Dashboard");
+        window.location.reload();
       } else {
+        console.log("response", response);
         const errorData = await response.json();
         console.error("Error:", errorData.error);
         alert("Update failed: " + errorData.error[0]);

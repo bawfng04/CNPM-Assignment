@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 
 const checkNumPageAPI = "http://localhost:4000/checkPage";
 
+
+const PrintAPI = "http://localhost:4000/createOrder";
+
 const PrinterRightPanel = ({
   selectedPrinterName,
   selectedPrinterModel,
@@ -94,7 +97,8 @@ const PrinterRightPanel = ({
     // formDataToSend.append("num_pages", pageNumber);
 
     const formDataToSend = {
-      printFile: file.name,
+      fileName: file.name,
+      fileSize: file.size,
       userID: userId,
       email: email,
       printerID: selectedPrinterID,
@@ -103,6 +107,8 @@ const PrinterRightPanel = ({
       numCopy: formData.copies,
       num_pages: pageNumber,
     };
+
+    console.log("FILE: ", file);
 
     try {
       const response = await fetch(checkNumPageAPI, {
@@ -123,7 +129,31 @@ const PrinterRightPanel = ({
       if (data) {
         if (data.flag) {
           // nếu in thành công
-          alert("Print success!");
+
+          const print = async () => {
+            try {
+              const response = await fetch(PrintAPI, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify(formDataToSend),
+              });
+              console.log("form data to send", formDataToSend);
+              const data = await response.json();
+              console.log("data::: ", data);
+              if (data.statusCode === 200) {
+                alert("Print success");
+              } else {
+                alert("Print fail");
+              }
+            } catch (error) {
+              console.error("Error:", error);
+            }
+          };
+
+          print();
         } else if (!data.flag) {
           // nếu in không thành công
           // lấy trang a3 a4 cần mua
@@ -142,7 +172,7 @@ const PrinterRightPanel = ({
           localStorage.setItem("num_pages", pageNumber);
 
           console.log("data", data);
-          window.location.reload();
+          // window.location.reload();
         } else {
           alert("Error");
         }
@@ -194,7 +224,7 @@ const PrinterRightPanel = ({
             name="copies"
             onChange={handleChange}
             required
-            value={formData.copies}
+            value={formData.copies || 0}
           />
         </div>
 

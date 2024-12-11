@@ -101,6 +101,14 @@ const PrintersList = ({ onSelectPrinter }) => {
                   <div className={`printer-status ${printer.status}`}>
                     {printer.status}
                   </div>
+                  <div className="printer-location">
+                    {"CS" +
+                      printer.campus_name +
+                      "-" +
+                      printer.building_name +
+                      "-" +
+                      printer.room_number || "No location"}
+                  </div>
                 </div>
               ))}
             </div>

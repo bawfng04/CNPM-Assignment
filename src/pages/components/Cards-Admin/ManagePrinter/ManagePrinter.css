@@ -206,3 +206,10 @@ input:checked + .slider:before {
 #printerDetails {
   margin-top: 20px;
 }
+
+.show-more-container{
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

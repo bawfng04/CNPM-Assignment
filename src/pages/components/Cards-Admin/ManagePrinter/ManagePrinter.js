@@ -9,6 +9,7 @@ const ManagePrinter = () => {
   const [enablePrinters, setEnablePrinters] = useState(0);
   const [disablePrinters, setDisablePrinters] = useState(0);
 
+
   const updatePrinterCounts = (enableCount, disableCount) => {
     setEnablePrinters(enableCount);
     setDisablePrinters(disableCount);
