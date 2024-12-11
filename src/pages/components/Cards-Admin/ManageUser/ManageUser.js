@@ -43,9 +43,9 @@ const ManageUser = () => {
   const showModal = (data) => {
     console.log("showmodeldata: ", data[0]);
 
-    const modal = document.getElementById("printerDetailModal");
-    const span = document.getElementsByClassName("close")[0];
-    const details = document.getElementById("printerDetails");
+    const modal = document.getElementById("printerDetailModal2");
+    const span = document.getElementsByClassName("close2")[0];
+    const details = document.getElementById("printerDetails2");
 
     // Populate the modal with data
 
@@ -57,19 +57,19 @@ const ManageUser = () => {
       alert("No data found");
     } else {
       details.innerHTML = `
-    <table className="history-table">
+    <table className="history-table2">
       <thead>
         <tr>
-          <th className="table-header">No.</th>
-          <th className="table-header">Printer ID</th>
-          <th className="table-header">File Name</th>
-          <th className="table-header">Start Time</th>
-          <th className="table-header">End Time</th>
-          <th className="table-header">Pages Printed</th>
-          <th className="table-header">Number of Copies</th>
+          <th className="table-header2">No.</th>
+          <th className="table-header2">Printer ID</th>
+          <th className="table-header2">File Name</th>
+          <th className="table-header2">Start Time</th>
+          <th className="table-header2">End Time</th>
+          <th className="table-header2">Pages Printed</th>
+          <th className="table-header2">Number of Copies</th>
         </tr>
       </thead>
-      <tbody className="rounded-tbody">
+      <tbody className="rounded-tbody2">
         ${data
           .map(
             (item, index) => `
@@ -176,11 +176,11 @@ const ManageUser = () => {
                 >
                   Detail
                 </button>
-                <div id="printerDetailModal" class="modal">
-                  <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Printer Details</h2>
-                    <p id="printerDetails"></p>
+                <div id="printerDetailModal2" class="modal">
+                  <div class="modal-content2">
+                    <span class="close2">&times;</span>
+                    <h2>User's History Print Details</h2>
+                    <p id="printerDetails2"></p>
                   </div>
                 </div>
               </td>

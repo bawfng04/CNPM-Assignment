@@ -41,6 +41,14 @@ function Login({ onLogin }) {
       });
 
       const data = await response.json();
+
+      if (data.error) {
+        console.log("DATA: ", data);
+        setError(data.error);
+
+        clearError();
+      }
+
       if (data.token) {
         console.log("DATA: ", data);
         localStorage.setItem(
@@ -90,12 +98,12 @@ function Login({ onLogin }) {
         } else if (password === "") {
           setError("Password can't be empty");
         } else {
-          setError("Invalid username or password");
+          setError(data.error);
         }
         clearError();
       }
     } catch (error) {
-      console.error("Error", error);
+      console.error("Errorrr", error);
       setError("Server  error");
       clearError();
     }
@@ -104,9 +112,8 @@ function Login({ onLogin }) {
   const clearError = () => {
     setTimeout(() => {
       setError("");
-    }, 3000);
+    }, 4000);
   };
-
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -130,6 +137,7 @@ function Login({ onLogin }) {
         )}
         {logged && (
           <div className="loginNotiS">
+            <div className="tick"></div>
             <p>Login successful!</p>
           </div>
         )}

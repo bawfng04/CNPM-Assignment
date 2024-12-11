@@ -82,6 +82,16 @@
   flex: 1;
 }
 
+.c-dashboard__box-circle{
+  background-color: #fff;
+  border-radius: 26px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+
+}
+
 .c-dashboard__transaction-head h2 {
   font-size: 22px;
   font-weight: 600;

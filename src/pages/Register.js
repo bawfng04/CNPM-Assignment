@@ -17,13 +17,14 @@ const Register = () => {
   const clearError = () => {
     setTimeout(() => {
       setError("");
-    }, 2000);
+    }, 3000);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (password !== rePassword) {
       setError("Password does not match!");
+      clearError();
       return;
     }
     const response = await fetch(registerAPI, {
@@ -37,6 +38,7 @@ const Register = () => {
       }),
     });
     const data = await response.json();
+    console.log(data);
     if (data.error) {
       setError(data.error);
       clearError();
@@ -73,7 +75,22 @@ const Register = () => {
     <div className="main-container">
       {registerSuccess && (
         <div className="registerNoti">
-          <p>Registration successful!</p>
+          <p className="reretext">Registration successful!</p>
+          <p className="reretext">
+            Please check your email to verify your account
+          </p>
+          <p className="reretext">
+            Click{"   "}
+            <a
+              href="https://mail.google.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              this link
+            </a>
+            {"   "}
+            to open Gmail.
+          </p>
         </div>
       )}
       {error && (
@@ -86,7 +103,7 @@ const Register = () => {
       </div>
       <div className="right-side">
         {/* <form onSubmit={handleRegister}> */}
-        <form onSubmit={handleSubmit}>
+        <form className="regisForm" onSubmit={handleSubmit}>
           <h1>Create an account</h1>
           <label htmlFor="email">Email</label>
           <input

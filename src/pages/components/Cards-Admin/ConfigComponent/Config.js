@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import "./Config.css";
 
 const Config = () => {
-  const [defaultPaper, setDefaultPaper] = useState(10);
-  const [defaultDate, setDefaultDate] = useState("2024-10-20");
+  const [defaultPaper, setDefaultPaper] = useState(
+    localStorage.getItem("defaultPaper") || 0
+  );
+  const [defaultDate, setDefaultDate] = useState(
+    localStorage.getItem("defaultDate") || ""
+  );
   const [fileTypes, setFileTypes] = useState([
     "Word Document (*.docx)",
     "PDF Document (*.pdf)",
@@ -25,6 +29,16 @@ const Config = () => {
     }
   };
 
+  const handleDefaultInputChange = (e) => {
+    setDefaultPaper(e.target.value);
+    localStorage.setItem("defaultPaper", e.target.value);
+  };
+
+  const handleDateInputChange = (e) => {
+    setDefaultDate(e.target.value);
+    localStorage.setItem("defaultDate", e.target.value);
+  };
+
   return (
     <div className="config-container">
       <h2>Change Configure</h2>
@@ -35,7 +49,7 @@ const Config = () => {
             <input
               type="number"
               value={defaultPaper}
-              onChange={(e) => setDefaultPaper(e.target.value)}
+              onChange={handleDefaultInputChange}
             />
           </div>
           <div className="form-group">
@@ -43,7 +57,7 @@ const Config = () => {
             <input
               type="date"
               value={defaultDate}
-              onChange={(e) => setDefaultDate(e.target.value)}
+              onChange={handleDateInputChange}
             />
           </div>
         </div>
