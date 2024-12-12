@@ -44,6 +44,10 @@ const Profile = () => {
     console.log("fff", formDataToSend);
 
     try {
+      if (formDataToSend.studentID.length !== 7) {
+        alert("Student ID must be 7 digits");
+        return;
+      }
       const response = await fetch(sendFormAPI, {
         method: "POST",
         headers: {
@@ -103,7 +107,7 @@ const Profile = () => {
               <div className="form-group">
                 <label>Student ID</label>
                 <input
-                  type="text"
+                  type="number"
                   name="studentID"
                   value={formData.studentID}
                   onChange={handleChange}
