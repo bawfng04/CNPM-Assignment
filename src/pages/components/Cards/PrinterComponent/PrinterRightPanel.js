@@ -173,11 +173,9 @@ const PrinterRightPanel = ({
 
           console.log("data", data);
           alert(
-            "You need to buy more paper, the website will redirect to the market page in 3 seconds"
+            "You need to buy more paper, the website will redirect to the market page"
           );
-          setTimeout(() => {
-            window.location.reload();
-          }, 3000);
+          window.location.reload();
         } else {
           alert("Error");
         }

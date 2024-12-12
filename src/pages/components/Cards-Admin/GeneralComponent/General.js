@@ -1,14 +1,72 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
 import "./General.css";
 
+const fetchAllUser = "http://localhost:4000/admin/getUsers";
+const PrinterListAPI = "http://localhost:4000/print/all";
+
 const General = () => {
+  const [userData, setUserData] = useState([]);
+  const [printerData, setPrinterData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userResponse = await fetch(fetchAllUser, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        const userResult = await userResponse.json();
+        setUserData(userResult.data);
+
+        const printerResponse = await fetch(PrinterListAPI, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        const printerResult = await printerResponse.json();
+        setPrinterData(printerResult.data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const userChartData = {
+    labels: userData.map((user, index) => `User ${index + 1}`),
+    datasets: [
+      {
+        label: "Number of Transactions",
+        data: userData.map((user) => user.transaction_count || 0),
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+      },
+    ],
+  };
+
+  const printerChartData = {
+    labels: printerData.map((printer, index) => `Printer ${index + 1}`),
+    datasets: [
+      {
+        label: "Number of Pages Printed",
+        data: printerData.map((printer) => printer.default_num_pages || 0),
+        backgroundColor: "rgba(153, 102, 255, 0.6)",
+      },
+    ],
+  };
+
   return (
     <div className="container">
       <div className="chart-section">
-        <h2>Transaction Chart</h2>
+        <h2>Printer Default Numpages</h2>
         <div className="chart">
-          {/* chart component */}
-          <div className="chart-placeholder">Chart</div>
+          <Bar className="chartin" data={printerChartData} />
         </div>
       </div>
       <div className="information-section">

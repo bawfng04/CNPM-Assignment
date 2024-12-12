@@ -62,3 +62,11 @@
 .info-box li span {
   font-weight: bold;
 }
+
+.chart{
+  max-width: 80vw;
+}
+
+.chartin{
+  max-width: 1200px;
+}
