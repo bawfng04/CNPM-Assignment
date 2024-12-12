@@ -317,16 +317,16 @@ function Dashboard() {
           </div>
           <div className="c-dashboard__box-card">
             <div className="c-dashboard__detail">
-              <h3>
+              <h3 className="ifsd">
                 Name: <span>{name ? name : "NULL"}</span>
               </h3>
-              <h3>
+              <h3 className="ifsd">
                 Student ID: <span id="span2">{studentID}</span>
               </h3>
-              <h3>
+              <h3 className="ifsd">
                 Faculty: <span id="span3">{faculty || ""}</span>
               </h3>
-              <h3>
+              <h3 className="ifsd">
                 Address: <span id="span4">{address || ""}</span>
               </h3>
             </div>

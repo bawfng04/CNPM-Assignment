@@ -138,7 +138,7 @@ function Login({ onLogin }) {
         {logged && (
           <div className="loginNotiS">
             <div className="tick"></div>
-            <p>Login successful!</p>
+            <p className="lssf">Login successful!</p>
           </div>
         )}
         <div className="logo">

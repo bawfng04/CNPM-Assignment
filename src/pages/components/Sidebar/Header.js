@@ -80,15 +80,6 @@ function Header({ activeComponent, setActiveComponent }) {
     <header className="header">
       <h2>{headerText}</h2>
       <div className="header-icons">
-        <div className="searchContainer">
-          <input
-            type="text"
-            placeholder=" Search for something"
-            className="searchBar"
-          />
-
-        </div>
-
         <button className="headerButton">
           <img
             src={settingsButton}
@@ -104,7 +95,6 @@ function Header({ activeComponent, setActiveComponent }) {
             </button>
           </div>
         )}
-
 
         <button onClick={handleOnClickAvatar} className="avatarLogo">
           <img src={HCMUTLogo} alt="HCMUTLogo" className="HCMUTLogo"></img>
