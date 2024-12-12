@@ -242,14 +242,20 @@ async function updatePass(req, res) {
 
 async function checkPage(req, res) {
   const num_pages = req.body.num_pages; // Số trang yêu cầu
+  const numCopy = req.body.numCopy;
+  const doubleSize = req.body.doubleSize;
   const userID = req.body.userID; // ID người dùng
+  let numPage;
+  if (doubleSize) {
+    numPage = (num_pages * numCopy) / 2;
+  } else numPage = num_pages * numCopy;
   let flag = false;
 
   // Kiểm tra nếu cần xử lý riêng với A3
-  if (req.body.A3) {
+  if (req.body.pageSize === "A3") {
     flag = true;
   }
-
+  // console.log(flag);
   try {
     const student = await UserService.findByID(userID);
 
@@ -261,22 +267,22 @@ async function checkPage(req, res) {
     }
 
     // Kiểm tra số trang còn lại
-    if (student.data.pages_remaininga4 < num_pages) {
+    if (flag && student.data.pages_remaininga3 < numPage) {
+      // console.log("hagha");
+      return res.status(StatusCodes.FORBIDDEN).json({
+        message: "Not enough pages remaining  A3",
+        flag: false,
+        pageA3: numPage - student.data.pages_remaininga3,
+      });
+    } else if (!flag && student.data.pages_remaininga4 < numPage) {
       return res.status(StatusCodes.FORBIDDEN).json({
         message: "Not enough pages remaining A4",
         flag: false,
-        pageA4: num_pages - student.data.pages_remaininga4,
+        pageA4: numPage - student.data.pages_remaininga4,
       });
     }
 
     // Kiểm tra điều kiện đặc biệt nếu flag bật (A3)
-    if (flag && student.data.pages_remaininga3 < num_pages) {
-      return res.status(StatusCodes.FORBIDDEN).json({
-        message: "Not enough pages remaining  A3",
-        flag: false,
-        pageA3: num_pages - student.data.pages_remaininga3,
-      });
-    }
 
     // Nếu tất cả điều kiện đều đạt
     return res.status(StatusCodes.OK).json({

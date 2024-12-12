@@ -19,36 +19,15 @@ class OrderController {
       req.body;
     const userData = await UserService.findByEmail2(email);
     const userID = userData.data;
-    console.log("Check userID: ", userID);
-    // if (!req.file) {
-    //   return res.status(400).json({
-    //     statusCode: 400,
-    //     msg: "Error in uploaded file!",
-    //     data: null,
-    //   });
-    // }
 
-    // let filePath = req.file.path;
-    // filePath = filePath.replace(/\\/g, "/");
-    // let pageNum = 1;
-    // let dataBuffer = fs.readFileSync(filePath);
-    // if (req.file.mimetype === "application/pdf") {
-    //   pdf(dataBuffer).then(function (data) {
-    //     pageNum = data.numpages;
-    //     console.log(`Number of pages: ${data.numpages}`);
-    //   });
-    //   const dataFile = await pdf(dataBuffer);
-    //   pageNum = dataFile.numpages;
-    // }
-    // console.log("CHECK PAGENUM: ", pageNum);
-    // const fileName = Buffer.from(req.file.originalname, "latin1").toString(
-    //   "utf8"
-    // );
-    // const fileType = req.file.mimetype;
-    // const fileSize = req.file.size;
     const fileName = req.body.fileName;
     const fileType = fileName.split(".").pop();
     const fileSize = req.fileSize;
+    let flag = false;
+    if (req.body.pageSize === "A3") {
+      flag = true;
+    }
+    console.log(flag);
     try {
       const documentData = await OrderService.createDocument(
         fileName,
@@ -56,12 +35,12 @@ class OrderController {
         null,
         fileSize
       );
-      console.log(documentData);
+      // console.log(documentData);
       const docsID = documentData.data;
-      console.log("Docs ID: ", docsID);
+      // console.log("Docs ID: ", docsID);
       let numPage;
       if (doubleSize) {
-        numPage = num_pages * numCopy * 2;
+        numPage = (num_pages * numCopy) / 2;
       } else numPage = num_pages * numCopy;
       // Lấy thời gian hiện tại
       const currentDate = new Date();
@@ -100,6 +79,21 @@ class OrderController {
           data: null,
         });
       } else {
+        const student = await UserService.findByID(userID);
+        if (!student || student.status !== 200 || !student.data) {
+          const error = new Error("Can't find student");
+          error.statusCode = 401;
+          throw error;
+        }
+        if (flag) {
+          student.data.pages_remaininga3 =
+            student.data.pages_remaininga3 - numPage;
+          UserService.updateStudent(student.data);
+        } else {
+          student.data.pages_remaininga4 =
+            student.data.pages_remaininga4 - numPage;
+          UserService.updateStudent(student.data);
+        }
         res.status(200).json({
           statusCode: 200,
           msg: "Create order successfully!",

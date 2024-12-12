@@ -118,7 +118,13 @@ async function updateProfile(req, res, next) {
     firstname: Joi.string().optional().trim().allow(""), // Cho phép rỗng
     lastname: Joi.string().optional().trim().allow(""), // Cho phép rỗng
     phonenumber: Joi.string().optional().min(10).max(11).trim().allow(""), // Cho phép rỗng
-    studentID: Joi.string().optional().trim().allow(""), // Cho phép rỗng
+    studentID: Joi.string()
+      .trim()
+      .allow("")
+      .pattern(/^.{7}$/, "7-character string")
+      .messages({
+        "string.pattern.name": "Student ID must be exactly 7 characters.",
+      }),
     faculty: Joi.string().optional().trim().allow(""), // Cho phép rỗng
     address: Joi.string().optional().trim().allow(""), // Cho phép rỗng
   });

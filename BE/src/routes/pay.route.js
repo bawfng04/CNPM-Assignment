@@ -11,12 +11,6 @@ const verify = require("../middleware/auth.js");
 const PayValidation = require("../validations/pay.validation");
 const payValidation = require("../validations/pay.validation");
 
-router.post(
-  "/checkBalance",
-  payValidation.checkBalance,
-  isAuth,
-  PayController.checkAccountBalance
-);
 router.post("/TotalPage", PayController.TotalPage);
 router.post("/BuyPages", PayController.BuyPages);
 router.post("/Update", PayController.SuccessBuyPages);
