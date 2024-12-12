@@ -22,30 +22,36 @@ const Register = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (password !== rePassword) {
-      setError("Password does not match!");
+    try {
+      if (password !== rePassword) {
+        setError("Password does not match!");
+        clearError();
+        return;
+      }
+      const response = await fetch(registerAPI, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+      if (data.error) {
+        setError(data.error);
+        clearError();
+      } else {
+        setRegisterSuccess(true);
+        setTimeout(() => navigate("/login"), 3000);
+      }
+    } catch (error) {
+      setError("Something went wrong! Please try again later.");
       clearError();
-      return;
     }
-    const response = await fetch(registerAPI, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
-    const data = await response.json();
-    console.log(data);
-    if (data.error) {
-      setError(data.error);
-      clearError();
-    } else {
-      setRegisterSuccess(true);
-      setTimeout(() => navigate("/login"), 3000);
-    }
+
   };
 
   // const handleRegister = (event) => {
