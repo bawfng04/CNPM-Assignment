@@ -12,16 +12,6 @@ const General = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await fetch(fetchAllUser, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        const userResult = await userResponse.json();
-        setUserData(userResult.data);
-
         const printerResponse = await fetch(PrinterListAPI, {
           method: "GET",
           headers: {
@@ -30,6 +20,9 @@ const General = () => {
           },
         });
         const printerResult = await printerResponse.json();
+
+        console.log("P:", printerResult.data);
+
         setPrinterData(printerResult.data);
       } catch (error) {
         console.error("Error fetching data: ", error);
@@ -39,19 +32,8 @@ const General = () => {
     fetchData();
   }, []);
 
-  const userChartData = {
-    labels: userData.map((user, index) => `User ${index + 1}`),
-    datasets: [
-      {
-        label: "Number of Transactions",
-        data: userData.map((user) => user.transaction_count || 0),
-        backgroundColor: "rgba(75, 192, 192, 0.6)",
-      },
-    ],
-  };
-
   const printerChartData = {
-    labels: printerData.map((printer, index) => `Printer ${index + 1}`),
+    labels: printerData.map((printer, index) => `Printer ${printer.id + 1}`),
     datasets: [
       {
         label: "Number of Pages Printed",
@@ -61,12 +43,38 @@ const General = () => {
     ],
   };
 
+  //pie chart for campus printer
+
+  const campusChart = {
+    labels: ["Campus 1", "Campus 2"],
+    datasets: [
+      {
+        label: "Number of Printers",
+        data: [
+          printerData.filter((printer) => printer.campus_name === "1").length,
+          printerData.filter((printer) => printer.campus_name === "2").length,
+        ],
+        backgroundColor: ["rgba(255, 99, 132, 0.6)", "rgba(54, 162, 235, 0.6)"],
+      },
+    ],
+  };
+
   return (
     <div className="container">
       <div className="chart-section">
-        <h2>Printer Default Numpages</h2>
-        <div className="chart">
-          <Bar className="chartin" data={printerChartData} />
+        <div className="chartUnit">
+          <h2 className="chartLable">Printer Default Numpages</h2>
+          <div className="chart">
+            <Bar className="chartin" data={printerChartData} />
+          </div>
+        </div>
+        <div className="chartUnit">
+          <h2 className="chartLable">
+            Number of Printers in Campus 1 and Campus 2
+          </h2>
+          <div className="chart">
+            <Bar className="chartin" data={campusChart} />
+          </div>
         </div>
       </div>
       <div className="information-section">

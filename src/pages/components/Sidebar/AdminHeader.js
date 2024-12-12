@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import HCMUTLogo from "../../images/HCMUTlogo.png";
-import notiButton from "../../images/notiButton.png";
+// import notiButton from "../../images/notiButton.png";
 import settingsButton from "../../images/settingsButton.png";
 
 function Header({ activeComponent, setActiveComponent }) {
@@ -75,13 +75,6 @@ function Header({ activeComponent, setActiveComponent }) {
     <header className="header">
       <h2>{headerText}</h2>
       <div className="header-icons">
-        <div className="searchContainer">
-          <input
-            type="text"
-            placeholder=" Search for something"
-            className="searchBar"
-          />
-        </div>
         <button className="headerButton">
           <img
             src={settingsButton}
@@ -97,9 +90,6 @@ function Header({ activeComponent, setActiveComponent }) {
             </button>
           </div>
         )}
-        <button className="headerButton">
-          <img src={notiButton} alt="notiButton"></img>
-        </button>
         <button onClick={handleOnClickAvatar} className="avatarLogo">
           <img src={HCMUTLogo} alt="HCMUTLogo" className="HCMUTLogo"></img>
         </button>

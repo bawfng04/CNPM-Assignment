@@ -6,6 +6,9 @@
 
 .chart-section {
   margin-bottom: 40px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .chart-section h2 {
@@ -63,10 +66,12 @@
   font-weight: bold;
 }
 
-.chart{
-  max-width: 80vw;
+.chartUnit{
+  width: 50%;
 }
 
-.chartin{
-  max-width: 1200px;
+
+.chartLable{
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
