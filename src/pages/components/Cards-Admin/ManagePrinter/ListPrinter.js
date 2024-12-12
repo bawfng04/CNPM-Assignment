@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Bar } from "react-chartjs-2";
 
 const PrinterListAPI = "http://localhost:4000/print/all";
 const handleDetailAPI = (id) => `http://localhost:4000/print/detail/${id}`;
@@ -6,13 +7,13 @@ const handleDetailAPI = (id) => `http://localhost:4000/print/detail/${id}`;
 const clickCheckboxAPI = (id) =>
   `http://localhost:4000/print/change-status/${id}`;
 
-
-
 const deleteAPI = (id) => `http://localhost:4000/print/delete/${id}`;
 
 const ListPrinter = ({ updatePrinterCounts }) => {
   const [printers, setPrinters] = useState([]);
   const [visiblePrinter, setVisiblePrinter] = useState(10);
+  const [en, setEn] = useState(0);
+  const [dis, setDis] = useState(0);
 
   const fetchPrinters = async () => {
     try {
@@ -28,6 +29,9 @@ const ListPrinter = ({ updatePrinterCounts }) => {
 
       const en = data2.totalPrinterEn.data;
       const dis = data2.totalPrinterDis.data;
+
+      setEn(en);
+      setDis(dis);
 
       // Update counts in the parent component
       updatePrinterCounts(en, dis);
@@ -90,6 +94,21 @@ const ListPrinter = ({ updatePrinterCounts }) => {
         console.error("Error changing printer status: ", error);
       });
   }
+
+  const printerStatusChart = {
+    labels: ["Available", "Disabled"],
+    datasets: [
+      {
+        label: "Number of Printers",
+        data: [en, dis],
+        backgroundColor: ["rgba(255, 99, 132, 0.6)", "rgba(54, 162, 235, 0.6)"],
+      },
+    ],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+    },
+  };
 
   const showModal = (data) => {
     console.log("showmodeldata: ", data[0]);
@@ -158,9 +177,14 @@ const ListPrinter = ({ updatePrinterCounts }) => {
 
   return (
     <div className="history-container">
+      <div className="chartz">
+        <Bar className="pChart" data={printerStatusChart} />
+      </div>
+
       <div className="printNfilter">
         <h2 className="printTextz">Printers list</h2>
       </div>
+
       <div className="table-container">
         <table className="history-table">
           <thead>

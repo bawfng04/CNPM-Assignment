@@ -8,7 +8,6 @@
   margin-bottom: 40px;
   display: flex;
   justify-content: space-between;
-  gap: 20px;
 }
 
 .chart-section h2 {
@@ -66,12 +65,14 @@
   font-weight: bold;
 }
 
-.chartUnit{
-  width: 50%;
-}
 
+
+.chartUnit{
+  width: 48%;
+}
 
 .chartLable{
   margin-top: 20px;
   margin-bottom: 10px;
 }
+

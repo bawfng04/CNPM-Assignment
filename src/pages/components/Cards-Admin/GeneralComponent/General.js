@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import "./General.css";
 
-const fetchAllUser = "http://localhost:4000/admin/getUsers";
 const PrinterListAPI = "http://localhost:4000/print/all";
 
 const General = () => {
-  const [userData, setUserData] = useState([]);
   const [printerData, setPrinterData] = useState([]);
 
   useEffect(() => {
@@ -41,6 +39,10 @@ const General = () => {
         backgroundColor: "rgba(153, 102, 255, 0.6)",
       },
     ],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+    },
   };
 
   //pie chart for campus printer
@@ -57,6 +59,10 @@ const General = () => {
         backgroundColor: ["rgba(255, 99, 132, 0.6)", "rgba(54, 162, 235, 0.6)"],
       },
     ],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+    },
   };
 
   return (
@@ -69,9 +75,7 @@ const General = () => {
           </div>
         </div>
         <div className="chartUnit">
-          <h2 className="chartLable">
-            Number of Printers in Campus 1 and Campus 2
-          </h2>
+          <h2 className="chartLable">Number of Printers in Campuses</h2>
           <div className="chart">
             <Bar className="chartin" data={campusChart} />
           </div>

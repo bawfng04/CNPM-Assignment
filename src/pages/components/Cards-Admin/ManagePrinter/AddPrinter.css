@@ -179,3 +179,9 @@ select[name="file_types"] option {
   transform: scale(1.5);
   align-items: center;
 }
+
+.pChart{
+  width: 80vw;
+  max-width: 1080px;
+  max-height: 300px;
+}
