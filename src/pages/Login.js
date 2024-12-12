@@ -153,36 +153,37 @@ function Login({ onLogin }) {
               {/* <form className="login-form" onSubmit={handleLogin}> */}
               <form className="login-form" onSubmit={handleSubmit}>
                 {/* Email Field */}
-                <div className="email-field">
-                  <label htmlFor="email">Email</label>
+                <div className="input-container">
                   <input
                     className="loginInput"
                     type="email"
                     id="email"
                     value={email}
                     onChange={handleEmailChange}
-                    placeholder="Enter your email"
+                    placeholder=""
                     required
                   ></input>
+                  <label htmlFor="email">Email</label>
                 </div>
                 {/* Password Field */}
                 <div className="password-field">
                   <div className="password-text">
-                    <label htmlFor="pasword">Password</label>
+                    <label htmlFor="pasword"></label>
                     <a className="forgot-link" href="/">
                       Forgot?
                     </a>
                   </div>
-                  <div className="passwordInput">
+                  <div className="input-container">
                     <input
                       className="loginInput"
                       type="password"
                       id="password"
                       value={password}
                       onChange={handlePasswordChange}
-                      placeholder="Enter your password"
+                      placeholder=""
                       required
                     ></input>
+                    <label htmlFor="password">Password</label>
                   </div>
                 </div>
                 {/* Submit Button*/}

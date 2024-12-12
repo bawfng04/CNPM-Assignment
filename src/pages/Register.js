@@ -105,39 +105,46 @@ const Register = () => {
         {/* <form onSubmit={handleRegister}> */}
         <form className="regisForm" onSubmit={handleSubmit}>
           <h1>Create an account</h1>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            required
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <label htmlFor="rePassword">Confirm Password</label>
-          <input
-            type="password"
-            id="rePassword"
-            name="rePassword"
-            required
-            onChange={(e) => setRePassword(e.target.value)}
-          />
+          <div className="input-container">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              placeholder=" "
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <label htmlFor="email">Email</label>
+          </div>
+          <div className="input-container">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              placeholder=" "
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <label htmlFor="password">Password</label>
+          </div>
+          <div className="input-container">
+            <input
+              type="password"
+              id="rePassword"
+              name="rePassword"
+              required
+              placeholder=" "
+              onChange={(e) => setRePassword(e.target.value)}
+            />
+            <label htmlFor="rePassword">Confirm Password</label>
+          </div>
           <button type="submit" className="registerButton">
             Create account
           </button>
-
           <button type="button" className="googleButton">
             <img src={GGlogo} alt="Google Logo" className="GGLogo"></img>
             Continue with Google
           </button>
-
           <div className="rUnderText">
             <p className="rText">Already Have An Account?</p>
             <span className="rLink" onClick={handleCancel}>
