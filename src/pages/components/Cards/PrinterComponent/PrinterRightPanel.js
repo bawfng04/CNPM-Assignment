@@ -172,7 +172,12 @@ const PrinterRightPanel = ({
           localStorage.setItem("num_pages", pageNumber);
 
           console.log("data", data);
-          window.location.reload();
+          alert(
+            "You need to buy more paper, the website will redirect to the market page in 3 seconds"
+          );
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
         } else {
           alert("Error");
         }
