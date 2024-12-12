@@ -103,9 +103,10 @@
 }
 
 .c-dashboard__box-card2 {
-  padding: 26px 11px 21px 25px;
-  background-color: #fff;
+  padding: 45px 25px 45px 25px;
+  background-color: #f5f7fa;
   border-radius: 24px;
+
 }
 
 .c-dashboard__item2 {

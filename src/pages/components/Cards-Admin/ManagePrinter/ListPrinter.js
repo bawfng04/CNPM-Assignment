@@ -177,9 +177,9 @@ const ListPrinter = ({ updatePrinterCounts }) => {
 
   return (
     <div className="history-container">
-      <div className="chartz">
+      {/* <div className="chartz">
         <Bar className="pChart" data={printerStatusChart} />
-      </div>
+      </div> */}
 
       <div className="printNfilter">
         <h2 className="printTextz">Printers list</h2>

@@ -4,8 +4,6 @@ import avatarDashboard from "../../../images/avatar-dashboard2.png";
 import t1 from "../../../images/t1.png";
 import t2 from "../../../images/t2.png";
 import t3 from "../../../images/t3.png";
-// import boxChart from "../../../images/box-chart.jpg";
-// import boxBalance from "../../../images/box-balance.jpg";
 import p1 from "../../../images/p1.jpg";
 import p2 from "../../../images/p2.jpg";
 import Chart from "chart.js/auto";
@@ -20,6 +18,7 @@ function Dashboard() {
   const chartRef = useRef(null);
   const printerChartRef = useRef(null);
   const historyChartRef = useRef(null);
+  const pagesPrintedChartRef = useRef(null); // New ref for pages printed chart
   const [name, setName] = useState("");
   const [studentID, setStudentID] = useState("");
   const [faculty, setFaculty] = useState("");
@@ -29,6 +28,7 @@ function Dashboard() {
   const [enabledPrinters, setEnabledPrinters] = useState(0);
   const [disabledPrinters, setDisabledPrinters] = useState(0);
   const [monthlyPrints, setMonthlyPrints] = useState([]);
+  const [pagesPrinted, setPagesPrinted] = useState([]); // New state for pages printed
 
   const getStudentInfo = async () => {
     let email = localStorage.getItem("email");
@@ -110,13 +110,17 @@ function Dashboard() {
       const data = await response.json();
       const history = data.data;
 
-      const monthlyCounts = Array(12).fill(0);
+      const monthlyCounts = Array(12).fill(0); //tạo mảng 12 phần tử, giá trị mặc định là 0
+      const pagesPrintedCounts = Array(12).fill(0);
+
       history.forEach((item) => {
         const month = moment(item.start_time).month();
         monthlyCounts[month]++;
+        pagesPrintedCounts[month] += item.pages_printed;
       });
 
       setMonthlyPrints(monthlyCounts);
+      setPagesPrinted(pagesPrintedCounts);
     } catch (error) {
       console.log(error);
     }
@@ -259,6 +263,51 @@ function Dashboard() {
     };
   }, [monthlyPrints]);
 
+  // Pages printed chart
+  useEffect(() => {
+    let pagesPrintedChartInstance;
+    if (pagesPrintedChartRef.current) {
+      const ctx = pagesPrintedChartRef.current.getContext("2d");
+      pagesPrintedChartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ],
+          datasets: [
+            {
+              label: "Pages Printed",
+              data: pagesPrinted,
+              borderColor: "#FF6384",
+              fill: false,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        },
+      });
+    }
+
+    return () => {
+      if (pagesPrintedChartInstance) {
+        pagesPrintedChartInstance.destroy();
+      }
+    };
+  }, [pagesPrinted]);
+
   return (
     <section className="c-dashboard">
       <div className="c-dashboard__box-1">
@@ -289,33 +338,10 @@ function Dashboard() {
 
         <div className="c-dashboard__box-transaction">
           <div className="c-dashboard__transaction-head">
-            <h2>Recent Transaction</h2>
+            <h2>Pages Printed Per Month</h2>
           </div>
           <div className="c-dashboard__box-card2">
-            <div className="c-dashboard__item2">
-              <img src={t1} alt="Logo" />
-              <div className="c-dashboard__text2">
-                <h3>Deposit</h3>
-                <p>17 September 2024</p>
-              </div>
-              <span>+100,000đ</span>
-            </div>
-            <div className="c-dashboard__item2">
-              <img src={t2} alt="Logo" />
-              <div className="c-dashboard__text2">
-                <h3>Print A4 paper</h3>
-                <p>15 September 2024</p>
-              </div>
-              <span id="span2">-25,000đ</span>
-            </div>
-            <div className="c-dashboard__item2">
-              <img src={t3} alt="Logo" />
-              <div className="c-dashboard__text2">
-                <h3>Print A3 paper</h3>
-                <p>10 September 2024</p>
-              </div>
-              <span id="span3">-30,000đ</span>
-            </div>
+            <canvas ref={pagesPrintedChartRef}></canvas>
           </div>
         </div>
       </div>
