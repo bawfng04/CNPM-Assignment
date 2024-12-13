@@ -67,6 +67,7 @@ const PrinterRightPanel = ({
       return;
     }
 
+
     // console.log("PAGE NUMBER: ", pageNumber);
     // console.log("selectedPageOption: ", selectedPageOption);
     // console.log("selectedStartPage: ", selectedStartPage);
