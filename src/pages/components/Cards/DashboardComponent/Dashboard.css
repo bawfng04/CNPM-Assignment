@@ -331,3 +331,11 @@
 .ifsd{
   animation: slidefaderight 1s;
 }
+
+.c2{
+  transition: transform 0.3s ease;
+}
+
+.c2:hover{
+  transform: scale(1.2);
+}

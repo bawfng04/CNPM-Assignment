@@ -1,0 +1,50 @@
+[debug] [2024-12-13T07:16:26.818Z] ----------------------------------------------------------------------
+[debug] [2024-12-13T07:16:26.821Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\nguye\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2024-12-13T07:16:26.822Z] CLI Version:   13.27.0
+[debug] [2024-12-13T07:16:26.822Z] Platform:      win32
+[debug] [2024-12-13T07:16:26.822Z] Node Version:  v21.6.2
+[debug] [2024-12-13T07:16:26.822Z] Time:          Fri Dec 13 2024 14:16:26 GMT+0700 (Indochina Time)
+[debug] [2024-12-13T07:16:26.822Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-12-13T07:16:26.897Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-12-13T07:16:26.897Z] > authorizing via signed-in user (nguyendinhbang53az@gmail.com)
+[debug] [2024-12-13T07:16:26.898Z] [iam] checking project smartprinterservice-86a9c for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-12-13T07:16:26.899Z] Checked if tokens are valid: true, expires at: 1734077078020
+[debug] [2024-12-13T07:16:26.899Z] Checked if tokens are valid: true, expires at: 1734077078020
+[debug] [2024-12-13T07:16:26.900Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/smartprinterservice-86a9c:testIamPermissions [none]
+[debug] [2024-12-13T07:16:26.900Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/smartprinterservice-86a9c:testIamPermissions x-goog-quota-user=projects/smartprinterservice-86a9c
+[debug] [2024-12-13T07:16:26.900Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/smartprinterservice-86a9c:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-12-13T07:16:38.268Z] *** [apiv2] error from fetch(https://cloudresourcemanager.googleapis.com/v1/projects/smartprinterservice-86a9c:testIamPermissions, {"headers":{},"method":"POST","body":"{\"permissions\":[\"firebase.projects.get\",\"firebasehosting.sites.update\"]}"}): FetchError: request to https://cloudresourcemanager.googleapis.com/v1/projects/smartprinterservice-86a9c:testIamPermissions failed, reason: getaddrinfo ENOTFOUND cloudresourcemanager.googleapis.com
+[debug] [2024-12-13T07:16:38.269Z] [iam] error while checking permissions, command may fail: Failed to make request to https://cloudresourcemanager.googleapis.com/v1/projects/smartprinterservice-86a9c:testIamPermissions
+[debug] [2024-12-13T07:16:38.270Z] Checked if tokens are valid: true, expires at: 1734077078020
+[debug] [2024-12-13T07:16:38.270Z] Checked if tokens are valid: true, expires at: 1734077078020
+[debug] [2024-12-13T07:16:38.272Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/smartprinterservice-86a9c [none]
+[debug] [2024-12-13T07:16:49.601Z] *** [apiv2] error from fetch(https://firebase.googleapis.com/v1beta1/projects/smartprinterservice-86a9c, {"headers":{},"method":"GET","signal":{}}): FetchError: request to https://firebase.googleapis.com/v1beta1/projects/smartprinterservice-86a9c failed, reason: getaddrinfo ENOTFOUND firebase.googleapis.com
+[debug] [2024-12-13T07:16:49.601Z] Failed to make request to https://firebase.googleapis.com/v1beta1/projects/smartprinterservice-86a9c (original: request to https://firebase.googleapis.com/v1beta1/projects/smartprinterservice-86a9c failed, reason: getaddrinfo ENOTFOUND firebase.googleapis.com)
+[error] 
+[error] Error: Assertion failed: resolving hosting target of a site with no site name or target name. This should have caused an error earlier
+[debug] [2024-12-13T07:17:22.598Z] ----------------------------------------------------------------------
+[debug] [2024-12-13T07:17:22.604Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\nguye\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2024-12-13T07:17:22.606Z] CLI Version:   13.27.0
+[debug] [2024-12-13T07:17:22.606Z] Platform:      win32
+[debug] [2024-12-13T07:17:22.606Z] Node Version:  v21.6.2
+[debug] [2024-12-13T07:17:22.607Z] Time:          Fri Dec 13 2024 14:17:22 GMT+0700 (Indochina Time)
+[debug] [2024-12-13T07:17:22.608Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-12-13T07:17:22.751Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-12-13T07:17:22.752Z] > authorizing via signed-in user (nguyendinhbang53az@gmail.com)
+[debug] [2024-12-13T07:17:22.752Z] [iam] checking project smartprinterservice-86a9c for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-12-13T07:17:22.755Z] Checked if tokens are valid: true, expires at: 1734077078020
+[debug] [2024-12-13T07:17:22.755Z] Checked if tokens are valid: true, expires at: 1734077078020
+[debug] [2024-12-13T07:17:22.757Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/smartprinterservice-86a9c:testIamPermissions [none]
+[debug] [2024-12-13T07:17:22.757Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/smartprinterservice-86a9c:testIamPermissions x-goog-quota-user=projects/smartprinterservice-86a9c
+[debug] [2024-12-13T07:17:22.757Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/smartprinterservice-86a9c:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-12-13T07:17:22.880Z] *** [apiv2] error from fetch(https://cloudresourcemanager.googleapis.com/v1/projects/smartprinterservice-86a9c:testIamPermissions, {"headers":{},"method":"POST","body":"{\"permissions\":[\"firebase.projects.get\",\"firebasehosting.sites.update\"]}"}): FetchError: request to https://cloudresourcemanager.googleapis.com/v1/projects/smartprinterservice-86a9c:testIamPermissions failed, reason: getaddrinfo ENOTFOUND cloudresourcemanager.googleapis.com
+[debug] [2024-12-13T07:17:22.881Z] [iam] error while checking permissions, command may fail: Failed to make request to https://cloudresourcemanager.googleapis.com/v1/projects/smartprinterservice-86a9c:testIamPermissions
+[debug] [2024-12-13T07:17:22.882Z] Checked if tokens are valid: true, expires at: 1734077078020
+[debug] [2024-12-13T07:17:22.882Z] Checked if tokens are valid: true, expires at: 1734077078020
+[debug] [2024-12-13T07:17:22.882Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/smartprinterservice-86a9c [none]
+[debug] [2024-12-13T07:17:22.897Z] *** [apiv2] error from fetch(https://firebase.googleapis.com/v1beta1/projects/smartprinterservice-86a9c, {"headers":{},"method":"GET","signal":{}}): FetchError: request to https://firebase.googleapis.com/v1beta1/projects/smartprinterservice-86a9c failed, reason: getaddrinfo ENOTFOUND firebase.googleapis.com
+[debug] [2024-12-13T07:17:22.898Z] Failed to make request to https://firebase.googleapis.com/v1beta1/projects/smartprinterservice-86a9c (original: request to https://firebase.googleapis.com/v1beta1/projects/smartprinterservice-86a9c failed, reason: getaddrinfo ENOTFOUND firebase.googleapis.com)
+[error] 
+[error] Error: Assertion failed: resolving hosting target of a site with no site name or target name. This should have caused an error earlier

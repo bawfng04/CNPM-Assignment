@@ -7,28 +7,32 @@ import settingsButton from "../../images/settingsButton.png";
 const logoutAPI = "http://localhost:4000/logout/";
 
 const handleLogout = async () => {
-  const response = await fetch(logoutAPI, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
-  // console.log("TOKENNNN:", localStorage.getItem("token"));
-  const data = await response.json();
-  if (data.message) {
-    localStorage.removeItem("token");
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("role");
-    localStorage.removeItem("email");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("iat");
-    localStorage.removeItem("exp");
-    localStorage.removeItem("activeComponent");
-    window.location.href = "/";
-    alert("Logout success");
-  } else {
-    console.log(data.error);
+  try {
+    const response = await fetch(logoutAPI, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    // console.log("TOKENNNN:", localStorage.getItem("token"));
+    const data = await response.json();
+    if (data.message) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("role");
+      localStorage.removeItem("email");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("iat");
+      localStorage.removeItem("exp");
+      localStorage.removeItem("activeComponent");
+      window.location.href = "/";
+      alert("Logout success");
+    } else {
+      console.log(data.error);
+    }
+  } catch (error) {
+    console.log("Error:", error);
   }
 };
 

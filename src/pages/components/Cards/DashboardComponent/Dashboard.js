@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./Dashboard.css";
 import avatarDashboard from "../../../images/avatar-dashboard2.png";
-import t1 from "../../../images/t1.png";
-import t2 from "../../../images/t2.png";
-import t3 from "../../../images/t3.png";
+// import t1 from "../../../images/t1.png";
+// import t2 from "../../../images/t2.png";
+// import t3 from "../../../images/t3.png";
 import p1 from "../../../images/p1.jpg";
 import p2 from "../../../images/p2.jpg";
 import Chart from "chart.js/auto";
@@ -142,7 +142,7 @@ function Dashboard() {
 
         const res = await response.json();
 
-        console.log("resss: ", res);
+        // console.log("resss: ", res);
 
         setA33(res.data.pages_remainingA3);
         setA44(res.data.pages_remainingA4);
@@ -352,7 +352,7 @@ function Dashboard() {
             <h2>Expense Statistics</h2>
           </div>
           <div className="c-dashboard__circle-box">
-            <canvas ref={chartRef}></canvas>
+            <canvas ref={chartRef} className="c2"></canvas>
           </div>
         </div>
 
@@ -361,7 +361,7 @@ function Dashboard() {
             <h2>Printers Status</h2>
           </div>
           <div className="c-dashboard__printer-box">
-            <canvas ref={printerChartRef}></canvas>
+            <canvas ref={printerChartRef} className="c2"></canvas>
           </div>
         </div>
       </div>
