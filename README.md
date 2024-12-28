@@ -60,14 +60,14 @@ Deploy: [https://smartprinterservice-86a9c.web.app/](https://smartprinterservice
 
 2. Install dependencies for backend and start the server:
     ```sh
-    cd BE
+    cd Server
     npm install
     npm start
     ```
 
 3. Install dependencies for frontend and start:
     ```sh
-    cd cnpm-client
+    cd Client
     npm install
     npm start
     ```
