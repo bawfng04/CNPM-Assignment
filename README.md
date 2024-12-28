@@ -32,20 +32,20 @@ Deploy: [https://smartprinterservice-86a9c.web.app/](https://smartprinterservice
 ## Screenshots
 
 ### User Screenshots
-| ![image](images/image10.png) | ![image](images/image11.png) |
+| ![image](Client/images/image10.png) | ![image](Client/images/image11.png) |
 |:------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------:|
-| ![image](images/image12.png) | ![image](images/image13.png) |
-| ![image](images/image14.png) | ![image](images/image15.png) |
-| ![image](images/image16.png) | ![image](images/image17.png) |
-| ![image](images/image18.png) |                                                                                              |
+| ![image](Client/images/image12.png) | ![image](Client/images/image13.png) |
+| ![image](Client/images/image14.png) | ![image](Client/images/image15.png) |
+| ![image](Client/images/image16.png) | ![image](Client/images/image17.png) |
+| ![image](Client/images/image18.png) |                                                                                              |
 
 ### Admin Screenshots
-| ![admin1](images/image-1.png) | ![admin2](images/image-2.png) |
+| ![admin1](Client/images/image-1.png) | ![admin2](Client/images/image-2.png) |
 |:----------------------:|:----------------------:|
-| ![admin3](images/image-3.png) | ![admin4](images/image-4.png) |
+| ![admin3](Client/images/image-3.png) | ![admin4](Client/images/image-4.png) |
 
 ### Unauthorized Page
-![Unauthorized](images/image.png)
+![Unauthorized](Client/images/image.png)
 
 ## Prerequisites
 
